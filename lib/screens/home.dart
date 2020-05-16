@@ -28,25 +28,25 @@ class HomePageState extends State<HomePage> {
   @override
   void initState() {
     // TODO: implement initState
-
+ 
     super.initState();
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
-    userBloc.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     user = Provider.of<User>(context);
+    userBloc = BlocProvider.of<UserBloc>(context);
     return _buildHomePage(context);
   }
 
   Widget _buildHomePage(BuildContext context) {
-    userBloc = BlocProvider.of<UserBloc>(context);
+ 
     return Scaffold(body: BlocBuilder<UserBloc, UserState>(
       bloc: userBloc,
         builder: (BuildContext context, UserState userState) {

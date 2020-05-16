@@ -1,4 +1,5 @@
 import 'package:customer_app/bloc/user_bloc.dart';
+import 'package:customer_app/screens/dashboard/dashboard_theme.dart';
 import 'package:customer_app/widgets/loading/loadingIndicator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -7,7 +8,6 @@ import './../../screens/sign_in/sign_in_page.dart';
 import './../../services/auth_service.dart';
 import 'package:flutter/material.dart';
 
-
 class AuthWidget extends StatelessWidget {
   const AuthWidget({Key key, @required this.userSnapshot}) : super(key: key);
   final AsyncSnapshot<User> userSnapshot;
@@ -15,7 +15,9 @@ class AuthWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (userSnapshot.connectionState == ConnectionState.active) {
-      return userSnapshot.hasData ? _buildHomePage(context,userSnapshot): SignInPageBuilder();
+      return userSnapshot.hasData
+          ? _buildHomePage(context, userSnapshot)
+          : SignInPageBuilder();
     }
     return Scaffold(
       body: Center(
@@ -23,9 +25,17 @@ class AuthWidget extends StatelessWidget {
       ),
     );
   }
-  Widget _buildHomePage(BuildContext context, AsyncSnapshot<User> userSnapshot) {
-    return BlocProvider(
-      create: (context) => UserBloc(uid: userSnapshot.data.uid)..add(UserFetch()),
-      child: HomePage());
+
+  Widget _buildHomePage(
+      BuildContext context, AsyncSnapshot<User> userSnapshot) {
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider<UserBloc>(
+            create: (context) =>
+                UserBloc(uid: userSnapshot.data.uid)..add(UserFetch()),
+          ),
+        ],
+        child: MaterialApp(
+            theme: ThemeData(primarySwatch: Colors.indigo), home: HomePage()));
   }
 }

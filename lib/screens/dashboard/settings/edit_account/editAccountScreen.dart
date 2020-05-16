@@ -65,11 +65,13 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
   bool isSubmitting;
   @override
   void initState() {
+    userbloc = BlocProvider.of<UserBloc>(context);
     displayNameFieldPlaceholder = userData.displayName;
     emailplaceholder = userData.email;
     phoneNumberPlaceholder = userData.phoneNumber;
     dateOfBirthPlaceholder = userData.dateofbirth;
     genderPlaceholder = userData.gender;
+    
     phoneIsoCode = '+91';
     isSubmitting = false;
     super.initState();
@@ -325,6 +327,8 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
             setState(() {
               isSubmitting = !isSubmitting;
             });
+
+            userbloc.add(UserFetch());
             Navigator.of(context).pop();
           });
         } else {
@@ -375,6 +379,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
 
   @override
   Widget build(BuildContext context) {
+    userbloc = BlocProvider.of<UserBloc>(context);
     return Scaffold(
       appBar: EditAccountTopBar(
           title: "Edit Your Details",

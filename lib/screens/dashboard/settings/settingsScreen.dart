@@ -123,7 +123,12 @@ class _SettingsScreenState extends State<SettingsScreen>
   }
 
   Future<void> _goToEditScreen(BuildContext context) {
-    Navigator.of(context).push(SlideLeftRoute(widget: (EditAccountScreen(userData))));
+
+    Navigator.of(context).push(SlideLeftRoute(
+        widget: BlocBuilder<UserBloc, UserState>(
+            bloc: userBloc,
+            builder: (BuildContext context, state) =>
+                EditAccountScreen(userData))));
   }
 
   Future<void> _onClickPhonenumber(BuildContext context) async {
@@ -223,9 +228,10 @@ class _SettingsScreenState extends State<SettingsScreen>
   }
 
   Widget getMainListViewUI() {
+    userBloc = BlocProvider.of<UserBloc>(context);
     return BlocBuilder<UserBloc, UserState>(
       bloc: userBloc,
-      condition: (previous,current) {
+      condition: (previous, current) {
         return true;
       },
       builder: (BuildContext context, UserState userState) {
