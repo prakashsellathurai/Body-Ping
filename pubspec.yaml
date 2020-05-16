@@ -1,0 +1,78 @@
+name: customer_app
+description: A new Flutter project.
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.2.2 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^0.1.2
+  flutter_secure_storage: ^3.3.1+1
+  provider: ^4.0.4
+  random_string: ^2.0.0
+  firebase_auth: ^0.15.3
+  google_sign_in: ^4.1.1
+  flutter_facebook_login: ^3.0.0
+  firebase_dynamic_links: ^0.5.0+9
+  rxdart: ^0.23.1
+  package_info: ^0.4.0+13
+  settings_ui: ^0.2.0
+  international_phone_input:
+    git:
+      url: git://github.com/niinyarko/flutter-international-phone-input
+  http: ^0.12.0+4
+  connectivity: ^0.4.2
+  equatable: ^1.1.1
+  shared_preferences: ^0.5.7
+  intl: ^0.16.1
+  flutter_html: ^0.11.1
+  url_launcher: ^5.4.5
+  google_fonts: ^ 1.0.0
+  shimmer: ^1.0.1
+  flare_flutter: ^2.0.3
+  cached_network_image: ^2.2.0+1
+  webview_flutter: ^0.3.21
+  flutter_ghost_content_api: ^0.0.3
+  avatar_glow: ^1.1.0
+  pk_skeleton: ^0.0.2
+  flutter_bloc: ^4.0.0
+  loading_overlay: ^0.2.1
+dev_dependencies:
+  flutter_test:
+    sdk: flutter 
+  flutter_launcher_icons: "^0.7.3"
+
+flutter_icons:
+  android: "launcher_icon" 
+  ios: true
+  image_path: "assets/images/logo.png"
+flutter:
+  uses-material-design: true
+
+  assets:
+   - assets/user.png
+   - assets/images/g-logo.png
+   - assets/images/logo.png
+   - assets/images/dashboard/
+   - assets/images/walk_through/
+   - assets/flare/no_internet.flr
+   - assets/flare/loading.flr
+
+ 
+  fonts:
+    - family: OpenSans
+      fonts:
+        - asset: assets/fonts/OpenSans.ttf
