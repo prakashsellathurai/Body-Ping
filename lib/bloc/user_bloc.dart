@@ -34,8 +34,11 @@ class UserDataFetched extends UserState {
 
   @override
   String toString() => '${userData.toJson}';
-
+  @override
+  UserDataModel getUserData() => userData;
+  @override
   String uid() => userData.uid;
+  @override
   String displayName() => userData.displayName;
 
 }
@@ -48,6 +51,10 @@ class UserBloc extends Bloc<UserEvent,UserState>{
   final _userFetcher = PublishSubject<UserDataModel>();
 
   Stream<UserDataModel> get userData => _userFetcher.stream;
+
+  getUser() async{
+    return await _userFetcher.last;
+  }
 
   fetchUser() async {
     UserDataModel userData = await _userRepository.fetchUser(this.uid);
