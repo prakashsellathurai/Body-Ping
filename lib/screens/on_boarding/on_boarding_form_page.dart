@@ -295,17 +295,7 @@ class UserDetailsFormPageState extends State<OnBoardingFormPage>
         ]);
   }
 
-  fetchUserdata(uid, submittedData) async {
-    print("checking serve");
-    var response;
-    try {
-      response = await userdataprovider.createUser(uid, submittedData);
-      return response;
-    } catch (e) {
-      print(e);
-      return null;
-    }
-  }
+
 
   Widget _buildsubmitbtn(BuildContext context) {
     return OutlineButton(

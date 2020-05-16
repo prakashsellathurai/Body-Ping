@@ -15,6 +15,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:international_phone_input/international_phone_input.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
+import 'package:provider/provider.dart';
 
 final kHintTextStyle = TextStyle(
   color: Colors.grey, //Colors.white54,
@@ -42,14 +43,16 @@ final kBoxDecorationStyle = BoxDecoration(
 class EditAccountScreen extends StatefulWidget {
   UserDataModel userData;
   EditAccountScreen(this.userData);
+
   @override
   _EditAccountScreenState createState() => _EditAccountScreenState(userData);
 }
 
 class _EditAccountScreenState extends State<EditAccountScreen> {
   UserDataModel userData;
-
+  UserBloc userbloc;
   String displayNameFieldPlaceholder,
+      emailplaceholder,
       genderPlaceholder,
       dateOfBirthPlaceholder,
       phoneNumberPlaceholder;
@@ -62,12 +65,17 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
   bool isSubmitting;
   @override
   void initState() {
+    displayNameFieldPlaceholder = userData.displayName;
+    emailplaceholder = userData.email;
+    phoneNumberPlaceholder = userData.phoneNumber;
+    dateOfBirthPlaceholder = userData.dateofbirth;
+    genderPlaceholder = userData.gender;
     phoneIsoCode = '+91';
     isSubmitting = false;
     super.initState();
   }
 
-  Widget _buildEmailField(email) {
+  Widget _buildEmailField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -90,7 +98,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                 Icons.email,
                 color: Colors.grey, //Colors.white,
               ),
-              hintText: email,
+              hintText: emailplaceholder,
               hintStyle: kHintTextStyle,
               enabled: false,
             ),
@@ -101,7 +109,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
     );
   }
 
-  Widget _buildDisplayNameField(displayNameField) {
+  Widget _buildDisplayNameField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -124,19 +132,19 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                 Icons.person,
                 color: Colors.grey, //Colors.white,
               ),
-              hintText: displayNameField,
+              hintText: displayNameFieldPlaceholder,
               hintStyle: kHintTextStyle,
               enabled: true,
             ),
             autocorrect: false,
             onChanged: (value) {
               setState(() {
-                displayNameField = value;
+                displayNameFieldPlaceholder = value;
               });
             },
             onSubmitted: (value) {
               setState(() {
-                displayNameField = value;
+                displayNameFieldPlaceholder = value;
               });
             },
           ),
@@ -145,11 +153,11 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
     );
   }
 
-  Widget _buildPhoneNumberField(phoneNumber) {
+  Widget _buildPhoneNumberField() {
     void onPhoneNumberChange(
         String number, String internationalizedPhoneNumber, String isoCode) {
       setState(() {
-        phoneNumber = number;
+        phoneNumberPlaceholder = number;
         phoneIsoCode = isoCode;
       });
     }
@@ -168,7 +176,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
               height: 50.0,
               child: InternationalPhoneInput(
                 onPhoneNumberChange: onPhoneNumberChange,
-                initialPhoneNumber: phoneNumber,
+                initialPhoneNumber: phoneNumberPlaceholder,
                 initialSelection: phoneIsoCode,
                 enabledCountries: ['+91'],
                 hintText: "Phone Number",
@@ -191,7 +199,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
 
   Future<Null> _selectDate(BuildContext context) async {}
 
-  Widget _buildGenderField(gender) {
+  Widget _buildGenderField() {
     Map<int, Widget> map = new Map();
     List<String> genderList = ['Male', 'Female', 'Others'];
     for (var key in genderList) {
@@ -206,7 +214,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
               )));
     }
 
-    int selectedGenderIndex = genderList.indexOf(gender);
+    int selectedGenderIndex = genderList.indexOf(genderPlaceholder);
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -223,7 +231,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                     onValueChanged: (value) {
                       print(value);
                       setState(() {
-                        gender = genderList[value];
+                        genderPlaceholder = genderList[value];
                         selectedGenderIndex = value;
                       });
                     },
@@ -239,9 +247,8 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
         ]);
   }
 
-  Widget _buildDateOfBirthPicker(dob) {
+  Widget _buildDateOfBirthPicker() {
     final df = new DateFormat('dd-MM-yyyy');
-    dateOfBirthPlaceholder = dob;
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -265,7 +272,6 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                           lastDate: DateTime.now());
                       if (picked != null &&
                           picked.toIso8601String() != dateOfBirthPlaceholder) {
-
                         setState(() {
                           print("up");
                           dateOfBirthPlaceholder = picked.toIso8601String();
@@ -319,7 +325,6 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
             setState(() {
               isSubmitting = !isSubmitting;
             });
-            // BlocProvider.of<UserBloc>(context).add(UserFetch());
             Navigator.of(context).pop();
           });
         } else {
@@ -408,27 +413,22 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                                   MediaQuery.of(context).size.width * .05 * 2,
                             ),
                             child: LoadingOverlay(
-                              child: 
-
-                                   Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      _buildEmailField(userData.email),
-                                      SizedBox(height: 8),
-                                      _buildDisplayNameField(
-                                          userData.displayName),
-                                      SizedBox(height: 8),
-                                      _buildPhoneNumberField(
-                                          userData.phoneNumber),
-                                      SizedBox(height: 8),
-                                      _buildGenderField(userData.gender),
-                                      SizedBox(height: 8),
-                                      _buildDateOfBirthPicker(
-                                          userData.dateofbirth),
-                                      SizedBox(height: 24),
-                                      _buildsubmitbtn(context),
-                                    ],
-                                  ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  _buildEmailField(),
+                                  SizedBox(height: 8),
+                                  _buildDisplayNameField(),
+                                  SizedBox(height: 8),
+                                  _buildPhoneNumberField(),
+                                  SizedBox(height: 8),
+                                  _buildGenderField(),
+                                  SizedBox(height: 8),
+                                  _buildDateOfBirthPicker(),
+                                  SizedBox(height: 24),
+                                  _buildsubmitbtn(context),
+                                ],
+                              ),
                               progressIndicator: CircularProgressIndicator(),
                               isLoading: isSubmitting,
                             )),
@@ -442,10 +442,5 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 }

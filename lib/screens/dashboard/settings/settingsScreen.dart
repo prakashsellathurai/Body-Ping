@@ -50,6 +50,7 @@ class _SettingsScreenState extends State<SettingsScreen>
   @override
   void initState() {
     userBloc = BlocProvider.of<UserBloc>(context);
+
     topBarAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
         CurvedAnimation(
             parent: widget.animationController,
@@ -122,11 +123,7 @@ class _SettingsScreenState extends State<SettingsScreen>
   }
 
   Future<void> _goToEditScreen(BuildContext context) {
-    Navigator.of(context).push(SlideLeftRoute(
-        widget: BlocProvider(
-            create: (context) => userBloc,
-            lazy: true,
-            child: (EditAccountScreen(userData)))));
+    Navigator.of(context).push(SlideLeftRoute(widget: (EditAccountScreen(userData))));
   }
 
   Future<void> _onClickPhonenumber(BuildContext context) async {

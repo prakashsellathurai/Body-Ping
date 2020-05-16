@@ -5,6 +5,7 @@ import 'package:customer_app/screens/dashboard/founder/blog_list_view.dart';
 import 'package:customer_app/screens/dashboard/founder/loading_blog_list.dart';
 import 'package:customer_app/screens/dashboard/founder/tweet/founder_tweets.dart';
 import 'package:customer_app/widgets/animations/slide_transition_routes.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ghost_content_api/flutter_ghost_content_api.dart';
 
@@ -32,6 +33,7 @@ class _FounderScreenState extends State<FounderScreen>
 
   @override
   void initState() {
+     SystemChrome.setEnabledSystemUIOverlays ([SystemUiOverlay.top,SystemUiOverlay.bottom]);
     topBarAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
         CurvedAnimation(
             parent: widget.animationController,
