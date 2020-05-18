@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:intercom_flutter/intercom_flutter.dart';
 
 import './widgets/auth/auth_widget_builder.dart';
 import './widgets/exceptions/email_link_error_presenter.dart';
@@ -16,6 +17,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   SystemChrome.setEnabledSystemUIOverlays ([SystemUiOverlay.bottom]);
+await Intercom.initialize('rv4ydr2y', iosApiKey: 'ios_sdk-152bd9bbc8dc994be0b581e706b97a7bfbd7f3cd', androidApiKey: 'android_sdk-00787217d80052b3eee2d51235c22e803a521dce');
   runApp(MyApp());
 }
 

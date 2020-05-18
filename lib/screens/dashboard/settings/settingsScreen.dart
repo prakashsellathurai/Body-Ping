@@ -9,6 +9,7 @@ import 'package:customer_app/widgets/exceptions/platform_alert_dialog.dart';
 import 'package:customer_app/widgets/exceptions/platform_exception_alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intercom_flutter/intercom_flutter.dart';
 import 'package:intl/intl.dart';
 import './../../../services/auth_service.dart';
 import 'package:settings_ui/settings_ui.dart';
@@ -90,6 +91,10 @@ class _SettingsScreenState extends State<SettingsScreen>
   Future<void> _signOut(BuildContext context) async {
     try {
       final AuthService auth = Provider.of<AuthService>(context, listen: false);
+      userBloc = BlocProvider.of<UserBloc>(context);
+      await Intercom.logout();
+
+      await userBloc.dispose();
       await auth.signOut();
     } on PlatformException catch (e) {
       await PlatformExceptionAlertDialog(

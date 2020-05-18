@@ -30,9 +30,7 @@ dependencies:
   rxdart: ^0.23.1
   package_info: ^0.4.0+13
   settings_ui: ^0.2.0
-  international_phone_input:
-    git:
-      url: git://github.com/niinyarko/flutter-international-phone-input
+  international_phone_input: ^1.0.4
   http: ^0.12.0+4
   connectivity: ^0.4.2
   equatable: ^1.1.1
@@ -50,6 +48,7 @@ dependencies:
   pk_skeleton: ^0.0.2
   flutter_bloc: ^4.0.0
   loading_overlay: ^0.2.1
+  intercom_flutter: ^2.2.0
 dev_dependencies:
   flutter_test:
     sdk: flutter 

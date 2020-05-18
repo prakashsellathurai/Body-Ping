@@ -16,6 +16,8 @@ class UserState {
   const UserState();
   @override
   List<Object> get props => [];
+   @override
+  UserDataModel getUserData() => null;
 }
 
 class UserUnitialized extends UserState {}
@@ -64,6 +66,7 @@ class UserBloc extends Bloc<UserEvent,UserState>{
 
   dispose() {
     _userFetcher.close();
+    super.close();
   }
 
   @override

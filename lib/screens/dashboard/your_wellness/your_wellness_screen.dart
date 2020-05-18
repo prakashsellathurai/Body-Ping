@@ -1,17 +1,24 @@
+import 'dart:convert';
+
 import 'package:customer_app/bloc/gk_fit_blog_bloc.dart';
+import 'package:customer_app/bloc/user_bloc.dart';
 import 'package:customer_app/model/userDataModel.dart';
 import 'package:customer_app/provider/wordpressProvider.dart';
+import 'package:customer_app/screens/dashboard/ui_view/consult_with_dietitian.dart';
+
 import 'package:customer_app/screens/dashboard/your_wellness/gk_fit_blogs/gk_fit_blogs_screen.dart';
 import 'package:customer_app/widgets/animations/slide_transition_routes.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intercom_flutter/intercom_flutter.dart';
 
 import '../ui_view/area_list_view.dart';
 import '../ui_view/running_view.dart';
 import '../ui_view/title_view.dart';
-import '../ui_view/workout_view.dart';
 import 'package:flutter/material.dart';
 
 import '../dashboard_theme.dart';
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
 
 class YourWellness extends StatefulWidget {
   const YourWellness({Key key, this.animationController, this.userData})
@@ -30,9 +37,10 @@ class _YourWellnessState extends State<YourWellness>
   List<Widget> listViews = <Widget>[];
   final ScrollController scrollController = ScrollController();
   double topBarOpacity = 0.0;
-
+  UserBloc userBloc;
   @override
   void initState() {
+    userBloc = BlocProvider.of<UserBloc>(context);
     topBarAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
         CurvedAnimation(
             parent: widget.animationController,
@@ -86,6 +94,38 @@ class _YourWellnessState extends State<YourWellness>
             curve:
                 Interval((1 / count) * 2, 1.0, curve: Curves.fastOutSlowIn))),
         animationController: widget.animationController,
+        onTap: () async {
+          var userData = userBloc.state.getUserData();
+          String uid = userData.uid;
+
+          final userId = utf8.encode(uid);
+          final secret =
+              utf8.encode('gLX8EC-OJlsCCUUd5O355KBwN0x6YHCwVONgyTdf');
+
+          final hmacSha256 = new Hmac(sha256, secret);
+          final userIdHash = hmacSha256.convert(userId);
+          print("HMAC digest as hex string: $userIdHash");
+          dynamic userhash = await Intercom.setUserHash('$userIdHash');
+          print(userhash);
+
+          dynamic registere =
+              await Intercom.registerIdentifiedUser(userId: uid, email: null);
+          print(registere);
+
+          dynamic userUpdated = await Intercom.updateUser(
+              email: userData.email,
+              name: userData.displayName,
+              userId: userData.uid,
+              phone: userData.phoneNumber,
+              customAttributes: {
+                "gender": userData.gender,
+                "date of birth": userData.dateofbirth,
+                "current_plan": userData.currentPlan
+              });
+          print(userUpdated);
+          await Intercom.displayMessenger();
+          // Navigator.push(context,SlideLeftRoute(widget:  FreshChatMainScreen()));
+        },
       ),
     );
 
@@ -111,13 +151,10 @@ class _YourWellnessState extends State<YourWellness>
                 Interval((1 / count) * 4, 1.0, curve: Curves.fastOutSlowIn))),
         animationController: widget.animationController,
         onclick: () {
-          Navigator.of(context)
-              .push(
-                SlideLeftRoute(widget: 
-                BlocProvider(create: (context) => GKFITBlogbloc()..add(GKFITBlogFetch()),
-                child:   GKFITblogsScreen())
-                )
-                );
+          Navigator.of(context).push(SlideLeftRoute(
+              widget: BlocProvider(
+                  create: (context) => GKFITBlogbloc()..add(GKFITBlogFetch()),
+                  child: GKFITblogsScreen())));
         },
       ),
     );
@@ -315,7 +352,7 @@ class _YourWellnessState extends State<YourWellness>
     );
   }
 
-@override
+  @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();

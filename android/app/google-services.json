@@ -1,42 +1,50 @@
 {
   "project_info": {
-    "project_number": "200021120309",
-    "firebase_url": "https://customer-app-2bc62.firebaseio.com",
-    "project_id": "customer-app-2bc62",
-    "storage_bucket": "customer-app-2bc62.appspot.com"
+    "project_number": "1030845745010",
+    "firebase_url": "https://hygieafit.firebaseio.com",
+    "project_id": "hygieafit",
+    "storage_bucket": "hygieafit.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:200021120309:android:f1f4358cae55bff397287c",
+        "mobilesdk_app_id": "1:1030845745010:android:cda320e62604eed3f6bfeb",
         "android_client_info": {
-          "package_name": "com.example.customer_app"
+          "package_name": "com.gkfitinida.gkfit"
         }
       },
       "oauth_client": [
         {
-          "client_id": "200021120309-p5d4qunq37ku4c5lfhcfa4spbai8iib4.apps.googleusercontent.com",
+          "client_id": "1030845745010-akts7ik9n5l35f7clnd3qskkia9v8fkp.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.customer_app",
+            "package_name": "com.gkfitinida.gkfit",
+            "certificate_hash": "d64bf4175eaedfd98e6584f9cf81920d4c5ba724"
+          }
+        },
+        {
+          "client_id": "1030845745010-v8oqt4rtco0fqonub3gp2apob7epgqeg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gkfitinida.gkfit",
             "certificate_hash": "5ed8656d497f4758d13e67a16a9f4e301145c8b1"
           }
         },
         {
-          "client_id": "200021120309-khg418rv6j8opbov5mm9v0iu5cuegta8.apps.googleusercontent.com",
+          "client_id": "1030845745010-dfvv896ltbsuf2nrqajdbu8l7tfbdpjq.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyADYjo7ZihCETyQuUbfEOFpW7lkTDWGQsA"
+          "current_key": "AIzaSyDjBcrERH5xBFWdWfs6L2CeRkIWZYKpw9A"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "200021120309-khg418rv6j8opbov5mm9v0iu5cuegta8.apps.googleusercontent.com",
+              "client_id": "1030845745010-dfvv896ltbsuf2nrqajdbu8l7tfbdpjq.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

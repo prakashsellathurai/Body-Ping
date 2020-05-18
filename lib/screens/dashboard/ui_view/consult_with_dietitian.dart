@@ -6,7 +6,9 @@ class ConsultWithOurDieticianView extends StatelessWidget {
   final AnimationController animationController;
   final Animation animation;
 
-  const ConsultWithOurDieticianView({Key key, this.animationController, this.animation})
+  final void Function() onTap;
+
+  const ConsultWithOurDieticianView({Key key, this.animationController, this.animation,this.onTap})
       : super(key: key);
 
   @override
@@ -83,7 +85,7 @@ class ConsultWithOurDieticianView extends StatelessWidget {
                           ),
                         ),
                       ),
-                          
+
                       SizedBox(
                         height: 32,
                       ),
@@ -118,6 +120,9 @@ class ConsultWithOurDieticianView extends StatelessWidget {
                             Expanded(
                               child: SizedBox(),
                             ),
+                            GestureDetector(
+                              onTap: onTap,
+                              child: 
                             Container(
                               decoration: BoxDecoration(
                                 color: DashboardTheme.nearlyWhite,
@@ -138,6 +143,7 @@ class ConsultWithOurDieticianView extends StatelessWidget {
                                   size: 44,
                                 ),
                               ),
+                            )
                             )
                           ],
                         ),
