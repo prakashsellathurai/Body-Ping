@@ -245,6 +245,7 @@ class _SettingsScreenState extends State<SettingsScreen>
         }
         if (userState is UserDataFetched) {
           userData = userState.userData;
+
           print(userData.displayName);
           List<Widget> listViews = <Widget>[];
           var formatter = new DateFormat('dd-MM-yyyy');

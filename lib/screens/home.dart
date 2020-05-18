@@ -69,6 +69,7 @@ class HomePageState extends State<HomePage> {
       }
 
       return Center(child: LoadingIndicator());
-    }));
+    })
+    );
   }
 }

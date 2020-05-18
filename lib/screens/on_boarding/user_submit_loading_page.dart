@@ -1,9 +1,11 @@
+import 'package:customer_app/bloc/user_bloc.dart';
 import 'package:customer_app/model/userDataModel.dart';
 import 'package:customer_app/provider/userDataProviderApiClient.dart';
 import 'package:customer_app/screens/home.dart';
 import 'package:customer_app/widgets/loading/loadingIndicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserSubmitLoadingPage extends StatelessWidget {
   Future<UserDataModel> userData;
@@ -12,6 +14,8 @@ class UserSubmitLoadingPage extends StatelessWidget {
   String uid;
 
   UserDataModel responseData;
+
+  UserBloc userBloc;
   UserSubmitLoadingPage(this.uid, this.submittedData);
 
   Widget showAlertDialog(BuildContext context, String title, String message) {
@@ -47,7 +51,7 @@ class UserSubmitLoadingPage extends StatelessWidget {
                 future: fetchUserdata(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    return HomePage();
+                    return goToHomeUntilUserState(context);
                   } else if (!snapshot.hasData) {
                     return LoadingIndicator();
                   } else if (snapshot.error) {
@@ -58,15 +62,39 @@ class UserSubmitLoadingPage extends StatelessWidget {
                 })));
   }
 
+  Widget goToHomeUntilUserState(BuildContext context) {
+    userBloc = BlocProvider.of<UserBloc>(context);
+    userBloc.fetchUser();
+    return StreamBuilder(
+        stream: userBloc.userData,
+        builder:
+            (BuildContext context, AsyncSnapshot<UserDataModel> asyncSnapshot) {
+          if (asyncSnapshot.hasData) {
+            if (asyncSnapshot.data.dateofbirth != '' ||
+                asyncSnapshot.data.dateofbirth != null ||
+                asyncSnapshot.data.dateofbirth.isNotEmpty) {
+              userBloc.add(UserFetch());
+              return HomePage();
+            } else {
+              userBloc.fetchUser();
+              userBloc.add(UserFetch());
+            }
+          } else {
+            return LoadingIndicator();
+          }
+          return LoadingIndicator();
+        });
+  }
+
   Future<bool> fetchUserdata() async {
     print("checking serve");
     try {
-      await userdataprovider.createUser(uid, submittedData);
-      print("success");
+      UserDataModel userdata =
+          await userdataprovider.createUser(uid, submittedData);
+      print(userdata.toJson);
+      return true;
     } catch (e) {
       print("post failed");
     }
-
-    return true;
   }
 }

@@ -69,6 +69,7 @@ class _YourWellnessState extends State<YourWellness>
         }
       }
     });
+    initIntercom();
     super.initState();
   }
 
@@ -95,23 +96,8 @@ class _YourWellnessState extends State<YourWellness>
                 Interval((1 / count) * 2, 1.0, curve: Curves.fastOutSlowIn))),
         animationController: widget.animationController,
         onTap: () async {
+          userBloc = BlocProvider.of<UserBloc>(context);
           var userData = userBloc.state.getUserData();
-          String uid = userData.uid;
-
-          final userId = utf8.encode(uid);
-          final secret =
-              utf8.encode('gLX8EC-OJlsCCUUd5O355KBwN0x6YHCwVONgyTdf');
-
-          final hmacSha256 = new Hmac(sha256, secret);
-          final userIdHash = hmacSha256.convert(userId);
-          print("HMAC digest as hex string: $userIdHash");
-          dynamic userhash = await Intercom.setUserHash('$userIdHash');
-          print(userhash);
-
-          dynamic registere =
-              await Intercom.registerIdentifiedUser(userId: uid, email: null);
-          print(registere);
-
           dynamic userUpdated = await Intercom.updateUser(
               email: userData.email,
               name: userData.displayName,
@@ -174,6 +160,36 @@ class _YourWellnessState extends State<YourWellness>
   Future<bool> getData() async {
     await Future<dynamic>.delayed(const Duration(milliseconds: 50));
     return true;
+  }
+
+  Future<void> initIntercom() async {
+    var userData = userBloc.state.getUserData();
+    String uid = userData.uid;
+
+    final userId = utf8.encode(uid);
+    final secret = utf8.encode('gLX8EC-OJlsCCUUd5O355KBwN0x6YHCwVONgyTdf');
+
+    final hmacSha256 = new Hmac(sha256, secret);
+    final userIdHash = hmacSha256.convert(userId);
+    print("HMAC digest as hex string: $userIdHash");
+    dynamic userhash = await Intercom.setUserHash('$userIdHash');
+    print(userhash);
+
+    dynamic registere =
+        await Intercom.registerIdentifiedUser(userId: uid, email: null);
+    print(registere);
+
+    dynamic userUpdated = await Intercom.updateUser(
+        email: userData.email,
+        name: userData.displayName,
+        userId: userData.uid,
+        phone: userData.phoneNumber,
+        customAttributes: {
+          "gender": userData.gender,
+          "date of birth": userData.dateofbirth,
+          "current_plan": userData.currentPlan
+        });
+    print(userUpdated);
   }
 
   @override
