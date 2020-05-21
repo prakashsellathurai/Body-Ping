@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:customer_app/constants/constants.dart';
-import 'package:customer_app/widgets/error/no_internet.dart';
-import 'package:customer_app/widgets/loading/loadingIndicator.dart';
+import 'package:gkfit/constants/constants.dart';
+import 'package:gkfit/widgets/error/no_internet.dart';
+import 'package:gkfit/widgets/loading/loadingIndicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

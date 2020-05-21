@@ -1,10 +1,10 @@
 import './../../widgets/exceptions/platform_alert_dialog.dart';
-import 'package:customer_app/constants/colors.dart';
-import 'package:customer_app/constants/strings.dart';
-import 'package:customer_app/model/userDataModel.dart';
-import 'package:customer_app/provider/userDataProviderApiClient.dart';
-import 'package:customer_app/screens/on_boarding/user_submit_loading_page.dart';
-import 'package:customer_app/services/auth_service.dart';
+import 'package:gkfit/constants/colors.dart';
+import 'package:gkfit/constants/strings.dart';
+import 'package:gkfit/model/userDataModel.dart';
+import 'package:gkfit/provider/userDataProviderApiClient.dart';
+import 'package:gkfit/screens/on_boarding/user_submit_loading_page.dart';
+import 'package:gkfit/services/auth_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

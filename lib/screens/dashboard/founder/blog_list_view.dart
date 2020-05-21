@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:customer_app/screens/dashboard/founder/blog/blog_post.dart';
-import 'package:customer_app/widgets/loading/shimmer_box.dart';
+import 'package:gkfit/screens/dashboard/founder/blog/blog_post.dart';
+import 'package:gkfit/widgets/loading/shimmer_box.dart';
 import 'package:flutter_ghost_content_api/flutter_ghost_content_api.dart';
 
 import '../dashboard_theme.dart';

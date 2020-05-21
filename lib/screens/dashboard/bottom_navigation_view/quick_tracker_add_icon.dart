@@ -1,6 +1,6 @@
-import 'package:customer_app/screens/dashboard/home/trackers/bmi_tracker/bmi_tracker_home.dart';
-import 'package:customer_app/screens/dashboard/home/trackers/calorie_tracker/calorie_tracker_home.dart';
-import 'package:customer_app/screens/dashboard/home/trackers/water_tracker/water_tracker_home.dart';
+import 'package:gkfit/screens/dashboard/home/trackers/bmi_tracker/bmi_tracker_home.dart';
+import 'package:gkfit/screens/dashboard/home/trackers/calorie_tracker/calorie_tracker_home.dart';
+import 'package:gkfit/screens/dashboard/home/trackers/water_tracker/water_tracker_home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';

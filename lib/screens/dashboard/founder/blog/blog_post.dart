@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:customer_app/model/wordpressModel.dart';
+import 'package:gkfit/model/wordpressModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ghost_content_api/flutter_ghost_content_api.dart';
 import 'package:flutter_html/flutter_html.dart';

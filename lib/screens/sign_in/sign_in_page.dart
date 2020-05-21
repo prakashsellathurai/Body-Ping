@@ -1,12 +1,12 @@
 import 'package:avatar_glow/avatar_glow.dart';
-import 'package:customer_app/constants/keys.dart';
-import 'package:customer_app/screens/sign_in/email_password/email_password_sign_in_model.dart';
-import 'package:customer_app/screens/walk_through/walk_through_screen.dart';
-import 'package:customer_app/widgets/animations/delayed_animation.dart';
-import 'package:customer_app/widgets/animations/transition_dot.dart';
-import 'package:customer_app/widgets/exceptions/platform_exception_alert_dialog.dart';
-import 'package:customer_app/widgets/loading/loadingIndicator.dart';
-import 'package:customer_app/widgets/ui/home_page_curve.dart';
+import 'package:gkfit/constants/keys.dart';
+import 'package:gkfit/screens/sign_in/email_password/email_password_sign_in_model.dart';
+import 'package:gkfit/screens/walk_through/walk_through_screen.dart';
+import 'package:gkfit/widgets/animations/delayed_animation.dart';
+import 'package:gkfit/widgets/animations/transition_dot.dart';
+import 'package:gkfit/widgets/exceptions/platform_exception_alert_dialog.dart';
+import 'package:gkfit/widgets/loading/loadingIndicator.dart';
+import 'package:gkfit/widgets/ui/home_page_curve.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import './email_password/email_password_sign_in_page.dart';

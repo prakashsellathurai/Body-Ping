@@ -1,4 +1,4 @@
-import 'package:customer_app/constants/constants.dart';
+import 'package:gkfit/constants/constants.dart';
 import 'package:flutter_ghost_content_api/flutter_ghost_content_api.dart';
 
 class FounderApiProvider {

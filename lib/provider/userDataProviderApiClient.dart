@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:customer_app/constants/constants.dart';
-import 'package:customer_app/model/userDataModel.dart';
-import 'package:customer_app/model/userDataProviderApiResponseModel.dart';
+import 'package:gkfit/constants/constants.dart';
+import 'package:gkfit/model/userDataModel.dart';
+import 'package:gkfit/model/userDataProviderApiResponseModel.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http show Client;
 

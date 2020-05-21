@@ -1,7 +1,7 @@
-import 'package:customer_app/constants/constants.dart';
-import 'package:customer_app/screens/dashboard/dashboard_theme.dart';
-import 'package:customer_app/widgets/error/no_internet.dart';
-import 'package:customer_app/widgets/loading/loadingIndicator.dart';
+import 'package:gkfit/constants/constants.dart';
+import 'package:gkfit/screens/dashboard/dashboard_theme.dart';
+import 'package:gkfit/widgets/error/no_internet.dart';
+import 'package:gkfit/widgets/loading/loadingIndicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_html/flutter_html.dart';

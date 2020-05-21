@@ -1,4 +1,4 @@
-import 'package:customer_app/model/wordpressModel.dart';
+import 'package:gkfit/model/wordpressModel.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 

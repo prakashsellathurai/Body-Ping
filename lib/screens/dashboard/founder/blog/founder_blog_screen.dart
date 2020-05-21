@@ -1,9 +1,9 @@
-import 'package:customer_app/bloc/founder_blog_post_bloc.dart';
-import 'package:customer_app/screens/dashboard/founder/loading_blog_list.dart';
-import 'package:customer_app/widgets/error/no_internet.dart';
-import 'package:customer_app/widgets/ui/blog_list_loader.dart';
-import 'package:customer_app/widgets/ui/blog_post_container.dart';
-import 'package:customer_app/widgets/ui/overlayed_widget.dart';
+import 'package:gkfit/bloc/founder_blog_post_bloc.dart';
+import 'package:gkfit/screens/dashboard/founder/loading_blog_list.dart';
+import 'package:gkfit/widgets/error/no_internet.dart';
+import 'package:gkfit/widgets/ui/blog_list_loader.dart';
+import 'package:gkfit/widgets/ui/blog_post_container.dart';
+import 'package:gkfit/widgets/ui/overlayed_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -1,10 +1,10 @@
-import 'package:customer_app/bloc/founder_blog_post_bloc.dart';
-import 'package:customer_app/constants/colors.dart';
-import 'package:customer_app/screens/dashboard/founder/about/about_founder.dart';
-import 'package:customer_app/screens/dashboard/founder/blog_list_view.dart';
-import 'package:customer_app/screens/dashboard/founder/loading_blog_list.dart';
-import 'package:customer_app/screens/dashboard/founder/tweet/founder_tweets.dart';
-import 'package:customer_app/widgets/animations/slide_transition_routes.dart';
+import 'package:gkfit/bloc/founder_blog_post_bloc.dart';
+import 'package:gkfit/constants/colors.dart';
+import 'package:gkfit/screens/dashboard/founder/about/about_founder.dart';
+import 'package:gkfit/screens/dashboard/founder/blog_list_view.dart';
+import 'package:gkfit/screens/dashboard/founder/loading_blog_list.dart';
+import 'package:gkfit/screens/dashboard/founder/tweet/founder_tweets.dart';
+import 'package:gkfit/widgets/animations/slide_transition_routes.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ghost_content_api/flutter_ghost_content_api.dart';

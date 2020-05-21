@@ -1,12 +1,12 @@
-import 'package:customer_app/bloc/user_bloc.dart';
-import 'package:customer_app/constants/colors.dart';
-import 'package:customer_app/constants/strings.dart';
-import 'package:customer_app/model/userDataModel.dart';
+import 'package:gkfit/bloc/user_bloc.dart';
+import 'package:gkfit/constants/colors.dart';
+import 'package:gkfit/constants/strings.dart';
+import 'package:gkfit/model/userDataModel.dart';
 
-import 'package:customer_app/screens/home.dart';
-import 'package:customer_app/widgets/exceptions/platform_alert_dialog.dart';
-import 'package:customer_app/widgets/topbar/edit_account_topbar.dart';
-import 'package:customer_app/widgets/ui/blog_list_loader.dart';
+import 'package:gkfit/screens/home.dart';
+import 'package:gkfit/widgets/exceptions/platform_alert_dialog.dart';
+import 'package:gkfit/widgets/topbar/edit_account_topbar.dart';
+import 'package:gkfit/widgets/ui/blog_list_loader.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

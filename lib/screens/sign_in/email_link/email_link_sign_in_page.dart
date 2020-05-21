@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'package:customer_app/widgets/exceptions/platform_alert_dialog.dart';
-import 'package:customer_app/widgets/exceptions/platform_exception_alert_dialog.dart';
-import 'package:customer_app/widgets/ui/form_submit_button.dart';
-import 'package:customer_app/widgets/validator.dart';
+import 'package:gkfit/widgets/exceptions/platform_alert_dialog.dart';
+import 'package:gkfit/widgets/exceptions/platform_exception_alert_dialog.dart';
+import 'package:gkfit/widgets/ui/form_submit_button.dart';
+import 'package:gkfit/widgets/validator.dart';
 
 import './../../../constants/constants.dart';
 import './../../../constants/strings.dart';

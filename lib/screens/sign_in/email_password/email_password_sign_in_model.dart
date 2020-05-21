@@ -1,5 +1,5 @@
 
-import 'package:customer_app/widgets/validator.dart';
+import 'package:gkfit/widgets/validator.dart';
 
 import './../../../constants/strings.dart';
 import './../../../services/auth_service.dart';

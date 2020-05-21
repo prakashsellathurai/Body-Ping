@@ -1,5 +1,5 @@
 import 'dart:math' as math;
-import 'package:customer_app/screens/dashboard/bottom_navigation_view/quick_tracker_add_icon.dart';
+import 'package:gkfit/screens/dashboard/bottom_navigation_view/quick_tracker_add_icon.dart';
 
 import '../dashboard_theme.dart';
 import './../../../model/dashboard/tabIcon_data.dart';

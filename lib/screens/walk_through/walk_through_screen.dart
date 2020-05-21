@@ -1,5 +1,5 @@
-import 'package:customer_app/constants/keys.dart';
-import 'package:customer_app/screens/sign_in/sign_in_page.dart';
+import 'package:gkfit/constants/keys.dart';
+import 'package:gkfit/screens/sign_in/sign_in_page.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './../../widgets/ui/page_view_indicator.dart';

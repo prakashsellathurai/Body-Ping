@@ -1,4 +1,4 @@
-import 'package:customer_app/widgets/loading/loadingIndicator.dart';
+import 'package:gkfit/widgets/loading/loadingIndicator.dart';
 import 'package:flutter/material.dart';
 
 @immutable

@@ -1,10 +1,10 @@
 import 'dart:math';
-import 'package:customer_app/bloc/user_bloc.dart';
-import 'package:customer_app/model/userDataModel.dart';
-import 'package:customer_app/provider/userDataProviderApiClient.dart';
-import 'package:customer_app/screens/dashboard/founder/founder_screen.dart';
-import 'package:customer_app/screens/dashboard/home/home_screen.dart';
-import 'package:customer_app/screens/dashboard/your_wellness/your_wellness_screen.dart';
+import 'package:gkfit/bloc/user_bloc.dart';
+import 'package:gkfit/model/userDataModel.dart';
+import 'package:gkfit/provider/userDataProviderApiClient.dart';
+import 'package:gkfit/screens/dashboard/founder/founder_screen.dart';
+import 'package:gkfit/screens/dashboard/home/home_screen.dart';
+import 'package:gkfit/screens/dashboard/your_wellness/your_wellness_screen.dart';
 import 'package:flutter/rendering.dart';
 
 import './../../model/dashboard/tabIcon_data.dart';

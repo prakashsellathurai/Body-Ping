@@ -1,4 +1,4 @@
-import 'package:customer_app/repository/founderBlogRepository.dart';
+import 'package:gkfit/repository/founderBlogRepository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_ghost_content_api/flutter_ghost_content_api.dart';
 import 'package:rxdart/rxdart.dart';

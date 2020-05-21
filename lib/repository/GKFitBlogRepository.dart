@@ -1,5 +1,5 @@
-import 'package:customer_app/model/wordpressModel.dart';
-import 'package:customer_app/provider/wordpressProvider.dart';
+import 'package:gkfit/model/wordpressModel.dart';
+import 'package:gkfit/provider/wordpressProvider.dart';
 
 class GKFitBlogRepository {
   final blogApiProvider = WordPressApiProvider(baseUrl: "https://www.gk.fitness/wp-json/wp/v2/posts");

@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:customer_app/model/wordpressModel.dart';
-import 'package:customer_app/provider/wordpressProvider.dart';
-import 'package:customer_app/screens/dashboard/your_wellness/gk_fit_blogs/gk_fit_blog_post_screen.dart';
-import 'package:customer_app/widgets/animations/slide_transition_routes.dart';
-import 'package:customer_app/widgets/ui/blog_list_loader.dart';
+import 'package:gkfit/model/wordpressModel.dart';
+import 'package:gkfit/provider/wordpressProvider.dart';
+import 'package:gkfit/screens/dashboard/your_wellness/gk_fit_blogs/gk_fit_blog_post_screen.dart';
+import 'package:gkfit/widgets/animations/slide_transition_routes.dart';
+import 'package:gkfit/widgets/ui/blog_list_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:pk_skeleton/pk_skeleton.dart';
 

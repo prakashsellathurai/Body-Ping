@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-import 'package:customer_app/bloc/user_bloc.dart';
+import 'package:gkfit/bloc/user_bloc.dart';
 
-import 'package:customer_app/model/userDataModel.dart';
-import 'package:customer_app/screens/dashboard/settings/edit_account/editAccountScreen.dart';
-import 'package:customer_app/widgets/animations/slide_transition_routes.dart';
-import 'package:customer_app/widgets/exceptions/platform_alert_dialog.dart';
-import 'package:customer_app/widgets/exceptions/platform_exception_alert_dialog.dart';
+import 'package:gkfit/model/userDataModel.dart';
+import 'package:gkfit/screens/dashboard/settings/edit_account/editAccountScreen.dart';
+import 'package:gkfit/widgets/animations/slide_transition_routes.dart';
+import 'package:gkfit/widgets/exceptions/platform_alert_dialog.dart';
+import 'package:gkfit/widgets/exceptions/platform_exception_alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intercom_flutter/intercom_flutter.dart';

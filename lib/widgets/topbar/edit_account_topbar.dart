@@ -1,4 +1,4 @@
-import 'package:customer_app/constants/colors.dart';
+import 'package:gkfit/constants/colors.dart';
 import 'package:flutter/material.dart';
 
 

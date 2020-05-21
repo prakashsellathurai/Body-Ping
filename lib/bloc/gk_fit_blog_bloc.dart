@@ -1,5 +1,5 @@
-import 'package:customer_app/model/wordpressModel.dart';
-import 'package:customer_app/repository/GKFitBlogRepository.dart';
+import 'package:gkfit/model/wordpressModel.dart';
+import 'package:gkfit/repository/GKFitBlogRepository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/subjects.dart';
@@ -42,7 +42,7 @@ class GKFITBlogLoaded extends GKFITBlogState {
   List<Object> get props => [posts, currentPage, hasReachedMax];
   @override
   String toString() =>
-      '{ posts: ${posts},currentPage: ${currentPage} ,hasReachedMax: ${hasReachedMax} }';
+      '{ posts: $posts,currentPage: $currentPage ,hasReachedMax: $hasReachedMax }';
 }
 
 class GKFITBlogbloc extends Bloc<GKFITBlogEvent, GKFITBlogState> {

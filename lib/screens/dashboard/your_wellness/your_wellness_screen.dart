@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-import 'package:customer_app/bloc/gk_fit_blog_bloc.dart';
-import 'package:customer_app/bloc/user_bloc.dart';
-import 'package:customer_app/model/userDataModel.dart';
-import 'package:customer_app/provider/wordpressProvider.dart';
-import 'package:customer_app/screens/dashboard/ui_view/consult_with_dietitian.dart';
+import 'package:gkfit/bloc/gk_fit_blog_bloc.dart';
+import 'package:gkfit/bloc/user_bloc.dart';
+import 'package:gkfit/model/userDataModel.dart';
+import 'package:gkfit/provider/wordpressProvider.dart';
+import 'package:gkfit/screens/dashboard/ui_view/consult_with_dietitian.dart';
 
-import 'package:customer_app/screens/dashboard/your_wellness/gk_fit_blogs/gk_fit_blogs_screen.dart';
-import 'package:customer_app/widgets/animations/slide_transition_routes.dart';
+import 'package:gkfit/screens/dashboard/your_wellness/gk_fit_blogs/gk_fit_blogs_screen.dart';
+import 'package:gkfit/widgets/animations/slide_transition_routes.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intercom_flutter/intercom_flutter.dart';
 
@@ -110,7 +110,7 @@ class _YourWellnessState extends State<YourWellness>
               });
           print(userUpdated);
           await Intercom.displayMessenger();
-          // Navigator.push(context,SlideLeftRoute(widget:  FreshChatMainScreen()));
+          print("messager opened");
         },
       ),
     );

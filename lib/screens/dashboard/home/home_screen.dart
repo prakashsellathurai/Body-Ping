@@ -1,4 +1,7 @@
-import 'package:customer_app/model/userDataModel.dart';
+import 'package:gkfit/model/userDataModel.dart';
+import 'package:gkfit/screens/dashboard/home/trackers/bmi_tracker/bmi_tracker_home.dart';
+import 'package:gkfit/screens/dashboard/home/trackers/calorie_tracker/calorie_tracker_home.dart';
+import 'package:gkfit/screens/dashboard/home/trackers/water_tracker/water_tracker_home.dart';
 
 import '../ui_view/body_measurement.dart';
 import '../ui_view/glass_view.dart';
@@ -7,6 +10,7 @@ import '../ui_view/title_view.dart';
 import '../dashboard_theme.dart';
 import '../home/water_view.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class DashboardHomeScreen extends StatefulWidget {
   const DashboardHomeScreen({Key key, this.animationController, this.userData})
@@ -14,7 +18,8 @@ class DashboardHomeScreen extends StatefulWidget {
   final UserDataModel userData;
   final AnimationController animationController;
   @override
-  _DashboardHomeScreenState createState() => _DashboardHomeScreenState(this.userData);
+  _DashboardHomeScreenState createState() =>
+      _DashboardHomeScreenState(this.userData);
 }
 
 class _DashboardHomeScreenState extends State<DashboardHomeScreen>
@@ -24,13 +29,14 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
   List<Widget> listViews = <Widget>[];
   final ScrollController scrollController = ScrollController();
   double topBarOpacity = 0.0;
-
+  DateTime currentDate;
   UserDataModel userData;
-
+  var TopBarformatter = new DateFormat('MMMd');
   _DashboardHomeScreenState(this.userData);
 
   @override
   void initState() {
+    currentDate = DateTime.now();
     topBarAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
         CurvedAnimation(
             parent: widget.animationController,
@@ -74,6 +80,10 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
             curve:
                 Interval((1 / count) * 0, 1.0, curve: Curves.fastOutSlowIn))),
         animationController: widget.animationController,
+        onclick: () {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (BuildContext context) => CalorietrackerHomeScreen()));
+        },
       ),
     );
     listViews.add(
@@ -117,6 +127,10 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
             curve:
                 Interval((1 / count) * 4, 1.0, curve: Curves.fastOutSlowIn))),
         animationController: widget.animationController,
+        onclick: () {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (BuildContext context) => BmitrackerHomeScreen()));
+        },
       ),
     );
 
@@ -138,6 +152,10 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
             curve:
                 Interval((1 / count) * 6, 1.0, curve: Curves.fastOutSlowIn))),
         animationController: widget.animationController,
+        onclick: () {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (BuildContext context) => WaterTrackerHomeScreen()));
+        },
       ),
     );
 
@@ -256,8 +274,8 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
-                                 //(userData.displayName != null) ? 'Hello ${userData.displayName}' : "Home",
-                                 "Home",
+                                  //(userData.displayName != null) ? 'Hello ${userData.displayName}' : "Home",
+                                  "Home",
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
                                     fontFamily: DashboardTheme.fontName,
@@ -276,7 +294,12 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
                                 highlightColor: Colors.transparent,
                                 borderRadius: const BorderRadius.all(
                                     Radius.circular(32.0)),
-                                onTap: () {},
+                                onTap: () {
+                                  setState(() {
+                                    currentDate = currentDate
+                                        .subtract(new Duration(days: 1));
+                                  });
+                                },
                                 child: Center(
                                   child: Icon(
                                     Icons.keyboard_arrow_left,
@@ -301,7 +324,7 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
                                     ),
                                   ),
                                   Text(
-                                    '15 May',
+                                    '${TopBarformatter.format(currentDate)}',
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
                                       fontFamily: DashboardTheme.fontName,
@@ -321,7 +344,12 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
                                 highlightColor: Colors.transparent,
                                 borderRadius: const BorderRadius.all(
                                     Radius.circular(32.0)),
-                                onTap: () {},
+                                onTap: () {
+                                  setState(() {
+                                    currentDate =
+                                        currentDate.add(new Duration(days: 1));
+                                  });
+                                },
                                 child: Center(
                                   child: Icon(
                                     Icons.keyboard_arrow_right,

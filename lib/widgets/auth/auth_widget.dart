@@ -1,6 +1,7 @@
-import 'package:customer_app/bloc/user_bloc.dart';
-import 'package:customer_app/screens/dashboard/dashboard_theme.dart';
-import 'package:customer_app/widgets/loading/loadingIndicator.dart';
+import 'package:gkfit/bloc/trackers/water_intake/water_intake_bloc.dart';
+import 'package:gkfit/bloc/user_bloc.dart';
+import 'package:gkfit/screens/dashboard/dashboard_theme.dart';
+import 'package:gkfit/widgets/loading/loadingIndicator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import './../../screens/home.dart';
@@ -34,6 +35,8 @@ class AuthWidget extends StatelessWidget {
             create: (context) =>
                 UserBloc(uid: userSnapshot.data.uid)..add(UserFetch()),
           ),
+          BlocProvider<WaterIntakeBloc>(create: (context) => WaterIntakeBloc(uid:userSnapshot.data.uid)..add(FetchWaterIntakeEvent()),
+          )
         ],
         child: MaterialApp(
             theme: ThemeData(primarySwatch: Colors.indigo), home: HomePage()));

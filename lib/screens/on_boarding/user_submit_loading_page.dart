@@ -1,8 +1,8 @@
-import 'package:customer_app/bloc/user_bloc.dart';
-import 'package:customer_app/model/userDataModel.dart';
-import 'package:customer_app/provider/userDataProviderApiClient.dart';
-import 'package:customer_app/screens/home.dart';
-import 'package:customer_app/widgets/loading/loadingIndicator.dart';
+import 'package:gkfit/bloc/user_bloc.dart';
+import 'package:gkfit/model/userDataModel.dart';
+import 'package:gkfit/provider/userDataProviderApiClient.dart';
+import 'package:gkfit/screens/home.dart';
+import 'package:gkfit/widgets/loading/loadingIndicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -1,5 +1,5 @@
-import 'package:customer_app/model/userDataModel.dart';
-import 'package:customer_app/provider/userDataProviderApiClient.dart';
+import 'package:gkfit/model/userDataModel.dart';
+import 'package:gkfit/provider/userDataProviderApiClient.dart';
 
 class UserRepository {
   final userApiProvider =  UserDataProviderApiClient();

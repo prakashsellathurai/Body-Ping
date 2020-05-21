@@ -1,5 +1,5 @@
-import 'package:customer_app/model/userDataModel.dart';
-import 'package:customer_app/repository/userDataRepository.dart';
+import 'package:gkfit/model/userDataModel.dart';
+import 'package:gkfit/repository/userDataRepository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';

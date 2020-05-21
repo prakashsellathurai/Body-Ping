@@ -1,4 +1,4 @@
-# customer_app
+# gkfit
 
 A new Flutter project.
 

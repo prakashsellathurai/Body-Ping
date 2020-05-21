@@ -1,4 +1,4 @@
-import 'package:customer_app/model/userDataModel.dart';
+import 'package:gkfit/model/userDataModel.dart';
 
 class UserDataProviderApiResponse {
   String description;

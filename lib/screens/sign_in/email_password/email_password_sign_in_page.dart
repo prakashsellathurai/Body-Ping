@@ -1,7 +1,7 @@
 import 'package:avatar_glow/avatar_glow.dart';
-import 'package:customer_app/widgets/exceptions/platform_alert_dialog.dart';
-import 'package:customer_app/widgets/exceptions/platform_exception_alert_dialog.dart';
-import 'package:customer_app/widgets/ui/login_page_back_button.dart';
+import 'package:gkfit/widgets/exceptions/platform_alert_dialog.dart';
+import 'package:gkfit/widgets/exceptions/platform_exception_alert_dialog.dart';
+import 'package:gkfit/widgets/ui/login_page_back_button.dart';
 
 import './email_password_sign_in_model.dart';
 import './../../../constants/strings.dart';
