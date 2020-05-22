@@ -1,3 +1,5 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gkfit/bloc/trackers/water_intake/water_intake_bloc.dart';
 import 'package:gkfit/model/userDataModel.dart';
 import 'package:gkfit/screens/dashboard/home/trackers/bmi_tracker/bmi_tracker_home.dart';
 import 'package:gkfit/screens/dashboard/home/trackers/calorie_tracker/calorie_tracker_home.dart';
@@ -11,6 +13,8 @@ import '../dashboard_theme.dart';
 import '../home/water_view.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+import 'trackers/water_tracker/mini_water_intake_dashboard.dart';
 
 class DashboardHomeScreen extends StatefulWidget {
   const DashboardHomeScreen({Key key, this.animationController, this.userData})
@@ -26,16 +30,18 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
     with TickerProviderStateMixin {
   Animation<double> topBarAnimation;
 
-  List<Widget> listViews = <Widget>[];
   final ScrollController scrollController = ScrollController();
   double topBarOpacity = 0.0;
   DateTime currentDate;
   UserDataModel userData;
+  WaterIntakeBloc waterIntakeBloc;
   var TopBarformatter = new DateFormat('MMMd');
   _DashboardHomeScreenState(this.userData);
 
   @override
   void initState() {
+    waterIntakeBloc = BlocProvider.of<WaterIntakeBloc>(context);
+    waterIntakeBloc..add(FetchWaterIntakeEvent());
     currentDate = DateTime.now();
     topBarAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
         CurvedAnimation(
@@ -68,117 +74,7 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
     super.initState();
   }
 
-  void addAllListData() {
-    const int count = 9;
-
-    listViews.add(
-      TitleView(
-        titleTxt: 'Your Daily Nutrition',
-        subTxt: 'Details',
-        animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-            parent: widget.animationController,
-            curve:
-                Interval((1 / count) * 0, 1.0, curve: Curves.fastOutSlowIn))),
-        animationController: widget.animationController,
-        onclick: () {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (BuildContext context) => CalorietrackerHomeScreen()));
-        },
-      ),
-    );
-    listViews.add(
-      MediterranesnDietView(
-        animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-            parent: widget.animationController,
-            curve:
-                Interval((1 / count) * 1, 1.0, curve: Curves.fastOutSlowIn))),
-        animationController: widget.animationController,
-      ),
-    );
-    // listViews.add(
-    //   TitleView(
-    //     titleTxt: 'Meals today',
-    //     subTxt: 'Customize',
-    //     animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-    //         parent: widget.animationController,
-    //         curve:
-    //             Interval((1 / count) * 2, 1.0, curve: Curves.fastOutSlowIn))),
-    //     animationController: widget.animationController,
-    //   ),
-    // );
-
-    // listViews.add(
-    //   MealsListView(
-    //     mainScreenAnimation: Tween<double>(begin: 0.0, end: 1.0).animate(
-    //         CurvedAnimation(
-    //             parent: widget.animationController,
-    //             curve: Interval((1 / count) * 3, 1.0,
-    //                 curve: Curves.fastOutSlowIn))),
-    //     mainScreenAnimationController: widget.animationController,
-    //   ),
-    // );
-
-    listViews.add(
-      TitleView(
-        titleTxt: 'Body measurement',
-        subTxt: 'Today',
-        animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-            parent: widget.animationController,
-            curve:
-                Interval((1 / count) * 4, 1.0, curve: Curves.fastOutSlowIn))),
-        animationController: widget.animationController,
-        onclick: () {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (BuildContext context) => BmitrackerHomeScreen()));
-        },
-      ),
-    );
-
-    listViews.add(
-      BodyMeasurementView(
-        animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-            parent: widget.animationController,
-            curve:
-                Interval((1 / count) * 5, 1.0, curve: Curves.fastOutSlowIn))),
-        animationController: widget.animationController,
-      ),
-    );
-    listViews.add(
-      TitleView(
-        titleTxt: 'Water',
-        subTxt: 'Aqua SmartBottle',
-        animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-            parent: widget.animationController,
-            curve:
-                Interval((1 / count) * 6, 1.0, curve: Curves.fastOutSlowIn))),
-        animationController: widget.animationController,
-        onclick: () {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (BuildContext context) => WaterTrackerHomeScreen()));
-        },
-      ),
-    );
-
-    listViews.add(
-      WaterView(
-        mainScreenAnimation: Tween<double>(begin: 0.0, end: 1.0).animate(
-            CurvedAnimation(
-                parent: widget.animationController,
-                curve: Interval((1 / count) * 7, 1.0,
-                    curve: Curves.fastOutSlowIn))),
-        mainScreenAnimationController: widget.animationController,
-      ),
-    );
-    listViews.add(
-      GlassView(
-          animation: Tween<double>(begin: 0.0, end: 1.0).animate(
-              CurvedAnimation(
-                  parent: widget.animationController,
-                  curve: Interval((1 / count) * 8, 1.0,
-                      curve: Curves.fastOutSlowIn))),
-          animationController: widget.animationController),
-    );
-  }
+  void addAllListData() {}
 
   Future<bool> getData() async {
     await Future<dynamic>.delayed(const Duration(milliseconds: 50));
@@ -205,12 +101,130 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
   }
 
   Widget getMainListViewUI() {
+    // waterIntakeBloc = BlocProvider.of<WaterIntakeBloc>(context);
+    // waterIntakeBloc..add(FetchWaterIntakeEvent());
     return FutureBuilder<bool>(
       future: getData(),
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         if (!snapshot.hasData) {
           return const SizedBox();
         } else {
+          const int count = 9;
+          List<Widget> listViews = <Widget>[];
+          listViews.add(
+            TitleView(
+              titleTxt: 'Your Daily Nutrition',
+              subTxt: 'Details',
+              animation: Tween<double>(begin: 0.0, end: 1.0).animate(
+                  CurvedAnimation(
+                      parent: widget.animationController,
+                      curve: Interval((1 / count) * 0, 1.0,
+                          curve: Curves.fastOutSlowIn))),
+              animationController: widget.animationController,
+              onclick: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext context) =>
+                        CalorietrackerHomeScreen()));
+              },
+            ),
+          );
+          listViews.add(
+            MediterranesnDietView(
+              animation: Tween<double>(begin: 0.0, end: 1.0).animate(
+                  CurvedAnimation(
+                      parent: widget.animationController,
+                      curve: Interval((1 / count) * 1, 1.0,
+                          curve: Curves.fastOutSlowIn))),
+              animationController: widget.animationController,
+            ),
+          );
+          // listViews.add(
+          //   TitleView(
+          //     titleTxt: 'Meals today',
+          //     subTxt: 'Customize',
+          //     animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+          //         parent: widget.animationController,
+          //         curve:
+          //             Interval((1 / count) * 2, 1.0, curve: Curves.fastOutSlowIn))),
+          //     animationController: widget.animationController,
+          //   ),
+          // );
+
+          // listViews.add(
+          //   MealsListView(
+          //     mainScreenAnimation: Tween<double>(begin: 0.0, end: 1.0).animate(
+          //         CurvedAnimation(
+          //             parent: widget.animationController,
+          //             curve: Interval((1 / count) * 3, 1.0,
+          //                 curve: Curves.fastOutSlowIn))),
+          //     mainScreenAnimationController: widget.animationController,
+          //   ),
+          // );
+
+          listViews.add(
+            TitleView(
+              titleTxt: 'Body measurement',
+              subTxt: 'Today',
+              animation: Tween<double>(begin: 0.0, end: 1.0).animate(
+                  CurvedAnimation(
+                      parent: widget.animationController,
+                      curve: Interval((1 / count) * 4, 1.0,
+                          curve: Curves.fastOutSlowIn))),
+              animationController: widget.animationController,
+              onclick: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext context) => BmitrackerHomeScreen()));
+              },
+            ),
+          );
+
+          listViews.add(
+            BodyMeasurementView(
+              animation: Tween<double>(begin: 0.0, end: 1.0).animate(
+                  CurvedAnimation(
+                      parent: widget.animationController,
+                      curve: Interval((1 / count) * 5, 1.0,
+                          curve: Curves.fastOutSlowIn))),
+              animationController: widget.animationController,
+            ),
+          );
+          listViews.add(
+            TitleView(
+              titleTxt: 'Water',
+              subTxt: 'Aqua SmartBottle',
+              animation: Tween<double>(begin: 0.0, end: 1.0).animate(
+                  CurvedAnimation(
+                      parent: widget.animationController,
+                      curve: Interval((1 / count) * 6, 1.0,
+                          curve: Curves.fastOutSlowIn))),
+              animationController: widget.animationController,
+              onclick: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext context) =>
+                        WaterTrackerHomeScreen()));
+              },
+            ),
+          );
+
+          listViews.add(WaterIntakeMiniDashboardView(
+              mainScreenAnimation: Tween<double>(begin: 0.0, end: 1.0).animate(
+                  CurvedAnimation(
+                      parent: widget.animationController,
+                      curve: Interval((1 / count) * 7, 1.0,
+                          curve: Curves.fastOutSlowIn))),
+              mainScreenAnimationController: widget.animationController,
+              daily_target: 3500,
+              current_water_intake: 2100,
+              last_drink_time: DateTime.now().toIso8601String()));
+          listViews.add(
+            GlassView(
+                animation: Tween<double>(begin: 0.0, end: 1.0).animate(
+                    CurvedAnimation(
+                        parent: widget.animationController,
+                        curve: Interval((1 / count) * 8, 1.0,
+                            curve: Curves.fastOutSlowIn))),
+                animationController: widget.animationController),
+          );
           return ListView.builder(
             controller: scrollController,
             padding: EdgeInsets.only(
@@ -301,11 +315,11 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
                                   });
                                 },
                                 child: Center(
-                                  child: Icon(
-                                    Icons.keyboard_arrow_left,
-                                    color: DashboardTheme.grey,
-                                  ),
-                                ),
+                                    // child: Icon(
+                                    //   Icons.keyboard_arrow_left,
+                                    //   color: DashboardTheme.grey,
+                                    // ),
+                                    ),
                               ),
                             ),
                             Padding(
@@ -351,11 +365,11 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
                                   });
                                 },
                                 child: Center(
-                                  child: Icon(
-                                    Icons.keyboard_arrow_right,
-                                    color: DashboardTheme.grey,
-                                  ),
-                                ),
+                                    // child: Icon(
+                                    //   Icons.keyboard_arrow_right,
+                                    //   color: DashboardTheme.grey,
+                                    // ),
+                                    ),
                               ),
                             ),
                           ],

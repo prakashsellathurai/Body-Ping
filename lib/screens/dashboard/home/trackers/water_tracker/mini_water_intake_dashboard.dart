@@ -1,3 +1,4 @@
+
 import 'package:gkfit/bloc/trackers/water_intake/water_intake_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -42,18 +43,22 @@ class _WaterIntakeMiniDashboardViewState
 
   @override
   void initState() {
-    display_last_time = '';//timeformatter.format(DateTime.parse(last_drink_time));
+    display_last_time =
+        ''; //timeformatter.format(DateTime.parse(last_drink_time));
     waterIntakeBloc = BlocProvider.of<WaterIntakeBloc>(context);
+        waterIntakeBloc.add(FetchWaterIntakeEvent());
   }
 
   Future<bool> getData() async {
     await Future<dynamic>.delayed(const Duration(milliseconds: 50));
+   
     return true;
   }
 
   @override
   Widget build(BuildContext context) {
     waterIntakeBloc = BlocProvider.of<WaterIntakeBloc>(context);
+ 
     return AnimatedBuilder(
       animation: widget.mainScreenAnimationController,
       builder: (BuildContext context, Widget child) {
@@ -204,7 +209,8 @@ class _WaterIntakeMiniDashboardViewState
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: <Widget>[
-                                        if ((current_water_intake /
+                                        if ((waterIntakeBloc.state
+                                                            .getCurrentQuantityInMl() /
                                                         daily_target)
                                                     .toDouble() *
                                                 100 <
@@ -215,7 +221,8 @@ class _WaterIntakeMiniDashboardViewState
                                             child: Image.asset(
                                                 'assets/images/dashboard/bell.png'),
                                           ),
-                                        if ((current_water_intake /
+                                        if ((waterIntakeBloc.state
+                                                            .getCurrentQuantityInMl() /
                                                         daily_target)
                                                     .toDouble() *
                                                 100 <
@@ -249,27 +256,30 @@ class _WaterIntakeMiniDashboardViewState
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                             GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    display_last_time = timeformatter.format(DateTime.now());
-                                    waterIntakeBloc..add(AddtwoFiftyMlevent());
-                                  });
-                                },
-                                child:
-                            Container(
-                              decoration: BoxDecoration(
-                                color: DashboardTheme.nearlyWhite,
-                                shape: BoxShape.circle,
-                                boxShadow: <BoxShadow>[
-                                  BoxShadow(
-                                      color: DashboardTheme.nearlyDarkBlue
-                                          .withOpacity(0.4),
-                                      offset: const Offset(4.0, 4.0),
-                                      blurRadius: 8.0),
-                                ],
-                              ),
-                              child: Padding(
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  display_last_time =
+                                      timeformatter.format(DateTime.now());
+                                  waterIntakeBloc..add(AddtwoFiftyMlevent());
+
+                                  waterIntakeBloc
+                                    ..add(UpdateWaterIntakeEvent());
+                                });
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: DashboardTheme.nearlyWhite,
+                                  shape: BoxShape.circle,
+                                  boxShadow: <BoxShadow>[
+                                    BoxShadow(
+                                        color: DashboardTheme.nearlyDarkBlue
+                                            .withOpacity(0.4),
+                                        offset: const Offset(4.0, 4.0),
+                                        blurRadius: 8.0),
+                                  ],
+                                ),
+                                child: Padding(
                                   padding: const EdgeInsets.all(6.0),
                                   child: Icon(
                                     Icons.add,
@@ -280,13 +290,16 @@ class _WaterIntakeMiniDashboardViewState
                               ),
                             ),
                             const SizedBox(
-                              height: 28,
+                              height: 45,
                             ),
                             GestureDetector(
                               onTap: () {
                                 setState(() {
                                   waterIntakeBloc
                                     ..add(SubtracttwoFiftyMlevent());
+
+                                  waterIntakeBloc
+                                    ..add(UpdateWaterIntakeEvent());
                                 });
                               },
                               child: Container(
@@ -335,10 +348,11 @@ class _WaterIntakeMiniDashboardViewState
                             ],
                           ),
                           child: WaveView(
-                            percentageValue:
-                                (waterIntakeBloc.state.getCurrentQuantityInMl() / daily_target)
-                                        .toDouble() *
-                                    100,
+                            percentageValue: (waterIntakeBloc.state
+                                            .getCurrentQuantityInMl() /
+                                        daily_target)
+                                    .toDouble() *
+                                100,
                           ),
                         ),
                       )

@@ -28,7 +28,7 @@ class WaterTrackerHomeScreenState extends State<WaterTrackerHomeScreen>
     "Month":["Jan","Feb","Mar","Apr","May","June","July","Sep","Oct","Nov","Dec"],
     "Year":List.generate(3, (index)=>"20${index+20}").toList()
   };
-  String mainValue="Year";
+  String mainValue="Day";
   int subIndex=0;
   List<charts.Series<Balance, String>>series;
   WaterIntakeBloc waterIntakebloc;
