@@ -161,33 +161,33 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
           //   ),
           // );
 
-          listViews.add(
-            TitleView(
-              titleTxt: 'Body measurement',
-              subTxt: 'Today',
-              animation: Tween<double>(begin: 0.0, end: 1.0).animate(
-                  CurvedAnimation(
-                      parent: widget.animationController,
-                      curve: Interval((1 / count) * 4, 1.0,
-                          curve: Curves.fastOutSlowIn))),
-              animationController: widget.animationController,
-              onclick: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (BuildContext context) => BmitrackerHomeScreen()));
-              },
-            ),
-          );
+          // listViews.add(
+          //   TitleView(
+          //     titleTxt: 'Body measurement',
+          //     subTxt: 'Today',
+          //     animation: Tween<double>(begin: 0.0, end: 1.0).animate(
+          //         CurvedAnimation(
+          //             parent: widget.animationController,
+          //             curve: Interval((1 / count) * 4, 1.0,
+          //                 curve: Curves.fastOutSlowIn))),
+          //     animationController: widget.animationController,
+          //     onclick: () {
+          //       Navigator.of(context).push(MaterialPageRoute(
+          //           builder: (BuildContext context) => BmitrackerHomeScreen()));
+          //     },
+          //   ),
+          // );
 
-          listViews.add(
-            BodyMeasurementView(
-              animation: Tween<double>(begin: 0.0, end: 1.0).animate(
-                  CurvedAnimation(
-                      parent: widget.animationController,
-                      curve: Interval((1 / count) * 5, 1.0,
-                          curve: Curves.fastOutSlowIn))),
-              animationController: widget.animationController,
-            ),
-          );
+          // listViews.add(
+          //   BodyMeasurementView(
+          //     animation: Tween<double>(begin: 0.0, end: 1.0).animate(
+          //         CurvedAnimation(
+          //             parent: widget.animationController,
+          //             curve: Interval((1 / count) * 5, 1.0,
+          //                 curve: Curves.fastOutSlowIn))),
+          //     animationController: widget.animationController,
+          //   ),
+          // );
           listViews.add(
             TitleView(
               titleTxt: 'Water',
