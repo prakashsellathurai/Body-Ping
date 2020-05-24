@@ -1,5 +1,5 @@
 class DailyRequirements {
-  double totalEnergy = 2000000;//in calories
+  double totalEnergy = 2000;//in calories
   double fat = 70; // less than 70 grams
   double carbs = 260; // atleast 260 grams
   double proteins = 50; //atleast 50 grams

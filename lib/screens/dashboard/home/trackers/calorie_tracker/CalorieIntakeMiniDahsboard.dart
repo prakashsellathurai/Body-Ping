@@ -314,7 +314,13 @@ class CalorieIntakeMiniDashBoard extends StatelessWidget {
                                             CrossAxisAlignment.center,
                                         children: <Widget>[
                                           Text(
-                                            '${(((dailyRequirements.totalEnergy - calorieIntakeBloc.state.totalEatenInKcal) / 1000) * animation.value).toInt()}',
+                                            (dailyRequirements.totalEnergy >
+                                                    calorieIntakeBloc
+                                                        .state.totalEatenInKcal)
+                                                ? 
+                                            '${(((dailyRequirements.totalEnergy - calorieIntakeBloc.state.totalEatenInKcal)) * animation.value).toInt()}'
+                                            : '${((( calorieIntakeBloc.state.totalEatenInKcal - dailyRequirements.totalEnergy )) * animation.value).toInt()}'
+                                            ,
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               fontFamily:
@@ -331,13 +337,15 @@ class CalorieIntakeMiniDashBoard extends StatelessWidget {
                                                     calorieIntakeBloc
                                                         .state.totalEatenInKcal)
                                                 ? 'Kcal left'
-                                                : 'Kcal',
+                                                : 'Kcal more ',
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               fontFamily:
                                                   DashboardTheme.fontName,
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 12,
+                                              fontSize: (dailyRequirements.totalEnergy >
+                                                    calorieIntakeBloc
+                                                        .state.totalEatenInKcal) ? 12 : 9,
                                               letterSpacing: 0.0,
                                               color: DashboardTheme.grey
                                                   .withOpacity(0.5),

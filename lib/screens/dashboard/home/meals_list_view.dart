@@ -299,16 +299,31 @@ class MealsView extends StatelessWidget {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: <Widget>[
-                                        Text(
-                                          mealsListData.meals.join('\n'),
-                                          style: TextStyle(
-                                            fontFamily: DashboardTheme.fontName,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 10,
-                                            letterSpacing: 0.2,
-                                            color: DashboardTheme.white,
-                                          ),
-                                        ),
+                                        Expanded(
+                                            child: ListView.builder(
+                                                itemCount:
+                                                    mealsListData.meals.length,
+                                                itemBuilder: (context, i) {
+                                                  return RichText(
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      text: TextSpan(
+                                                        text: [
+                                                          mealsListData.meals[i]
+                                                        ].join('\n'),
+                                                        style: TextStyle(
+                                                          fontFamily:
+                                                              DashboardTheme
+                                                                  .fontName,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          fontSize: 10,
+                                                          letterSpacing: 0.2,
+                                                          color: DashboardTheme
+                                                              .white,
+                                                        ),
+                                                      ));
+                                                }))
                                       ],
                                     ),
                                   ),
@@ -320,10 +335,8 @@ class MealsView extends StatelessWidget {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.end,
                                         children: <Widget>[
-                                          Text(
-                                            (mealsListData.kacl.toInt() / 1000)
-                                                .toString(),
-                                            textAlign: TextAlign.center,
+                                          RichText(
+                                              text: TextSpan(
                                             style: TextStyle(
                                               fontFamily:
                                                   DashboardTheme.fontName,
@@ -332,19 +345,24 @@ class MealsView extends StatelessWidget {
                                               letterSpacing: 0.2,
                                               color: DashboardTheme.white,
                                             ),
-                                          ),
+                                            text: (mealsListData.kacl.toInt() /
+                                                    1000)
+                                                .toString(),
+                                          )),
                                           Padding(
                                             padding: const EdgeInsets.only(
                                                 left: 4, bottom: 3),
-                                            child: Text(
-                                              'kcal',
-                                              style: TextStyle(
-                                                fontFamily:
-                                                    DashboardTheme.fontName,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 10,
-                                                letterSpacing: 0.2,
-                                                color: DashboardTheme.white,
+                                            child: RichText(
+                                              text: TextSpan(
+                                                text: 'kcal',
+                                                style: TextStyle(
+                                                  fontFamily:
+                                                      DashboardTheme.fontName,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 10,
+                                                  letterSpacing: 0.2,
+                                                  color: DashboardTheme.white,
+                                                ),
                                               ),
                                             ),
                                           ),

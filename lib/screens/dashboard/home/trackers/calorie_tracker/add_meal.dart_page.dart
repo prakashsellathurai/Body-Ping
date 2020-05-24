@@ -82,24 +82,26 @@ class _AddMealScreenState extends State<AddMealScreen> {
                         onPressed: () {
                           List<double> calories_list = [];
                           double totalCalories = 0;
-                          for (NutritionDatabaseModel item in selectedItems) {
+                          for (var item in selectedItems) {
                             int index = selectedItems.indexOf(item);
                             double multipliedCalorie = item.total_calories *
                                 selectedItemsQuantity[index];
                             calories_list.insert(index, multipliedCalorie);
                             totalCalories = totalCalories + multipliedCalorie;
                           }
+                        
+
                           if (mealSelector == 'breakfast') {
-                           
                             calorieIntakeBloc
                               ..add(AddBreakFastEvent(
                                   meallist: selectedItems,
                                   mealListQuantity: selectedItemsQuantity,
                                   totalCalories: totalCalories,
                                   calories_list: calories_list));
-                              calorieIntakeBloc..add(UpdateBreakfastModelIndatabaseEvent());
-                              
+                            calorieIntakeBloc
+                              ..add(UpdateBreakfastModelIndatabaseEvent());
                           } else if (mealSelector == 'morningSnack') {
+
                             calorieIntakeBloc
                               ..add(AddMorningSnack(
                                   meallist: selectedItems,
@@ -183,7 +185,9 @@ class _AddMealScreenState extends State<AddMealScreen> {
                         return AddQuantityToFoodTile(
                             index: index,
                             meal_data: selectedItems[index],
-                            quantity: selectedItems[index].quantity_in_grams,
+                            quantity: (selectedItemsQuantity[index].isFinite)
+                                ? selectedItemsQuantity[index]
+                                : selectedItems[index].quantity_in_grams,
                             currentQuantity: (double currentQuantity) {
                               setState(() {
                                 if (currentQuantity.toInt() == 0) {

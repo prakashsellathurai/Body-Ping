@@ -53,6 +53,7 @@ class CalorieIntakeBloc extends Bloc<CalorieIntakeEvent, CalorieIntakeState> {
 
       if (event is AddMorningSnack &&
           currentState is CalorieIntakeStateinitialized) {
+            print(event.totalCalories);
         yield currentState.copyWith(
             breakfast: currentState.entireDayMeal.breakfast,
             morningSnack: MorningSnackModel(

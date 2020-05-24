@@ -332,25 +332,25 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
                               ),
                               child: Row(
                                 children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 8),
-                                    child: Icon(
-                                      Icons.calendar_today,
-                                      color: DashboardTheme.grey,
-                                      size: 18,
-                                    ),
-                                  ),
-                                  Text(
-                                    '${TopBarformatter.format(currentDate)}',
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                      fontFamily: DashboardTheme.fontName,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 18,
-                                      letterSpacing: -0.2,
-                                      color: DashboardTheme.darkerText,
-                                    ),
-                                  ),
+                                  // Padding(
+                                  //   padding: const EdgeInsets.only(right: 8),
+                                  //   child: Icon(
+                                  //     Icons.calendar_today,
+                                  //     color: DashboardTheme.grey,
+                                  //     size: 18,
+                                  //   ),
+                                  // ),
+                                  // Text(
+                                  //   '${TopBarformatter.format(currentDate)}',
+                                  //   textAlign: TextAlign.left,
+                                  //   style: TextStyle(
+                                  //     fontFamily: DashboardTheme.fontName,
+                                  //     fontWeight: FontWeight.normal,
+                                  //     fontSize: 18,
+                                  //     letterSpacing: -0.2,
+                                  //     color: DashboardTheme.darkerText,
+                                  //   ),
+                                  // ),
                                 ],
                               ),
                             ),
