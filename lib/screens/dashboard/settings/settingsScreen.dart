@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:gkfit/bloc/trackers/calorieIntake/CalorieIntakeBloc.dart';
+import 'package:gkfit/bloc/trackers/water_intake/water_intake_bloc.dart';
 import 'package:gkfit/bloc/user_bloc.dart';
 
 import 'package:gkfit/model/userDataModel.dart';
@@ -92,8 +94,11 @@ class _SettingsScreenState extends State<SettingsScreen>
     try {
       final AuthService auth = Provider.of<AuthService>(context, listen: false);
       userBloc = BlocProvider.of<UserBloc>(context);
+      final CalorieIntakeBloc calorieIntakeBloc = BlocProvider.of<CalorieIntakeBloc>(context);
+      final WaterIntakeBloc waterIntakeBloc = BlocProvider.of<WaterIntakeBloc>(context);
       await Intercom.logout();
-
+      await calorieIntakeBloc.dispose();
+      await waterIntakeBloc.dispose();
       await userBloc.dispose();
       await auth.signOut();
     } on PlatformException catch (e) {

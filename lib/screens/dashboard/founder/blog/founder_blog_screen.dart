@@ -49,7 +49,7 @@ class _FounderblogScreenState extends State<FounderblogScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          elevation: 0,
+          elevation: 10,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(45),
@@ -59,7 +59,7 @@ class _FounderblogScreenState extends State<FounderblogScreen> {
           title: Text(
             "Founder's Blog",
             style:
-                Theme.of(context).textTheme.title.copyWith(color: Colors.black),
+                Theme.of(context).textTheme.title.copyWith(color: Colors.white),
           ),
         ),
         body: Column(

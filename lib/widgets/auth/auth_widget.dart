@@ -1,6 +1,9 @@
 import 'package:gkfit/bloc/trackers/water_intake/water_intake_bloc.dart';
+import 'package:gkfit/bloc/trackers/calorieIntake/CalorieIntakeBloc.dart';
+
+import 'package:gkfit/bloc/trackers/calorieIntake/CalorieIntakeEvent.dart';
+
 import 'package:gkfit/bloc/user_bloc.dart';
-import 'package:gkfit/screens/dashboard/dashboard_theme.dart';
 import 'package:gkfit/widgets/loading/loadingIndicator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -36,7 +39,9 @@ class AuthWidget extends StatelessWidget {
                 UserBloc(uid: userSnapshot.data.uid)..add(UserFetch()),
           ),
           BlocProvider<WaterIntakeBloc>(create: (context) => WaterIntakeBloc(uid:userSnapshot.data.uid)..add(FetchWaterIntakeEvent()),
-          )
+          ),
+          BlocProvider<CalorieIntakeBloc> 
+          (create:(context) => CalorieIntakeBloc(uid: userSnapshot.data.uid)..add(FetchEntiredayMealModelEvent()),)
         ],
         child: MaterialApp(
             theme: ThemeData(primarySwatch: Colors.indigo), home: HomePage()));

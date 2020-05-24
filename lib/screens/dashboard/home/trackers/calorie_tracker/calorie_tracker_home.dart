@@ -5,6 +5,13 @@ import '../../../dashboard_theme.dart';
 import './../../../home/meals_list_view.dart';
 import './../../../ui_view/title_view.dart';
 import './your_nutrition_report_screen.dart';
+import 'CalorieIntakeMiniDahsboard.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gkfit/bloc/trackers/calorieIntake/CalorieIntakeBloc.dart';
+import 'package:gkfit/bloc/trackers/calorieIntake/CalorieIntakeState.dart';
+import 'package:gkfit/bloc/trackers/calorieIntake/CalorieIntakeEvent.dart';
+import 'dart:developer' as developer;
+import 'package:gkfit/widgets/loading/loadingIndicator.dart';
 
 class CalorietrackerHomeScreen extends StatefulWidget {
   @override
@@ -14,7 +21,7 @@ class CalorietrackerHomeScreen extends StatefulWidget {
 class CalorietrackerHomeScreenState extends State<CalorietrackerHomeScreen>
     with TickerProviderStateMixin {
   AnimationController animationController;
-
+  CalorieIntakeBloc calorieIntakeBloc;
   @override
   void initState() {
     animationController = AnimationController(
@@ -23,6 +30,14 @@ class CalorietrackerHomeScreenState extends State<CalorietrackerHomeScreen>
 
   @override
   Widget build(BuildContext context) {
+    calorieIntakeBloc = BlocProvider.of<CalorieIntakeBloc>(context);
+            developer.log(
+              'calorie tracker home' +
+                  calorieIntakeBloc.state.entireDayMeal.dinner
+                      .toJson()
+                      .toString(),
+              name: 'calorie tracker home',
+            );
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(
@@ -51,7 +66,7 @@ class CalorietrackerHomeScreenState extends State<CalorietrackerHomeScreen>
     int count = 9;
     List<Widget> listViews = <Widget>[];
     listViews.add(
-      MediterranesnDietView(
+      CalorieIntakeMiniDashBoard(
         animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
             parent: animationController,
             curve:
@@ -60,9 +75,8 @@ class CalorietrackerHomeScreenState extends State<CalorietrackerHomeScreen>
       ),
     );
     listViews.add(
-      TitleView(
-        titleTxt: 'Your Nutrition Report',
-        subTxt: 'Details',
+      JustTitleView(
+        titleTxt: 'Track Your Calorie Intake',
         animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
             parent: animationController,
             curve:

@@ -2,48 +2,49 @@ import 'package:gkfit/bloc/trackers/water_intake/water_intake_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import '../../../ui_view/wave_view.dart';
-import '../../../dashboard_theme.dart';
-import './../../../../../constants/colors.dart';
+import '../ui_view/wave_view.dart';
+import '../dashboard_theme.dart';
+import './../../../constants/colors.dart';
 import 'package:flutter/material.dart';
 
-class WaterIntakeMiniDashboardView extends StatefulWidget {
+class StaticWaterDashboardView extends StatefulWidget {
   int daily_target, current_water_intake;
   String last_drink_time;
 
-  WaterIntakeMiniDashboardView({
-    Key key,
-    this.mainScreenAnimationController,
-    this.mainScreenAnimation,
-    this.daily_target,
-    this.current_water_intake,
-  }) : super(key: key);
+  StaticWaterDashboardView(
+      {Key key,
+      this.mainScreenAnimationController,
+      this.mainScreenAnimation,
+      this.daily_target,
+      this.current_water_intake,
+      this.last_drink_time})
+      : super(key: key);
 
   final AnimationController mainScreenAnimationController;
   final Animation<dynamic> mainScreenAnimation;
 
   @override
-  _WaterIntakeMiniDashboardViewState createState() =>
-      _WaterIntakeMiniDashboardViewState(daily_target, current_water_intake);
+  _StaticWaterDashboardViewState createState() =>
+      _StaticWaterDashboardViewState(
+          daily_target, current_water_intake, last_drink_time);
 }
 
-class _WaterIntakeMiniDashboardViewState
-    extends State<WaterIntakeMiniDashboardView> with TickerProviderStateMixin {
+class _StaticWaterDashboardViewState extends State<StaticWaterDashboardView>
+    with TickerProviderStateMixin {
   int daily_target, current_water_intake;
   String last_drink_time;
   WaterIntakeBloc waterIntakeBloc;
   var timeformatter = new DateFormat('Hm');
 
   String display_last_time;
-  _WaterIntakeMiniDashboardViewState(
-      this.daily_target, this.current_water_intake);
+  _StaticWaterDashboardViewState(
+      this.daily_target, this.current_water_intake, this.last_drink_time);
 
   @override
   void initState() {
-    display_last_time =
-        ''; //timeformatter.format(DateTime.parse(last_drink_time));
     waterIntakeBloc = BlocProvider.of<WaterIntakeBloc>(context);
     waterIntakeBloc.add(FetchWaterIntakeEvent());
+    //timeformatter.format(DateTime.parse(last_drink_time));
   }
 
   Future<bool> getData() async {
@@ -180,21 +181,21 @@ class _WaterIntakeMiniDashboardViewState
                                         ),
                                       ),
                                       Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 4.0),
-                                          child: Text(
-                                            'Last drink ${waterIntakeBloc.state.getLastWaterIntake()}',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontFamily:
-                                                  DashboardTheme.fontName,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 14,
-                                              letterSpacing: 0.0,
-                                              color: DashboardTheme.grey
-                                                  .withOpacity(0.5),
-                                            ),
-                                          )),
+                                        padding:
+                                            const EdgeInsets.only(left: 4.0),
+                                        child: Text(
+                                          'Last drink ${waterIntakeBloc.state.getLastWaterIntake()}',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontFamily: DashboardTheme.fontName,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 14,
+                                            letterSpacing: 0.0,
+                                            color: DashboardTheme.grey
+                                                .withOpacity(0.5),
+                                          ),
+                                        ),
+                                      ),
                                     ],
                                   ),
                                   Padding(
@@ -251,70 +252,7 @@ class _WaterIntakeMiniDashboardViewState
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                 
-                                  waterIntakeBloc..add(AddLastDrinkDataEvent())..add(AddtwoFiftyMlevent());
-                                   print(waterIntakeBloc.state.getLastWaterIntake());
-                                });
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: DashboardTheme.nearlyWhite,
-                                  shape: BoxShape.circle,
-                                  boxShadow: <BoxShadow>[
-                                    BoxShadow(
-                                        color: DashboardTheme.nearlyDarkBlue
-                                            .withOpacity(0.4),
-                                        offset: const Offset(4.0, 4.0),
-                                        blurRadius: 8.0),
-                                  ],
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(6.0),
-                                  child: Icon(
-                                    Icons.add,
-                                    color: DashboardTheme.nearlyDarkBlue,
-                                    size: 24,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 45,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  waterIntakeBloc
-                                    ..add(SubtracttwoFiftyMlevent());
-                                });
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: DashboardTheme.nearlyWhite,
-                                  shape: BoxShape.circle,
-                                  boxShadow: <BoxShadow>[
-                                    BoxShadow(
-                                        color: DashboardTheme.nearlyDarkBlue
-                                            .withOpacity(0.4),
-                                        offset: const Offset(4.0, 4.0),
-                                        blurRadius: 8.0),
-                                  ],
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(6.0),
-                                  child: Icon(
-                                    Icons.remove,
-                                    color: DashboardTheme.nearlyDarkBlue,
-                                    size: 24,
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
+                          children: <Widget>[],
                         ),
                       ),
                       Padding(

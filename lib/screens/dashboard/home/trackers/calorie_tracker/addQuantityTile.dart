@@ -6,16 +6,16 @@ import '../../../dashboard_theme.dart';
 class AddQuantityToFoodTile extends StatefulWidget {
   NutritionDatabaseModel meal_data;
   double quantity;
-  int count;
+  double count;
   int index;
-  ValueChanged<int> currentCount;
+  ValueChanged<double> currentQuantity;
   AddQuantityToFoodTile(
       {Key key,
       this.index,
       this.meal_data,
       this.quantity,
       this.count,
-      this.currentCount})
+      this.currentQuantity})
       : super(key: key);
 
   @override
@@ -23,34 +23,38 @@ class AddQuantityToFoodTile extends StatefulWidget {
 }
 
 class _AddQuantityToFoodTileState extends State<AddQuantityToFoodTile> {
-  int currentCount;
+  double currentquantity;
   @override
   void initState() {
     // TODO: implement initState
-    currentCount = widget.count;
+    currentquantity = widget.quantity;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
+        height: 50,
         child: Padding(
             padding: const EdgeInsets.only(left: 24, right: 24),
-            child: Row(children: <Widget>[
-              Text('${(widget.index + 1).toString()} .'),
+            child: 
+            Row(children: <Widget>[
               Expanded(
                 child: Text(
                   '\n' +
-                      widget.meal_data.name +
-                      '\n\n ${(currentCount * widget.meal_data.total_calories).toString()} calories per ${(widget.quantity.toInt()*currentCount).toString()} grams',
+                      '${(widget.index + 1).toString()} . ' +
+                      widget.meal_data.name,
+                      style: TextStyle(
+
+                      ),
                   textAlign: TextAlign.left,
                 ),
               ),
               GestureDetector(
                 onTap: () {
                   setState(() {
-                    currentCount = currentCount + 1;
-                    widget.currentCount(currentCount);
+                    currentquantity = currentquantity + widget.quantity;
+                    widget.currentQuantity(currentquantity);
                   });
                 },
                 child: Container(
@@ -77,15 +81,18 @@ class _AddQuantityToFoodTileState extends State<AddQuantityToFoodTile> {
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Text(
-                  '${currentCount}',
+                  '${currentquantity} g',
                   style: DashboardTheme.textTheme.headline2,
                 ),
               ),
               GestureDetector(
                 onTap: () {
                   setState(() {
-                    currentCount = (currentCount - 1) <= 0 ? 0: (currentCount - 1);
-                    widget.currentCount(currentCount);
+                    currentquantity = currentquantity - widget.quantity;
+                    currentquantity = (currentquantity <= 0)
+                        ? double.parse('0')
+                        : currentquantity;
+                    widget.currentQuantity(currentquantity);
                   });
                 },
                 child: Container(
@@ -109,6 +116,8 @@ class _AddQuantityToFoodTileState extends State<AddQuantityToFoodTile> {
                   ),
                 ),
               ),
-            ])));
+            ]
+            
+            )));
   }
 }

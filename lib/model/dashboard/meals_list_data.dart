@@ -1,3 +1,5 @@
+import 'package:gkfit/model/trackers/Nutrition_database_model.dart';
+
 class MealsListData {
   MealsListData({
     this.imagePath = '',
@@ -6,6 +8,9 @@ class MealsListData {
     this.endColor = '',
     this.meals,
     this.kacl = 0,
+    this.mealListFromDatabase,
+    this.mealSelector,
+    this.mealListQuantityInGrams
   });
 
   String imagePath;
@@ -13,7 +18,11 @@ class MealsListData {
   String startColor;
   String endColor;
   List<String> meals;
-  int kacl;
+  List<NutritionDatabaseModel> mealListFromDatabase;
+   List<double> mealListQuantityInGrams;
+  double kacl;
+  String mealSelector;
+
 
   static List<MealsListData> tabIconsList = <MealsListData>[
     MealsListData(
@@ -27,8 +36,8 @@ class MealsListData {
       titleTxt: 'Morning Snack',
       kacl: 525,
       meals: <String>['Bread,', 'Peanut butter,', 'Apple'],
-      startColor: '#FA7D82',
-      endColor: '#FFB295',
+      startColor: '#41B4BC',
+      endColor: '#00D4FF',
     ),
     MealsListData(
       titleTxt: 'Lunch',

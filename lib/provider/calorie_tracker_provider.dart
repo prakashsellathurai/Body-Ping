@@ -1,9 +1,9 @@
 import 'package:gkfit/model/trackers/Nutrition_database_model.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class CalorieTrackerProvider {
-  String baseUrl =
-      'https://trackers-api-dot-hygieafit.el.r.appspot.com/trackers/v1/calories';
+  String baseUrl = 'https://trackers-api-dot-hygieafit.el.r.appspot.com/trackers/v1/calories';
 
   Future<String> getMealdata(uid, dateString) async {
     http.Response result =
@@ -21,15 +21,22 @@ class CalorieTrackerProvider {
       String uid,
       List<NutritionDatabaseModel> meal_list,
       List<double> calories_list,
-      List<int> quantities_in_grams,
+      List<double> quantities_in_grams,
       double total_calories) async {
-    http.Response result =
-        await http.post(baseUrl + '/add/$uid/breakfast', body: {
-      "meal_list": meal_list,
+    List<dynamic> meal_listJson = [];
+  
+    for (NutritionDatabaseModel item in meal_list) {
+      meal_listJson.add( json.encode(item.toJson()));
+    }
+    var body = json.encode({
+      "meal_list":  meal_listJson,
       "calories_list": calories_list,
       "quantities_in_grams": quantities_in_grams,
       "total_calories": total_calories
     });
+   
+    http.Response result = await http.post(baseUrl + '/add/$uid/breakfast',
+        body: body, headers: {"content-type": "application/json"});
     return result.body;
   }
 
@@ -37,15 +44,21 @@ class CalorieTrackerProvider {
       String uid,
       List<NutritionDatabaseModel> meal_list,
       List<double> calories_list,
-      List<int> quantities_in_grams,
+      List<double> quantities_in_grams,
       double total_calories) async {
-    http.Response result =
-        await http.post(baseUrl + '/add/$uid/morning_snack', body: {
-      "meal_list": meal_list,
+    List<dynamic> meal_listJson = [];
+    for (NutritionDatabaseModel item in meal_list) {
+      meal_listJson.add( json.encode(item.toJson()));
+    }
+    var body = json.encode({
+      "meal_list":  meal_listJson,
       "calories_list": calories_list,
       "quantities_in_grams": quantities_in_grams,
       "total_calories": total_calories
     });
+    http.Response result =
+        await http.post(baseUrl + '/add/$uid/morning_snack', body: body
+    , headers: {"content-type": "application/json"});
     return result.body;
   }
 
@@ -53,14 +66,19 @@ class CalorieTrackerProvider {
       String uid,
       List<NutritionDatabaseModel> meal_list,
       List<double> calories_list,
-      List<int> quantities_in_grams,
+      List<double> quantities_in_grams,
       double total_calories) async {
-    http.Response result = await http.post(baseUrl + '/add/$uid/lunch', body: {
-      "meal_list": meal_list,
+    List<dynamic> meal_listJson = [];
+    for (NutritionDatabaseModel item in meal_list) {
+      meal_listJson.add( json.encode(item.toJson()));
+    }
+    var body = json.encode({
+      "meal_list":  meal_listJson,
       "calories_list": calories_list,
       "quantities_in_grams": quantities_in_grams,
       "total_calories": total_calories
     });
+    http.Response result = await http.post(baseUrl + '/add/$uid/lunch', body: body, headers: {"content-type": "application/json"});
     return result.body;
   }
 
@@ -68,15 +86,20 @@ class CalorieTrackerProvider {
       String uid,
       List<NutritionDatabaseModel> meal_list,
       List<double> calories_list,
-      List<int> quantities_in_grams,
+      List<double> quantities_in_grams,
       double total_calories) async {
-    http.Response result =
-        await http.post(baseUrl + '/add/$uid/evening_snack', body: {
-      "meal_list": meal_list,
+    List<dynamic> meal_listJson = [];
+    for (NutritionDatabaseModel item in meal_list) {
+      meal_listJson.add( json.encode(item.toJson()));
+    }
+    var body = json.encode({
+      "meal_list":  meal_listJson,
       "calories_list": calories_list,
       "quantities_in_grams": quantities_in_grams,
       "total_calories": total_calories
     });
+    http.Response result =
+        await http.post(baseUrl + '/add/$uid/evening_snack', body: body, headers: {"content-type": "application/json"});
     return result.body;
   }
 
@@ -84,15 +107,20 @@ class CalorieTrackerProvider {
       String uid,
       List<NutritionDatabaseModel> meal_list,
       List<double> calories_list,
-      List<int> quantities_in_grams,
+      List<double> quantities_in_grams,
       double total_calories) async {
-    http.Response result =
-        await http.post(baseUrl + '/add/$uid/evening_snack', body: {
-      "meal_list": meal_list,
+    List<dynamic> meal_listJson = [];
+    for (NutritionDatabaseModel item in meal_list) {
+      meal_listJson.add( json.encode(item.toJson()));
+    }
+    var body = json.encode({
+      "meal_list":  meal_listJson,
       "calories_list": calories_list,
       "quantities_in_grams": quantities_in_grams,
       "total_calories": total_calories
     });
+    http.Response result =
+        await http.post(baseUrl + '/add/$uid/evening_snack', body: body, headers: {"content-type": "application/json"});
     return result.body;
   }
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gkfit/widgets/error/no_internet.dart';
+import 'package:gkfit/widgets/loading/loadingIndicator.dart';
 import '../../../dashboard_theme.dart';
 class YourNutritionReportScreen extends StatefulWidget {
   YourNutritionReportScreen({Key key}) : super(key: key);
@@ -29,7 +31,9 @@ class _YourNutritionReportScreenState extends State<YourNutritionReportScreen> {
                 .copyWith(color: Colors.black),
           ),
         ),
-       body: Text("your Nutrition report"),
+       body: Center(
+         child:NoInternet()
+       ),
     );
   }
 }

@@ -1,18 +1,27 @@
-import '../dashboard_theme.dart';
-import './../../../constants/colors.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gkfit/bloc/trackers/calorieIntake/CalorieIntakeBloc.dart';
+import 'package:gkfit/bloc/trackers/calorieIntake/CalorieIntakeEvent.dart';
+
+import 'package:gkfit/model/DailyRequiremnentModel.dart';
+import '../../../dashboard_theme.dart';
+import './../../../../../constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
-class MediterranesnDietView extends StatelessWidget {
+class CalorieIntakeMiniDashBoard extends StatelessWidget {
   final AnimationController animationController;
   final Animation animation;
 
-  const MediterranesnDietView(
+  const CalorieIntakeMiniDashBoard(
       {Key key, this.animationController, this.animation})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    CalorieIntakeBloc calorieIntakeBloc =
+        BlocProvider.of<CalorieIntakeBloc>(context);
+    // calorieIntakeBloc..add(FetchEntiredayMealModelEvent());
+    DailyRequirements dailyRequirements = DailyRequirements();
     return AnimatedBuilder(
       animation: animationController,
       builder: (BuildContext context, Widget child) {
@@ -106,7 +115,7 @@ class MediterranesnDietView extends StatelessWidget {
                                                       const EdgeInsets.only(
                                                           left: 4, bottom: 3),
                                                   child: Text(
-                                                    '${(1127 * animation.value).toInt()}',
+                                                   '${(calorieIntakeBloc.state.totalEatenInKcal * animation.value).toInt()}',
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                       fontFamily: DashboardTheme
@@ -209,9 +218,15 @@ class MediterranesnDietView extends StatelessWidget {
                                                       child: Row(
                                                         children: <Widget>[
                                                           Container(
-                                                            width: ((70 / 1.2) *
-                                                                animation
-                                                                    .value),
+                                                            width: 
+                                                            (70 *
+                                                                ((calorieIntakeBloc.state.totalCarbs <
+                                                                            dailyRequirements
+                                                                                .carbs)
+                                                                        ? (calorieIntakeBloc.state.totalCarbs /
+                                                                            dailyRequirements.carbs)
+                                                                        : 1)
+                                                                    .toDouble()),
                                                             height: 4,
                                                             decoration:
                                                                 BoxDecoration(
@@ -240,7 +255,14 @@ class MediterranesnDietView extends StatelessWidget {
                                                         const EdgeInsets.only(
                                                             top: 6),
                                                     child: Text(
-                                                      '12g left',
+                                                      (dailyRequirements.carbs
+                                                                  .toInt() >
+                                                              calorieIntakeBloc
+                                                                  .state
+                                                                  .totalCarbs
+                                                                  .toInt())
+                                                          ? '${(((dailyRequirements.carbs - calorieIntakeBloc.state.totalCarbs)).toInt())}g left'
+                                                          : '${(((calorieIntakeBloc.state.totalCarbs - dailyRequirements.carbs)).toInt())}g more',
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: TextStyle(
@@ -292,7 +314,7 @@ class MediterranesnDietView extends StatelessWidget {
                                             CrossAxisAlignment.center,
                                         children: <Widget>[
                                           Text(
-                                            '${(1503 * animation.value).toInt()}',
+                                            '${(((dailyRequirements.totalEnergy - calorieIntakeBloc.state.totalEatenInKcal) / 1000) * animation.value).toInt()}',
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               fontFamily:
@@ -305,7 +327,11 @@ class MediterranesnDietView extends StatelessWidget {
                                             ),
                                           ),
                                           Text(
-                                            'Kcal left',
+                                            (dailyRequirements.totalEnergy >
+                                                    calorieIntakeBloc
+                                                        .state.totalEatenInKcal)
+                                                ? 'Kcal left'
+                                                : 'Kcal',
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               fontFamily:
@@ -330,8 +356,17 @@ class MediterranesnDietView extends StatelessWidget {
                                             HexColor("#8A98E8"),
                                             HexColor("#8A98E8")
                                           ],
-                                          angle: 140 +
-                                              (360 - 140) *
+                                          angle: ((calorieIntakeBloc.state
+                                                          .totalEatenInKcal /
+                                                      dailyRequirements
+                                                          .totalEnergy) *
+                                                  360) +
+                                              (360 -
+                                                      ((calorieIntakeBloc.state
+                                                                  .totalEatenInKcal /
+                                                              dailyRequirements
+                                                                  .totalEnergy) *
+                                                          360)) *
                                                   (1.0 - animation.value)),
                                       child: SizedBox(
                                         width: 108,
@@ -396,7 +431,18 @@ class MediterranesnDietView extends StatelessWidget {
                                         child: Row(
                                           children: <Widget>[
                                             Container(
-                                              width: ((70 / 2) *
+                                              width: (70 *
+                                                  ((calorieIntakeBloc.state
+                                                                  .totalproteins <
+                                                              dailyRequirements
+                                                                  .proteins)
+                                                          ? (calorieIntakeBloc
+                                                                  .state
+                                                                  .totalproteins /
+                                                              dailyRequirements
+                                                                  .proteins)
+                                                          : 1)
+                                                      .toDouble() *
                                                   animationController.value),
                                               height: 4,
                                               decoration: BoxDecoration(
@@ -417,7 +463,12 @@ class MediterranesnDietView extends StatelessWidget {
                                     Padding(
                                       padding: const EdgeInsets.only(top: 6),
                                       child: Text(
-                                        '30g left',
+                                        (dailyRequirements.proteins.toInt() >
+                                                calorieIntakeBloc
+                                                    .state.totalproteins
+                                                    .toInt())
+                                            ? '${(((dailyRequirements.proteins - calorieIntakeBloc.state.totalproteins)).toInt())}g left'
+                                            : '${(((calorieIntakeBloc.state.totalproteins - dailyRequirements.proteins)).toInt())}g more',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontFamily: DashboardTheme.fontName,
@@ -467,7 +518,18 @@ class MediterranesnDietView extends StatelessWidget {
                                         child: Row(
                                           children: <Widget>[
                                             Container(
-                                              width: ((70 / 2.5) *
+                                              width: (70 *
+                                                  ((calorieIntakeBloc.state
+                                                                  .totalfat <
+                                                              dailyRequirements
+                                                                  .fat)
+                                                          ? (calorieIntakeBloc
+                                                                  .state
+                                                                  .totalfat /
+                                                              dailyRequirements
+                                                                  .fat)
+                                                          : 1)
+                                                      .toDouble() *
                                                   animationController.value),
                                               height: 4,
                                               decoration: BoxDecoration(
@@ -488,7 +550,11 @@ class MediterranesnDietView extends StatelessWidget {
                                     Padding(
                                       padding: const EdgeInsets.only(top: 6),
                                       child: Text(
-                                        '10g left',
+                                        (dailyRequirements.fat.toInt() >
+                                                calorieIntakeBloc.state.totalfat
+                                                    .toInt())
+                                            ? '${(((dailyRequirements.fat - calorieIntakeBloc.state.totalfat)).toInt())}g left'
+                                            : '${(((calorieIntakeBloc.state.totalfat - dailyRequirements.fat)).toInt())}g more',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontFamily: DashboardTheme.fontName,
@@ -538,7 +604,19 @@ class MediterranesnDietView extends StatelessWidget {
                                         child: Row(
                                           children: <Widget>[
                                             Container(
-                                              width: ((70 / 2) *
+                                              width:
+                                            (70 *
+                                                  ((calorieIntakeBloc.state
+                                                                  .totalfibres <
+                                                              dailyRequirements
+                                                                  .fibres)
+                                                          ? (calorieIntakeBloc
+                                                                  .state
+                                                                  .totalfibres /
+                                                              dailyRequirements
+                                                                  .fibres)
+                                                          : 1)
+                                                      .toDouble() *
                                                   animationController.value),
                                               height: 4,
                                               decoration: BoxDecoration(
@@ -559,7 +637,12 @@ class MediterranesnDietView extends StatelessWidget {
                                     Padding(
                                       padding: const EdgeInsets.only(top: 6),
                                       child: Text(
-                                        '3g left',
+                                        (dailyRequirements.fibres.toInt() >
+                                                calorieIntakeBloc
+                                                    .state.totalfibres
+                                                    .toInt())
+                                            ? '${(((dailyRequirements.fibres - calorieIntakeBloc.state.totalfibres)).toInt())}g left'
+                                            : '${(((calorieIntakeBloc.state.totalfibres - dailyRequirements.fibres)).toInt())}g more',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontFamily: DashboardTheme.fontName,

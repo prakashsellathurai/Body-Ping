@@ -1,6 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gkfit/bloc/trackers/calorieIntake/CalorieIntakeBloc.dart';
+import 'package:gkfit/bloc/trackers/calorieIntake/CalorieIntakeEvent.dart';
 import 'package:gkfit/bloc/trackers/water_intake/water_intake_bloc.dart';
 import 'package:gkfit/model/userDataModel.dart';
+import 'package:gkfit/screens/dashboard/home/staticWaterView.dart';
 import 'package:gkfit/screens/dashboard/home/trackers/bmi_tracker/bmi_tracker_home.dart';
 import 'package:gkfit/screens/dashboard/home/trackers/calorie_tracker/calorie_tracker_home.dart';
 import 'package:gkfit/screens/dashboard/home/trackers/water_tracker/water_tracker_home.dart';
@@ -15,7 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'trackers/water_tracker/mini_water_intake_dashboard.dart';
-
+import './trackers/calorie_tracker/CalorieIntakeMiniDahsboard.dart';
 class DashboardHomeScreen extends StatefulWidget {
   const DashboardHomeScreen({Key key, this.animationController, this.userData})
       : super(key: key);
@@ -35,13 +38,16 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
   DateTime currentDate;
   UserDataModel userData;
   WaterIntakeBloc waterIntakeBloc;
+  CalorieIntakeBloc calorieIntakeBloc;
   var TopBarformatter = new DateFormat('MMMd');
   _DashboardHomeScreenState(this.userData);
 
   @override
   void initState() {
     waterIntakeBloc = BlocProvider.of<WaterIntakeBloc>(context);
-    waterIntakeBloc..add(FetchWaterIntakeEvent());
+    waterIntakeBloc.add(FetchWaterIntakeEvent());
+    calorieIntakeBloc = BlocProvider.of<CalorieIntakeBloc>(context);
+    calorieIntakeBloc..add(FetchEntiredayMealModelEvent());
     currentDate = DateTime.now();
     topBarAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
         CurvedAnimation(
@@ -101,8 +107,6 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
   }
 
   Widget getMainListViewUI() {
-    // waterIntakeBloc = BlocProvider.of<WaterIntakeBloc>(context);
-    // waterIntakeBloc..add(FetchWaterIntakeEvent());
     return FutureBuilder<bool>(
       future: getData(),
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
@@ -129,7 +133,7 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
             ),
           );
           listViews.add(
-            MediterranesnDietView(
+            CalorieIntakeMiniDashBoard(
               animation: Tween<double>(begin: 0.0, end: 1.0).animate(
                   CurvedAnimation(
                       parent: widget.animationController,
@@ -206,7 +210,7 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
             ),
           );
 
-          listViews.add(WaterIntakeMiniDashboardView(
+          listViews.add(StaticWaterDashboardView(
               mainScreenAnimation: Tween<double>(begin: 0.0, end: 1.0).animate(
                   CurvedAnimation(
                       parent: widget.animationController,
@@ -214,8 +218,7 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
                           curve: Curves.fastOutSlowIn))),
               mainScreenAnimationController: widget.animationController,
               daily_target: 3500,
-              current_water_intake: 2100,
-              last_drink_time: DateTime.now().toIso8601String()));
+              current_water_intake: 2100));
           listViews.add(
             GlassView(
                 animation: Tween<double>(begin: 0.0, end: 1.0).animate(

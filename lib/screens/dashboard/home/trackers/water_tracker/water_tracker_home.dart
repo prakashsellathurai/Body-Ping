@@ -15,6 +15,7 @@ import './history/models/balance.dart';
 import 'dart:async';
 
 import 'history/models/domain.dart';
+
 class WaterTrackerHomeScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => WaterTrackerHomeScreenState();
@@ -22,15 +23,26 @@ class WaterTrackerHomeScreen extends StatefulWidget {
 
 class WaterTrackerHomeScreenState extends State<WaterTrackerHomeScreen>
     with TickerProviderStateMixin {
-
-        final Map<String,List<String>>timeValues={
-    "Day":["Mon","Tue","Wed","Thur","Fri","Sat","Sun"],
-    "Month":["Jan","Feb","Mar","Apr","May","June","July","Sep","Oct","Nov","Dec"],
-    "Year":List.generate(3, (index)=>"20${index+20}").toList()
+  final Map<String, List<String>> timeValues = {
+    "Day": ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"],
+    "Month": [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "June",
+      "July",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+    ],
+    "Year": List.generate(3, (index) => "20${index + 20}").toList()
   };
-  String mainValue="Day";
-  int subIndex=0;
-  List<charts.Series<Balance, String>>series;
+  String mainValue = "Day";
+  int subIndex = 0;
+  List<charts.Series<Balance, String>> series;
   WaterIntakeBloc waterIntakebloc;
 
   AnimationController animationController;
@@ -39,7 +51,7 @@ class WaterTrackerHomeScreenState extends State<WaterTrackerHomeScreen>
     animationController = AnimationController(
         duration: const Duration(milliseconds: 600), vsync: this);
     // TODO: implement initState
-     series=db.getSeries(mainValue, subIndex,max:10);
+    series = db.getSeries(mainValue, subIndex, max: 10);
     super.initState();
   }
 
@@ -50,6 +62,12 @@ class WaterTrackerHomeScreenState extends State<WaterTrackerHomeScreen>
     return Scaffold(
         appBar: AppBar(
           elevation: 10,
+          leading: new IconButton(
+              icon: new Icon(Icons.arrow_back),
+              onPressed: () {
+                waterIntakebloc..add(UpdateWaterIntakeEvent());
+                Navigator.pop(context, true);
+              }),
           iconTheme: IconThemeData(color: Colors.black),
           backgroundColor: DashboardTheme.nearlyWhite,
           shape: RoundedRectangleBorder(
@@ -69,10 +87,11 @@ class WaterTrackerHomeScreenState extends State<WaterTrackerHomeScreen>
         backgroundColor: DashboardTheme.background,
         body: listView());
   }
-    updateData()async{
-    Timer(Duration(milliseconds: 400),(){
+
+  updateData() async {
+    Timer(Duration(milliseconds: 400), () {
       setState(() {
-        series=db.getSeries(mainValue, subIndex,max:1000);
+        series = db.getSeries(mainValue, subIndex, max: 1000);
       });
     });
   }
@@ -81,32 +100,35 @@ class WaterTrackerHomeScreenState extends State<WaterTrackerHomeScreen>
     int count = 9;
     List<Widget> listViews = <Widget>[];
     listViews.add(WaterIntakeMiniDashboardView(
-      mainScreenAnimation: Tween<double>(begin: 0.0, end: 1.0).animate(
-          CurvedAnimation(
-              parent: animationController,
-              curve:
-                  Interval((1 / count) * 7, 1.0, curve: Curves.fastOutSlowIn))),
-      mainScreenAnimationController: animationController,
-      daily_target: 3500,
-      current_water_intake: 2100,
-      last_drink_time: DateTime.now().toIso8601String()
-    ));
+        mainScreenAnimation: Tween<double>(begin: 0.0, end: 1.0).animate(
+            CurvedAnimation(
+                parent: animationController,
+                curve: Interval((1 / count) * 7, 1.0,
+                    curve: Curves.fastOutSlowIn))),
+        mainScreenAnimationController: animationController,
+        daily_target: 3500,
+        current_water_intake: 2100
+    )
+       );
     listViews.add(
-         DropWidget(timeValues,(mainValue,subIndex){
-            setState(() {
-              if(this.mainValue!=mainValue)
-                this.mainValue=mainValue;
-              if(this.subIndex!=subIndex)
-                this.subIndex=subIndex;
-              series=db.getSeries(mainValue, subIndex,max:1000);
-            });
-          },mainValue: mainValue,),
+      DropWidget(
+        timeValues,
+        (mainValue, subIndex) {
+          setState(() {
+            if (this.mainValue != mainValue) this.mainValue = mainValue;
+            if (this.subIndex != subIndex) this.subIndex = subIndex;
+            series = db.getSeries(mainValue, subIndex, max: 1000);
+          });
+        },
+        mainValue: mainValue,
+      ),
     );
     listViews.add(
-           Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: GroupedBarChart(Domain.getDomain(["Water Intake"], [Color(0xff1274ED)]),series),
-          ),
+      Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: GroupedBarChart(
+            Domain.getDomain(["Water Intake"], [Color(0xff1274ED)]), series),
+      ),
     );
     return ListView.builder(
         padding: EdgeInsets.only(

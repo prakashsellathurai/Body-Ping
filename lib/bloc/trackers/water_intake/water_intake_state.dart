@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
 
 abstract class WaterIntakeState extends Equatable {
   /// notify change state without deep clone state
@@ -13,6 +14,7 @@ abstract class WaterIntakeState extends Equatable {
 
   String getDay();
 
+  String getLastWaterIntake();
   @override
   List<Object> get props => ([version, ...propss ?? []]);
 }
@@ -33,7 +35,13 @@ class UnWaterIntakeState extends WaterIntakeState {
   @override
   String getDay() {
     // TODO: implement getDay
-   return DateTime(DateTime.now().day).toIso8601String();
+    return DateTime(DateTime.now().day).toIso8601String();
+  }
+
+  @override
+  String getLastWaterIntake() {
+    // TODO: implement getDay
+    return '';
   }
 }
 
@@ -41,16 +49,20 @@ class UnWaterIntakeState extends WaterIntakeState {
 class InWaterIntakeState extends WaterIntakeState {
   final int quantity_in_ml;
   final String day;
+  String lastWaterIntake;
 
-  InWaterIntakeState(int version, this.quantity_in_ml, this.day)
+  InWaterIntakeState(int version, this.quantity_in_ml, this.day,this.lastWaterIntake)
       : super(version, [quantity_in_ml, day]);
 
   @override
   String toString() => 'InWaterIntakeState $quantity_in_ml $day';
 
-  InWaterIntakeState copyWith(quantity_in_ml,day) {
-    return InWaterIntakeState(version + 1, quantity_in_ml, day);
+  InWaterIntakeState copyWith(quantity_in_ml, day, lastWaterIntake) {
+    print(lastWaterIntake);
+    return InWaterIntakeState(version + 1, quantity_in_ml, day,lastWaterIntake);
   }
+
+
 
   @override
   int getCurrentQuantityInMl() {
@@ -61,7 +73,13 @@ class InWaterIntakeState extends WaterIntakeState {
   @override
   String getDay() {
     // TODO: implement getDay
-  return day;
+    return day;
+  }
+
+  @override
+  String getLastWaterIntake() {
+    // TODO: implement getDay
+    return  this.lastWaterIntake ?? '';
   }
 }
 
@@ -92,6 +110,12 @@ class ErrorWaterIntakeState extends WaterIntakeState {
 
   @override
   String getDay() {
+    // TODO: implement getDay
+    throw UnimplementedError();
+  }
+
+  @override
+  String getLastWaterIntake() {
     // TODO: implement getDay
     throw UnimplementedError();
   }
