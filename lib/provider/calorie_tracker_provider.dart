@@ -10,7 +10,11 @@ class CalorieTrackerProvider {
         await http.get(baseUrl + '/get/$uid?date=$dateString');
     return result.body;
   }
-
+  Future<String> getEntireHistory(uid) async{
+  http.Response result =
+        await http.get(baseUrl + '/get/$uid/all');
+    return result.body;
+  }
   Future<String> getMealdataBetweenDate(uid, start_date, end_date) async {
     http.Response result = await http
         .get(baseUrl + '/get/$uid?start_date=$start_date&end_date=$end_date');

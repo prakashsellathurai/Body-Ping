@@ -6,14 +6,30 @@ class CalorieTrackerRepository {
   CalorieTrackerProvider _calorieTrackerProvider = CalorieTrackerProvider();
 
   Future<EntireDayMealModel> fetchMealdata(
-          String uid, String dateString) async  {
-              String responseString = await _calorieTrackerProvider.getMealdata(uid, dateString);
-              EntireDayMealModel entireDayMealModel = (json.decode(responseString)["results"].length > 0 ) 
-              ? EntireDayMealModel.fromJson(json.decode(responseString)["results"][0]) :
-               EntireDayMealModel.emptyModel();
-              return  entireDayMealModel;
-          }
-   
+      String uid, String dateString) async {
+    String responseString =
+        await _calorieTrackerProvider.getMealdata(uid, dateString);
+    EntireDayMealModel entireDayMealModel = (json
+                .decode(responseString)["results"]
+                .length >
+            0)
+        ? EntireDayMealModel.fromJson(json.decode(responseString)["results"][0])
+        : EntireDayMealModel.emptyModel();
+    return entireDayMealModel;
+  }
+
+  Future<List<EntireDayMealModel>> fetchEntireMealHistory(uid) async {
+    String responseString = await _calorieTrackerProvider.getEntireHistory(uid);
+    List<EntireDayMealModel> meal_list = [];
+    if (json.decode(responseString)["results"].length > 0) {
+      json.decode(responseString)["results"].forEach((el) {
+        meal_list.add(EntireDayMealModel.fromJson(el));
+      });
+    }
+    // ? EntireDayMealModel.fromJson(json.decode(responseString)["results"])
+    // : EntireDayMealModel.emptyModel();
+    return meal_list;
+  }
 
   Future<List<Map<String, dynamic>>> fetchMealdataBetweenDates(
           String uid, String start_date, String end_date) async =>

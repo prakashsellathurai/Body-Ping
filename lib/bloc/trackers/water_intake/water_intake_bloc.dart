@@ -8,10 +8,10 @@ import 'package:gkfit/bloc/trackers/water_intake/water_intake_state.dart';
 import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class WaterIntakeEvent extends Equatable {
   @override
-
   List<Object> get props => throw UnimplementedError();
 }
 
@@ -47,11 +47,17 @@ class WaterIntakeBloc extends Bloc<WaterIntakeEvent, WaterIntakeState> {
       if (event is AddLastDrinkDataEvent) {
         print('update last drink');
         var timeformatter = new DateFormat('Hm');
-        String lastWaterIntake = timeformatter.format(DateTime.now());
-
-        yield InWaterIntakeState(currentState.version,
-            currentState.getCurrentQuantityInMl(), currentState.getDay(), lastWaterIntake)
-            .copyWith(currentState.getCurrentQuantityInMl(),  currentState.getDay(), lastWaterIntake);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        String lastWaterIntake = prefs.getString('lastWaterIntake') ??
+            timeformatter.format(DateTime.now());
+        prefs.setString('lastWaterIntake', lastWaterIntake);
+        yield InWaterIntakeState(
+                currentState.version,
+                currentState.getCurrentQuantityInMl(),
+                currentState.getDay(),
+                lastWaterIntake)
+            .copyWith(currentState.getCurrentQuantityInMl(),
+                currentState.getDay(), lastWaterIntake);
         ;
       }
 
@@ -59,15 +65,21 @@ class WaterIntakeBloc extends Bloc<WaterIntakeEvent, WaterIntakeState> {
         var update_value = (currentState.getCurrentQuantityInMl() + 250 > 3500)
             ? 3800
             : currentState.getCurrentQuantityInMl() + 250;
-        yield InWaterIntakeState(currentState.version + 1, update_value,
-            DateTime(DateTime.now().day).toIso8601String(),currentState.getLastWaterIntake());
+        yield InWaterIntakeState(
+            currentState.version + 1,
+            update_value,
+            DateTime(DateTime.now().day).toIso8601String(),
+            currentState.getLastWaterIntake());
       }
       if (event is SubtracttwoFiftyMlevent) {
         var update_value = (currentState.getCurrentQuantityInMl() - 250 < 0)
             ? 0
             : currentState.getCurrentQuantityInMl() - 250;
-        yield InWaterIntakeState(currentState.version + 1, update_value,
-            DateTime(DateTime.now().day).toIso8601String(),currentState.getLastWaterIntake());
+        yield InWaterIntakeState(
+            currentState.version + 1,
+            update_value,
+            DateTime(DateTime.now().day).toIso8601String(),
+            currentState.getLastWaterIntake());
       }
       if (event is UpdateWaterIntakeEvent) {
         await _waterIntakeRepository.updateDailyWaterIntake(
@@ -85,9 +97,15 @@ class WaterIntakeBloc extends Bloc<WaterIntakeEvent, WaterIntakeState> {
             await _waterIntakeRepository.fetchWaterIntake(
                 uid, DateTime(DateTime.now().day).toIso8601String());
 
-        yield InWaterIntakeState(currentState.version + 1,
-            (result.results.length > 0) ? int.parse(result.results[0].quantity_in_ml) : 0,(result.results.length > 0) ? result.results[0].day : DateTime(DateTime.now().day).toIso8601String()
-            ,currentState.getLastWaterIntake());
+        yield InWaterIntakeState(
+            currentState.version + 1,
+            (result.results.length > 0)
+                ? int.parse(result.results[0].quantity_in_ml)
+                : 0,
+            (result.results.length > 0)
+                ? result.results[0].day
+                : DateTime(DateTime.now().day).toIso8601String(),
+            currentState.getLastWaterIntake());
       }
     } catch (_, stackTrace) {
       developer.log('$_',

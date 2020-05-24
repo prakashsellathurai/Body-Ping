@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import '../../../ui_view/mediterranesn_diet_view.dart';
+import 'package:gkfit/services/auth_service.dart';
+import 'package:provider/provider.dart';
 import '../../../dashboard_theme.dart';
 import './../../../home/meals_list_view.dart';
 import './../../../ui_view/title_view.dart';
@@ -12,7 +14,10 @@ import 'package:gkfit/bloc/trackers/calorieIntake/CalorieIntakeState.dart';
 import 'package:gkfit/bloc/trackers/calorieIntake/CalorieIntakeEvent.dart';
 import 'dart:developer' as developer;
 import 'package:gkfit/widgets/loading/loadingIndicator.dart';
-
+import 'package:gkfit/widgets/charts/time_series_chart_with_bar_renderer.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:gkfit/repository/CalorietrackerRepository.dart';
+import 'package:gkfit/model/trackers/calorieTracker/entireDayMealModel.dart';
 class CalorietrackerHomeScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => CalorietrackerHomeScreenState();
@@ -22,6 +27,8 @@ class CalorietrackerHomeScreenState extends State<CalorietrackerHomeScreen>
     with TickerProviderStateMixin {
   AnimationController animationController;
   CalorieIntakeBloc calorieIntakeBloc;
+   User user;
+  CalorieTrackerRepository _calorieTrackerRepository = CalorieTrackerRepository();
   @override
   void initState() {
     animationController = AnimationController(
@@ -30,6 +37,7 @@ class CalorietrackerHomeScreenState extends State<CalorietrackerHomeScreen>
 
   @override
   Widget build(BuildContext context) {
+       user = Provider.of<User>(context);
     calorieIntakeBloc = BlocProvider.of<CalorieIntakeBloc>(context);
             developer.log(
               'calorie tracker home' +
@@ -107,6 +115,45 @@ class CalorietrackerHomeScreenState extends State<CalorietrackerHomeScreen>
             letterSpacing: 0.2,
           ),
         )));
+
+    listViews.add(
+      JustTitleView(
+        titleTxt: 'Your Calorie Intake History',
+        animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+            parent: animationController,
+            curve:
+                Interval((1 / count) * 0, 1.0, curve: Curves.fastOutSlowIn))),
+        animationController: animationController,
+        onclick: () {
+  
+        },
+      ),
+    );
+       listViews.add(Container(
+        height: 200,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: FutureBuilder<List<charts.Series<TimeSeriesSales, DateTime>>>(
+            future: _createWaterIntakeChart(),
+            builder: (BuildContext context,
+                AsyncSnapshot<List<charts.Series<TimeSeriesSales, DateTime>>>
+                    snapshot) {
+                      print(snapshot.data);
+              if (snapshot.hasData) {
+                print(snapshot.data);
+                return new TimeSeriesBar(
+                  snapshot.data,
+                  animate: true,
+                  
+                );
+              }
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            },
+          ),
+        )));
+    
     return ListView.builder(
       // controller: scrollController,
       padding: EdgeInsets.only(
@@ -121,7 +168,28 @@ class CalorietrackerHomeScreenState extends State<CalorietrackerHomeScreen>
       },
     );
   }
+Future<List<charts.Series<TimeSeriesSales, DateTime>>>
+      _createWaterIntakeChart() async {
+    List<EntireDayMealModel> autogen =
+        await _calorieTrackerRepository.fetchEntireMealHistory(user.uid);
+    List<TimeSeriesSales> data = [];
+    autogen.forEach((element) {
+      double totalcalories = element.breakfast.total_calories ?? 0 + element.morning_snack.total_calories ?? 0 + element.lunch.total_calories ?? 0+ element.evening_snack.total_calories ?? 0 + element.dinner.total_calories ?? 0;
+      data.add(new TimeSeriesSales(
+              DateTime.parse(element.date),
+        totalcalories.toInt()));
+    });
 
+    return [
+      new charts.Series<TimeSeriesSales, DateTime>(
+        id: 'Sales',
+        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        domainFn: (TimeSeriesSales sales, _) =>new DateTime(sales.time.year,sales.time.month,sales.time.day),
+        measureFn: (TimeSeriesSales sales, _) => sales.sales,
+        data: data,
+      )
+    ];
+  }
   @override
   void dispose() {
     animationController.dispose();

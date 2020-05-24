@@ -170,6 +170,7 @@ class _WaterIntakeMiniDashboardViewState
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: <Widget>[
+                                      if (waterIntakeBloc.state.getLastWaterIntake() != null)
                                       Padding(
                                         padding: const EdgeInsets.only(left: 4),
                                         child: Icon(
@@ -179,6 +180,7 @@ class _WaterIntakeMiniDashboardViewState
                                           size: 16,
                                         ),
                                       ),
+                                      if (waterIntakeBloc.state.getLastWaterIntake() != null)
                                       Padding(
                                           padding:
                                               const EdgeInsets.only(left: 4.0),
