@@ -13,7 +13,7 @@ class AddMealScreen extends StatefulWidget {
   String meal_title;
   List<NutritionDatabaseModel> mealListFromDatabase;
   String mealSelector;
-
+bool isTyping;
   List<double> mealQuantityList;
   AddMealScreen(
       {this.meal_title,
@@ -44,15 +44,20 @@ class _AddMealScreenState extends State<AddMealScreen> {
 
   void filterSearchResults(String query) async {
     if (query.isNotEmpty) {
+      setState(() {
+        widget.isTyping = true;
+      });
       List<NutritionDatabaseModel> queryResults =
           await _nutritionSearchRepository.searchByName(query);
       setState(() {
         items.clear();
+        
         items.addAll(queryResults);
       });
       return;
     } else {
       setState(() {
+          widget.isTyping = false;
         items.clear();
       });
       return;
@@ -89,7 +94,6 @@ class _AddMealScreenState extends State<AddMealScreen> {
                             calories_list.insert(index, multipliedCalorie);
                             totalCalories = totalCalories + multipliedCalorie;
                           }
-                        
 
                           if (mealSelector == 'breakfast') {
                             calorieIntakeBloc

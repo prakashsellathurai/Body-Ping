@@ -5,18 +5,16 @@ import 'package:intl/intl.dart';
 import '../../../ui_view/wave_view.dart';
 import '../../../dashboard_theme.dart';
 import './../../../../../constants/colors.dart';
+import 'package:gkfit/model/userPreferenceModel.dart';
 import 'package:flutter/material.dart';
 
 class WaterIntakeMiniDashboardView extends StatefulWidget {
-  int daily_target, current_water_intake;
   String last_drink_time;
 
   WaterIntakeMiniDashboardView({
     Key key,
     this.mainScreenAnimationController,
     this.mainScreenAnimation,
-    this.daily_target,
-    this.current_water_intake,
   }) : super(key: key);
 
   final AnimationController mainScreenAnimationController;
@@ -24,22 +22,24 @@ class WaterIntakeMiniDashboardView extends StatefulWidget {
 
   @override
   _WaterIntakeMiniDashboardViewState createState() =>
-      _WaterIntakeMiniDashboardViewState(daily_target, current_water_intake);
+      _WaterIntakeMiniDashboardViewState();
 }
 
 class _WaterIntakeMiniDashboardViewState
     extends State<WaterIntakeMiniDashboardView> with TickerProviderStateMixin {
-  int daily_target, current_water_intake;
+  int daily_target;
   String last_drink_time;
   WaterIntakeBloc waterIntakeBloc;
+  UserPreferenceModel _userPreferenceModel;
   var timeformatter = new DateFormat('Hm');
 
   String display_last_time;
-  _WaterIntakeMiniDashboardViewState(
-      this.daily_target, this.current_water_intake);
+  _WaterIntakeMiniDashboardViewState();
 
   @override
   void initState() {
+    _userPreferenceModel = UserPreferenceModel();
+    this.daily_target = _userPreferenceModel.daily_water_intake_target;
     display_last_time =
         ''; //timeformatter.format(DateTime.parse(last_drink_time));
     waterIntakeBloc = BlocProvider.of<WaterIntakeBloc>(context);

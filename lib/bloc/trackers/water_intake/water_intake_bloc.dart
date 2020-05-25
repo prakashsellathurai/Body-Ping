@@ -6,6 +6,7 @@ import 'package:gkfit/bloc/trackers/water_intake/water_intake_model.dart';
 import 'package:gkfit/bloc/trackers/water_intake/water_intake_repository.dart';
 import 'package:gkfit/bloc/trackers/water_intake/water_intake_state.dart';
 import 'package:equatable/equatable.dart';
+import 'package:gkfit/model/userPreferenceModel.dart';
 import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -62,8 +63,8 @@ class WaterIntakeBloc extends Bloc<WaterIntakeEvent, WaterIntakeState> {
       }
 
       if (event is AddtwoFiftyMlevent) {
-        var update_value = (currentState.getCurrentQuantityInMl() + 250 > 3500)
-            ? 3800
+        var update_value = (currentState.getCurrentQuantityInMl() + 250 > UserPreferenceModel().daily_water_intake_target)
+            ? UserPreferenceModel().daily_water_intake_target
             : currentState.getCurrentQuantityInMl() + 250;
         yield InWaterIntakeState(
             currentState.version + 1,
