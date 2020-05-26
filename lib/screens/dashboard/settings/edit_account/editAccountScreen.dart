@@ -281,7 +281,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                       }
                     },
                     child: DateTime.parse(dateOfBirthPlaceholder).day !=
-                            DateTime.now().day
+                            DateTime.now().toUtc().day
                         ? Text(
                             df.format(DateTime.parse(dateOfBirthPlaceholder)))
                         : Text('Pick Your Date of birth'),

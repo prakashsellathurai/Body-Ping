@@ -18,6 +18,7 @@ import 'package:gkfit/widgets/charts/time_series_chart_with_bar_renderer.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:gkfit/repository/CalorietrackerRepository.dart';
 import 'package:gkfit/model/trackers/calorieTracker/entireDayMealModel.dart';
+
 class CalorietrackerHomeScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => CalorietrackerHomeScreenState();
@@ -27,8 +28,9 @@ class CalorietrackerHomeScreenState extends State<CalorietrackerHomeScreen>
     with TickerProviderStateMixin {
   AnimationController animationController;
   CalorieIntakeBloc calorieIntakeBloc;
-   User user;
-  CalorieTrackerRepository _calorieTrackerRepository = CalorieTrackerRepository();
+  User user;
+  CalorieTrackerRepository _calorieTrackerRepository =
+      CalorieTrackerRepository();
   @override
   void initState() {
     animationController = AnimationController(
@@ -37,15 +39,13 @@ class CalorietrackerHomeScreenState extends State<CalorietrackerHomeScreen>
 
   @override
   Widget build(BuildContext context) {
-       user = Provider.of<User>(context);
+    user = Provider.of<User>(context);
     calorieIntakeBloc = BlocProvider.of<CalorieIntakeBloc>(context);
-            developer.log(
-              'calorie tracker home' +
-                  calorieIntakeBloc.state.entireDayMeal.dinner
-                      .toJson()
-                      .toString(),
-              name: 'calorie tracker home',
-            );
+    developer.log(
+      'calorie tracker home' +
+          calorieIntakeBloc.state.entireDayMeal.dinner.toJson().toString(),
+      name: 'calorie tracker home',
+    );
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(
@@ -124,12 +124,10 @@ class CalorietrackerHomeScreenState extends State<CalorietrackerHomeScreen>
             curve:
                 Interval((1 / count) * 0, 1.0, curve: Curves.fastOutSlowIn))),
         animationController: animationController,
-        onclick: () {
-  
-        },
+        onclick: () {},
       ),
     );
-       listViews.add(Container(
+    listViews.add(Container(
         height: 200,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -138,13 +136,10 @@ class CalorietrackerHomeScreenState extends State<CalorietrackerHomeScreen>
             builder: (BuildContext context,
                 AsyncSnapshot<List<charts.Series<TimeSeriesSales, DateTime>>>
                     snapshot) {
-                      print(snapshot.data);
               if (snapshot.hasData) {
-                print(snapshot.data);
                 return new TimeSeriesBar(
                   snapshot.data,
                   animate: true,
-                  
                 );
               }
               return Center(
@@ -153,7 +148,7 @@ class CalorietrackerHomeScreenState extends State<CalorietrackerHomeScreen>
             },
           ),
         )));
-    
+
     return ListView.builder(
       // controller: scrollController,
       padding: EdgeInsets.only(
@@ -168,28 +163,35 @@ class CalorietrackerHomeScreenState extends State<CalorietrackerHomeScreen>
       },
     );
   }
-Future<List<charts.Series<TimeSeriesSales, DateTime>>>
+
+  Future<List<charts.Series<TimeSeriesSales, DateTime>>>
       _createWaterIntakeChart() async {
     List<EntireDayMealModel> autogen =
         await _calorieTrackerRepository.fetchEntireMealHistory(user.uid);
     List<TimeSeriesSales> data = [];
     autogen.forEach((element) {
-      double totalcalories = element.breakfast.total_calories ?? 0 + element.morning_snack.total_calories ?? 0 + element.lunch.total_calories ?? 0+ element.evening_snack.total_calories ?? 0 + element.dinner.total_calories ?? 0;
+      double totalcalories = element.breakfast.total_calories ??
+          0 + element.morning_snack.total_calories ??
+          0 + element.lunch.total_calories ??
+          0 + element.evening_snack.total_calories ??
+          0 + element.dinner.total_calories ??
+          0;
       data.add(new TimeSeriesSales(
-              DateTime.parse(element.date),
-        totalcalories.toInt()));
+          DateTime.parse(element.date).toLocal(), totalcalories~/1000));
     });
 
     return [
       new charts.Series<TimeSeriesSales, DateTime>(
         id: 'Sales',
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (TimeSeriesSales sales, _) =>new DateTime(sales.time.year,sales.time.month,sales.time.day),
+        domainFn: (TimeSeriesSales sales, _) =>
+            new DateTime(sales.time.year, sales.time.month, sales.time.day),
         measureFn: (TimeSeriesSales sales, _) => sales.sales,
         data: data,
       )
     ];
   }
+
   @override
   void dispose() {
     animationController.dispose();

@@ -35,7 +35,7 @@ class UnWaterIntakeState extends WaterIntakeState {
   @override
   String getDay() {
     // TODO: implement getDay
-    return DateTime(DateTime.now().day).toIso8601String();
+    return   DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).toUtc().toIso8601String();
   }
 
   @override
@@ -58,7 +58,6 @@ class InWaterIntakeState extends WaterIntakeState {
   String toString() => 'InWaterIntakeState $quantity_in_ml $day';
 
   InWaterIntakeState copyWith(quantity_in_ml, day, lastWaterIntake) {
-    print(lastWaterIntake);
     return InWaterIntakeState(version + 1, quantity_in_ml, day,lastWaterIntake);
   }
 
@@ -78,6 +77,7 @@ class InWaterIntakeState extends WaterIntakeState {
 
   @override
   String getLastWaterIntake() {
+    
     // TODO: implement getDay
     return  this.lastWaterIntake ?? '';
   }

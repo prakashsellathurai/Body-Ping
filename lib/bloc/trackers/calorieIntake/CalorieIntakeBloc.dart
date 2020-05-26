@@ -28,10 +28,16 @@ class CalorieIntakeBloc extends Bloc<CalorieIntakeEvent, CalorieIntakeState> {
     // TODO: implement mapEventToState
     try {
       if (currentState is CalorieIntakeStateUninitialized) {
+        if (DateTime.parse(currentState.entireDayMeal.date).day !=
+            DateTime.now().toUtc().day) {
+          yield CalorieIntakeStateinitialized(
+              entireDayMeal: EntireDayMealModel.emptyModel());
+        }
         EntireDayMealModel entireDayMeal =
             await _calorieTrackerRepository.fetchMealdata(uid, getToday());
         yield CalorieIntakeStateinitialized(entireDayMeal: entireDayMeal);
       }
+
       if (event is AddBreakFastEvent &&
           currentState is CalorieIntakeStateinitialized) {
         developer.log(
@@ -53,7 +59,6 @@ class CalorieIntakeBloc extends Bloc<CalorieIntakeEvent, CalorieIntakeState> {
 
       if (event is AddMorningSnack &&
           currentState is CalorieIntakeStateinitialized) {
-            print(event.totalCalories);
         yield currentState.copyWith(
             breakfast: currentState.entireDayMeal.breakfast,
             morningSnack: MorningSnackModel(
@@ -164,35 +169,56 @@ class CalorieIntakeBloc extends Bloc<CalorieIntakeEvent, CalorieIntakeState> {
       if (event is FetchEntiredayMealModelEvent &&
           currentState is CalorieIntakeStateinitialized) {
         developer.log(
-          ' Fetching the meal from database',
-          name: 'CalorieIntakeBloc',
-        );
-        EntireDayMealModel entireDayMeal =
-            await _calorieTrackerRepository.fetchMealdata(uid, getToday());
-        developer.log(
-          ' Fetched the meal',
-          name: 'CalorieIntakeBloc',
-        );
-        developer.log(
-          'breakfast' + entireDayMeal.breakfast.toJson().toString(),
-          name: 'CalorieIntakeBloc',
-        );
-        developer.log(
-          'morning snack' + entireDayMeal.morning_snack.toJson().toString(),
-          name: 'CalorieIntakeBloc',
-        );
-        developer.log(
-          'lunch' + entireDayMeal.lunch.toJson().toString(),
+          ' triggering fetch event ' +
+            DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day) .toUtc().toString(),
           name: 'CalorieIntakeBloc',
         );
 
-        yield currentState.copyWith(
-            date: entireDayMeal.date,
-            breakfast: entireDayMeal.breakfast,
-            morningSnack: entireDayMeal.morning_snack,
-            lunch: entireDayMeal.lunch,
-            eveningSnack: entireDayMeal.evening_snack,
-            dinner: entireDayMeal.dinner);
+        if (DateTime.parse(currentState.entireDayMeal.date).toLocal().day !=
+            (DateTime.parse(getToday()).toLocal().day)) {
+          developer.log(
+            'Resetting Calorie local State  ',
+            name: 'CalorieIntakeBloc',
+          );
+          EntireDayMealModel _emptyMeal = EntireDayMealModel.emptyModel();
+
+          yield currentState.copyWith(
+              breakfast: _emptyMeal.breakfast,
+              morningSnack: _emptyMeal.morning_snack,
+              lunch: _emptyMeal.lunch,
+              eveningSnack: _emptyMeal.evening_snack,
+              dinner: _emptyMeal.dinner,
+              date: _emptyMeal.date);
+        } else {
+          developer.log(
+            ' Fetching the meal from database ' +
+                (DateTime.parse(currentState.entireDayMeal.date)
+                    .toUtc()
+                    .day
+                    .toString()),
+            name: 'CalorieIntakeBloc',
+          );
+
+          EntireDayMealModel _updatedEntireDayMeal =
+              await _calorieTrackerRepository.fetchMealdata(uid, getToday());
+          developer.log(
+            ' Fetched the meal ' +
+                currentState.entireDayMeal.date +
+                ' ' +
+                _updatedEntireDayMeal.date.toString() +
+                ' ' +
+                getToday(),
+            name: 'CalorieIntakeBloc',
+          );
+
+          yield currentState.copyWith(
+              date: _updatedEntireDayMeal.date,
+              breakfast: _updatedEntireDayMeal.breakfast,
+              morningSnack: _updatedEntireDayMeal.morning_snack,
+              lunch: _updatedEntireDayMeal.lunch,
+              eveningSnack: _updatedEntireDayMeal.evening_snack,
+              dinner: _updatedEntireDayMeal.dinner);
+        }
       }
     } catch (_, stackTrace) {
       developer.log('$_',
@@ -205,5 +231,8 @@ class CalorieIntakeBloc extends Bloc<CalorieIntakeEvent, CalorieIntakeState> {
     super.close();
   }
 
-  String getToday() => DateTime(DateTime.now().day).toIso8601String();
+  String getToday() =>
+      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
+          .toUtc()
+          .toIso8601String();
 }

@@ -259,7 +259,7 @@ class _WaterIntakeMiniDashboardViewState
                                 setState(() {
                                  
                                   waterIntakeBloc..add(AddLastDrinkDataEvent())..add(AddtwoFiftyMlevent());
-                                   print(waterIntakeBloc.state.getLastWaterIntake());
+                                   
                                 });
                               },
                               child: Container(

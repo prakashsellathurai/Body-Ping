@@ -24,7 +24,10 @@ class EntireDayMealModel extends Equatable {
 
   factory EntireDayMealModel.emptyModel() {
     return EntireDayMealModel(
-        date: DateTime(DateTime.now().day).toIso8601String(),
+        date: DateTime(
+                DateTime.now().year, DateTime.now().month, DateTime.now().day)
+            .toUtc()
+            .toIso8601String(),
         breakfast: BreakFastModel(
             calories_list: [],
             meal_list: [],
@@ -51,28 +54,15 @@ class EntireDayMealModel extends Equatable {
             quantities_in_grams: [],
             total_calories: 0));
   }
-// factory EntireDayMealModel.fromIndividualMeals (
-//   String date,
-//   BreakFastModel breakfast,
-//   MorningSnackModel morningSnack,
-//   LunchModel lunch,
-//   EveningSnackModel eveningSnack,
-//   DinnerModel dinner
-// ) {
-//       return EntireDayMealModel(
-//         date: date,
-//         breakfast: breakfast,
-//         morning_snack: morning_snack,
-//         lunch: lunch,
-//         evening_snack: evening_snack,
-//         dinner: dinner);
-//   }
-// }
+
   factory EntireDayMealModel.fromJson(Map<String, dynamic> _json) {
     return EntireDayMealModel(
         date: (_json['date'] != null)
             ? _json['date']
-            : DateTime(DateTime.now().day).toIso8601String(),
+            : DateTime(DateTime.now().year, DateTime.now().month,
+                    DateTime.now().day)
+                .toUtc()
+                .toIso8601String(),
         breakfast: (_json['breakfast'] != null)
             ? BreakFastModel.fromJson(_json['breakfast'])
             : BreakFastModel(
@@ -121,7 +111,7 @@ class EntireDayMealModel extends Equatable {
     };
   }
 
-  String getToday() => DateTime(DateTime.now().day).toIso8601String();
+  String getToday() =>DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).toUtc().toIso8601String();
 
   @override
   // TODO: implement props

@@ -37,9 +37,9 @@ class _WaterIntakeHistoryWidgetState extends State<WaterIntakeHistoryWidget> {
             builder: (BuildContext context,
                 AsyncSnapshot<List<charts.Series<TimeSeriesSales, DateTime>>>
                     snapshot) {
-              print(snapshot.data);
+              
               if (snapshot.hasData) {
-                print(snapshot.data);
+                
                 return new TimeSeriesBar(
                   snapshot.data,
                   animate: true,
@@ -59,9 +59,8 @@ class _WaterIntakeHistoryWidgetState extends State<WaterIntakeHistoryWidget> {
         await _waterIntakeRepository.fetchWaterIntakeHistory(user.uid);
     List<TimeSeriesSales> data = [];
     autogen.results.forEach((element) {
-      print(new DateTime(2017, 9, 1));
-      print(DateTime.parse(element.day));
-      data.add(new TimeSeriesSales(DateTime.parse(element.day),
+
+      data.add(new TimeSeriesSales(DateTime.parse(element.day).toLocal(),
           int.parse(element.quantity_in_ml).toInt()));
     });
 

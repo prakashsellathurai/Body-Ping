@@ -76,15 +76,6 @@ class CalorieIntakeStateinitialized extends CalorieIntakeState {
       LunchModel lunch,
       EveningSnackModel eveningSnack,
       DinnerModel dinner}) {
-    print(EntireDayMealModel(
-            date: date ?? this.entireDayMeal.date,
-            breakfast: breakfast ?? entireDayMeal.breakfast,
-            morning_snack: morningSnack ?? entireDayMeal.morning_snack,
-            lunch: lunch ?? this.entireDayMeal.lunch,
-            evening_snack: eveningSnack ?? this.entireDayMeal.evening_snack,
-            dinner: dinner ?? this.entireDayMeal.dinner)
-        .breakfast
-        .toJson());
     return CalorieIntakeStateinitialized(
         entireDayMeal: EntireDayMealModel(
             date: date ?? this.entireDayMeal.date,

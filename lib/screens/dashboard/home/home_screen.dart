@@ -195,7 +195,7 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
           listViews.add(
             TitleView(
               titleTxt: 'Water',
-              subTxt: 'Aqua SmartBottle',
+              subTxt: 'Track ',
               animation: Tween<double>(begin: 0.0, end: 1.0).animate(
                   CurvedAnimation(
                       parent: widget.animationController,
@@ -219,15 +219,7 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
               mainScreenAnimationController: widget.animationController,
               daily_target: 3500,
               current_water_intake: 2100));
-          listViews.add(
-            GlassView(
-                animation: Tween<double>(begin: 0.0, end: 1.0).animate(
-                    CurvedAnimation(
-                        parent: widget.animationController,
-                        curve: Interval((1 / count) * 8, 1.0,
-                            curve: Curves.fastOutSlowIn))),
-                animationController: widget.animationController),
-          );
+
           return ListView.builder(
             controller: scrollController,
             padding: EdgeInsets.only(

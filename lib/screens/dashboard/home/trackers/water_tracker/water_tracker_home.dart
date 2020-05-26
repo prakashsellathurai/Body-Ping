@@ -4,6 +4,7 @@ import 'package:gkfit/bloc/trackers/water_intake/water_intake_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gkfit/screens/dashboard/home/trackers/water_tracker/water_intake_history/waterIntakeHistoryWidget.dart';
+import 'package:gkfit/screens/dashboard/ui_view/glass_view.dart';
 
 import '../../../dashboard_theme.dart';
 import './mini_water_intake_dashboard.dart';
@@ -50,7 +51,7 @@ class WaterTrackerHomeScreenState extends State<WaterTrackerHomeScreen>
 
   WaterIntakeBloc waterIntakebloc;
   User user;
-  
+
   AnimationController animationController;
   @override
   void initState() {
@@ -94,25 +95,26 @@ class WaterTrackerHomeScreenState extends State<WaterTrackerHomeScreen>
         body: listView());
   }
 
-  // updateData() async {
-  //   Timer(Duration(milliseconds: 400), () {
-  //     setState(() {
-  //       series = db.getSeries(mainValue, subIndex, max: 1000);
-  //     });
-  //   });
-  // }
-
   Widget listView() {
     int count = 7;
     List<Widget> listViews = <Widget>[];
     listViews.add(WaterIntakeMiniDashboardView(
-        mainScreenAnimation: Tween<double>(begin: 0.0, end: 1.0).animate(
-            CurvedAnimation(
-                parent: animationController,
-                curve: Interval((1 / count) * 7, 1.0,
-                    curve: Curves.fastOutSlowIn))),
-        mainScreenAnimationController: animationController,
-       ));
+      mainScreenAnimation: Tween<double>(begin: 0.0, end: 1.0).animate(
+          CurvedAnimation(
+              parent: animationController,
+              curve:
+                  Interval((1 / count) * 7, 1.0, curve: Curves.fastOutSlowIn))),
+      mainScreenAnimationController: animationController,
+    ));
+    listViews.add(
+      GlassView(
+          animation: Tween<double>(begin: 0.0, end: 1.0).animate(
+              CurvedAnimation(
+                  parent: animationController,
+                  curve: Interval((1 / 9) * 8, 1.0,
+                      curve: Curves.fastOutSlowIn))),
+          animationController: animationController),
+    );
     // listViews.add(
     //   DropWidget(
     //     timeValues,
@@ -156,6 +158,4 @@ class WaterTrackerHomeScreenState extends State<WaterTrackerHomeScreen>
           return listViews[index];
         });
   }
-
-
 }

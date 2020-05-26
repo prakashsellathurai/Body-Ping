@@ -78,7 +78,7 @@ class NutritionDatabaseModel extends Equatable {
       ];
 
   factory NutritionDatabaseModel.fromJson(Map<String, dynamic> json) {
-    print(double.parse((json['proteins_in_grams']).toString()));
+
     return NutritionDatabaseModel(
         json['_id'] as String,
         json['name'] as String,

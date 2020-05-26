@@ -21,6 +21,7 @@ class CalorieTrackerRepository {
   Future<List<EntireDayMealModel>> fetchEntireMealHistory(uid) async {
     String responseString = await _calorieTrackerProvider.getEntireHistory(uid);
     List<EntireDayMealModel> meal_list = [];
+
     if (json.decode(responseString)["results"].length > 0) {
       json.decode(responseString)["results"].forEach((el) {
         meal_list.add(EntireDayMealModel.fromJson(el));

@@ -228,7 +228,7 @@ class UserDetailsFormPageState extends State<OnBoardingFormPage>
                   child: SizedBox.expand(
                       child: RaisedButton(
                     onPressed: () => _selectDate(context),
-                    child: selectedDate.day != DateTime.now().day
+                    child: selectedDate.day != DateTime.now().toUtc().day
                         ? Text(df.format(selectedDate))
                         : Text('Pick Your Date of birth'),
                     color: base_color_monochrome_1,

@@ -22,7 +22,7 @@ class MorningSnackModel extends Equatable  {
         List<NutritionDatabaseModel>();
     List<double> tempCaloriesList = List<double>();
     List<double> tempquantities = List<double>();
-    print(_json);
+
     _json['meal_list'].forEach((element) {
       element = json.decode(element);
       tempNutritionDattaList.add(NutritionDatabaseModel.fromJson(element)

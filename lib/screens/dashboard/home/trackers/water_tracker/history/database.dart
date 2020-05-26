@@ -39,7 +39,7 @@ List<charts.Series<Balance, String>> getSeries(String key,int index,{int max=100
       "Year":years
     };
     var subKey=mainMap[key];
-    print("Called");
+
     return _getSeries(subMap[subKey],max);
 }
 

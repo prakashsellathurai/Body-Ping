@@ -147,7 +147,7 @@ class QuickTrackerAddIconState extends State<QuickTrackerAddIcon>
                           // )
                           ,
                           onClick: () {
-                            print("press");
+                       
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (BuildContext context) =>
                                     BmitrackerHomeScreen()));
@@ -171,7 +171,7 @@ class QuickTrackerAddIconState extends State<QuickTrackerAddIcon>
                           color: Colors.white,
                         ),
                         onClick: () {
-                          print("onclick center");
+                          
                           if (animationController.isCompleted) {
                             animationController.reverse();
                           } else {

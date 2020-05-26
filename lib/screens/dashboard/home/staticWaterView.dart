@@ -44,7 +44,6 @@ class _StaticWaterDashboardViewState extends State<StaticWaterDashboardView>
   void initState() {
     waterIntakeBloc = BlocProvider.of<WaterIntakeBloc>(context);
     waterIntakeBloc.add(FetchWaterIntakeEvent());
-    //timeformatter.format(DateTime.parse(last_drink_time));
   }
 
   Future<bool> getData() async {

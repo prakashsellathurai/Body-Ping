@@ -44,7 +44,7 @@ class GlassView extends StatelessWidget {
                                 padding: const EdgeInsets.only(
                                     left: 68, bottom: 12, right: 16, top: 12),
                                 child: Text(
-                                  'Prepare your stomach for lunch with one or two glass of water',
+                                  'Prepare your stomach for ${mealNameGenerator()} with one or two glass of water',
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
                                     fontFamily: DashboardTheme.fontName,
@@ -66,7 +66,8 @@ class GlassView extends StatelessWidget {
                         child: SizedBox(
                           width: 80,
                           height: 80,
-                          child: Image.asset("assets/images/dashboard/glass.png"),
+                          child:
+                              Image.asset("assets/images/dashboard/glass.png"),
                         ),
                       )
                     ],
@@ -78,5 +79,16 @@ class GlassView extends StatelessWidget {
         );
       },
     );
+  }
+
+  String mealNameGenerator() {
+    var hour = DateTime.now().toLocal().hour;
+    if (hour < 12) {
+      return 'breakfast';
+    }
+    if (hour < 17) {
+      return 'lunch';
+    }
+    return 'dinner';
   }
 }
