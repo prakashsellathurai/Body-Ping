@@ -1,3 +1,8 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gkfit/bloc/trackers/bmi/bmi_bloc.dart';
+import 'package:gkfit/bloc/trackers/calorieIntake/CalorieIntakeBloc.dart';
+import 'package:intl/intl.dart';
+
 import '../dashboard_theme.dart';
 import 'package:flutter/material.dart';
 
@@ -7,9 +12,26 @@ class BodyMeasurementView extends StatelessWidget {
 
   const BodyMeasurementView({Key key, this.animationController, this.animation})
       : super(key: key);
+  String bmiSummary(bmi) {
+    if (bmi == null) {
+      return ' ';
+    } else if (bmi < 18) {
+      return 'Underweight';
+    } else if (bmi >= 18 && bmi <= 25) {
+      return 'Normal';
+    } else if (bmi > 25 && bmi <= 30) {
+      return 'Overweight';
+    } else {
+      return 'Obese';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    BmiBloc _bmiBloc = BlocProvider.of<BmiBloc>(context);
+    var timeformatter = new DateFormat('EEE d hh:mm a');
+
+
     return AnimatedBuilder(
       animation: animationController,
       builder: (BuildContext context, Widget child) {
@@ -71,7 +93,10 @@ class BodyMeasurementView extends StatelessWidget {
                                     padding: const EdgeInsets.only(
                                         left: 4, bottom: 3),
                                     child: Text(
-                                      '206.8',
+                                      (_bmiBloc.state.weight_in_kgs != null)
+                                          ? _bmiBloc.state.weight_in_kgs
+                                              .toString()
+                                          : '0',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         fontFamily: DashboardTheme.fontName,
@@ -85,7 +110,7 @@ class BodyMeasurementView extends StatelessWidget {
                                     padding: const EdgeInsets.only(
                                         left: 8, bottom: 8),
                                     child: Text(
-                                      'Ibs',
+                                      'kgs',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         fontFamily: DashboardTheme.fontName,
@@ -115,11 +140,10 @@ class BodyMeasurementView extends StatelessWidget {
                                         padding:
                                             const EdgeInsets.only(left: 4.0),
                                         child: Text(
-                                          'Today 8:26 AM',
+                                          '${ (_bmiBloc.state.lastLoggedTime != null && _bmiBloc.state.lastLoggedTime != "not logged") ? timeformatter.format(DateTime.parse(_bmiBloc.state.lastLoggedTime).toLocal()) : "not logged"}',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
-                                            fontFamily:
-                                                DashboardTheme.fontName,
+                                            fontFamily: DashboardTheme.fontName,
                                             fontWeight: FontWeight.w500,
                                             fontSize: 14,
                                             letterSpacing: 0.0,
@@ -134,7 +158,7 @@ class BodyMeasurementView extends StatelessWidget {
                                     padding: const EdgeInsets.only(
                                         top: 4, bottom: 14),
                                     child: Text(
-                                      'InBody SmartScale',
+                                      ' ',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         fontFamily: DashboardTheme.fontName,
@@ -174,7 +198,7 @@ class BodyMeasurementView extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  '185 cm',
+                                  '${(_bmiBloc.state.height_in_cm != null)? _bmiBloc.state.height_in_cm.toStringAsFixed(2) : 0} cm',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontFamily: DashboardTheme.fontName,
@@ -193,8 +217,8 @@ class BodyMeasurementView extends StatelessWidget {
                                       fontFamily: DashboardTheme.fontName,
                                       fontWeight: FontWeight.w600,
                                       fontSize: 12,
-                                      color: DashboardTheme.grey
-                                          .withOpacity(0.5),
+                                      color:
+                                          DashboardTheme.grey.withOpacity(0.5),
                                     ),
                                   ),
                                 ),
@@ -211,7 +235,7 @@ class BodyMeasurementView extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: <Widget>[
                                     Text(
-                                      '27.3 BMI',
+                                      '${(_bmiBloc.state.bmi != null ) ? _bmiBloc.state.bmi.toStringAsFixed(1) : 0} BMI',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         fontFamily: DashboardTheme.fontName,
@@ -224,7 +248,7 @@ class BodyMeasurementView extends StatelessWidget {
                                     Padding(
                                       padding: const EdgeInsets.only(top: 6),
                                       child: Text(
-                                        'Overweight',
+                                        '${ (_bmiBloc.state.bmi != null)? bmiSummary(_bmiBloc.state.bmi) : ''}',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontFamily: DashboardTheme.fontName,
@@ -250,7 +274,7 @@ class BodyMeasurementView extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: <Widget>[
                                     Text(
-                                      '20%',
+                                      '${ (_bmiBloc.state.bodyfat != null) ? _bmiBloc.state.bodyfat.toStringAsFixed(1) : 0}%',
                                       style: TextStyle(
                                         fontFamily: DashboardTheme.fontName,
                                         fontWeight: FontWeight.w500,

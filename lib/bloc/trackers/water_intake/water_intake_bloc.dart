@@ -48,15 +48,14 @@ class WaterIntakeBloc extends Bloc<WaterIntakeEvent, WaterIntakeState> {
       if (event is AddLastDrinkDataEvent &&
           currentState is InWaterIntakeState) {
         var timeformatter = new DateFormat('hh:mm a');
-        SharedPreferences prefs = await SharedPreferences.getInstance();
         String lastWaterIntake = timeformatter.format(DateTime.now().toLocal());
         developer.log(
           ' Add last drink event  ',
           name: 'WaterIntakeBloc',
         );
-        prefs.setString('lastWaterIntake', lastWaterIntake);
+
         yield currentState.copyWith(currentState.getCurrentQuantityInMl(),
-            DateTime.now().toUtc().toIso8601String(), lastWaterIntake);
+            currentState.getDay(), lastWaterIntake);
         ;
       }
 
@@ -125,7 +124,8 @@ class WaterIntakeBloc extends Bloc<WaterIntakeEvent, WaterIntakeState> {
                   DateTime.now().year, DateTime.now().month, DateTime.now().day)
               .toLocal();
           developer.log(
-            ' Fetch Water Intake  ' +DateTime.parse(currentState.getDay()).toLocal().day.toString() ,
+            ' Fetch Water Intake  ' +
+                DateTime.parse(currentState.getDay()).toLocal().day.toString(),
             name: 'WaterIntakeBloc',
           );
 
@@ -145,7 +145,6 @@ class WaterIntakeBloc extends Bloc<WaterIntakeEvent, WaterIntakeState> {
                             DateTime.now().day)
                         .toUtc()
                         .toIso8601String());
-            // print(result.results[0].toJson());
             yield currentState.copyWith(
                 (result.results.length > 0)
                     ? int.parse(result.results[0].quantity_in_ml)

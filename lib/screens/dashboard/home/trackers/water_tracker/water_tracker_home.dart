@@ -18,9 +18,7 @@ import 'dart:async';
 import './../../../ui_view/title_view.dart';
 import 'history/models/domain.dart';
 import 'package:gkfit/services/auth_service.dart';
-import 'package:gkfit/widgets/charts/time_series_chart_with_bar_renderer.dart';
 
-import 'package:gkfit/bloc/trackers/water_intake/water_intake_repository.dart';
 
 class WaterTrackerHomeScreen extends StatefulWidget {
   @override
@@ -115,26 +113,7 @@ class WaterTrackerHomeScreenState extends State<WaterTrackerHomeScreen>
                       curve: Curves.fastOutSlowIn))),
           animationController: animationController),
     );
-    // listViews.add(
-    //   DropWidget(
-    //     timeValues,
-    //     (mainValue, subIndex) {
-    //       setState(() {
-    //         if (this.mainValue != mainValue) this.mainValue = mainValue;
-    //         if (this.subIndex != subIndex) this.subIndex = subIndex;
-    //         series = db.getSeries(mainValue, subIndex, max: 1000);
-    //       });
-    //     },
-    //     mainValue: mainValue,
-    //   ),
-    // );
-    // listViews.add(
-    //   Padding(
-    //     padding: const EdgeInsets.all(16.0),
-    //     child: GroupedBarChart(
-    //         Domain.getDomain(["Water Intake"], [Color(0xff1274ED)]), series),
-    //   ),
-    // );
+
     listViews.add(JustTitleView(
       titleTxt: "Water Intake History",
       animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(

@@ -1,4 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gkfit/bloc/trackers/bmi/bmi_bloc.dart';
+import 'package:gkfit/bloc/trackers/bmi/bmi_event.dart';
 import 'package:gkfit/bloc/trackers/calorieIntake/CalorieIntakeBloc.dart';
 import 'package:gkfit/bloc/trackers/calorieIntake/CalorieIntakeEvent.dart';
 import 'package:gkfit/bloc/trackers/water_intake/water_intake_bloc.dart';
@@ -39,6 +41,7 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
   UserDataModel userData;
   WaterIntakeBloc waterIntakeBloc;
   CalorieIntakeBloc calorieIntakeBloc;
+  BmiBloc bmiBloc;
   var TopBarformatter = new DateFormat('MMMd');
   _DashboardHomeScreenState(this.userData);
 
@@ -48,6 +51,8 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
     waterIntakeBloc.add(FetchWaterIntakeEvent());
     calorieIntakeBloc = BlocProvider.of<CalorieIntakeBloc>(context);
     calorieIntakeBloc..add(FetchEntiredayMealModelEvent());
+    bmiBloc = BlocProvider.of<BmiBloc>(context);
+    bmiBloc..add(FetchBMI());
     currentDate = DateTime.now();
     topBarAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
         CurvedAnimation(
@@ -165,33 +170,33 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
           //   ),
           // );
 
-          // listViews.add(
-          //   TitleView(
-          //     titleTxt: 'Body measurement',
-          //     subTxt: 'Today',
-          //     animation: Tween<double>(begin: 0.0, end: 1.0).animate(
-          //         CurvedAnimation(
-          //             parent: widget.animationController,
-          //             curve: Interval((1 / count) * 4, 1.0,
-          //                 curve: Curves.fastOutSlowIn))),
-          //     animationController: widget.animationController,
-          //     onclick: () {
-          //       Navigator.of(context).push(MaterialPageRoute(
-          //           builder: (BuildContext context) => BmitrackerHomeScreen()));
-          //     },
-          //   ),
-          // );
+          listViews.add(
+            TitleView(
+              titleTxt: 'Body measurement',
+              subTxt: 'Today',
+              animation: Tween<double>(begin: 0.0, end: 1.0).animate(
+                  CurvedAnimation(
+                      parent: widget.animationController,
+                      curve: Interval((1 / count) * 4, 1.0,
+                          curve: Curves.fastOutSlowIn))),
+              animationController: widget.animationController,
+              onclick: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext context) => BmitrackerHomeScreen()));
+              },
+            ),
+          );
 
-          // listViews.add(
-          //   BodyMeasurementView(
-          //     animation: Tween<double>(begin: 0.0, end: 1.0).animate(
-          //         CurvedAnimation(
-          //             parent: widget.animationController,
-          //             curve: Interval((1 / count) * 5, 1.0,
-          //                 curve: Curves.fastOutSlowIn))),
-          //     animationController: widget.animationController,
-          //   ),
-          // );
+          listViews.add(
+            BodyMeasurementView(
+              animation: Tween<double>(begin: 0.0, end: 1.0).animate(
+                  CurvedAnimation(
+                      parent: widget.animationController,
+                      curve: Interval((1 / count) * 5, 1.0,
+                          curve: Curves.fastOutSlowIn))),
+              animationController: widget.animationController,
+            ),
+          );
           listViews.add(
             TitleView(
               titleTxt: 'Water',

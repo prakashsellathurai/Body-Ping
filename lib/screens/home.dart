@@ -1,3 +1,5 @@
+import 'package:gkfit/bloc/trackers/bmi/bmi_bloc.dart';
+import 'package:gkfit/bloc/trackers/bmi/bmi_state.dart';
 import 'package:gkfit/bloc/trackers/calorieIntake/CalorieIntakeBloc.dart';
 import 'package:gkfit/bloc/trackers/calorieIntake/calorieIntakeState.dart';
 import 'package:gkfit/bloc/trackers/water_intake/water_intake_bloc.dart';
@@ -91,8 +93,17 @@ class HomePageState extends State<HomePage> {
                     return Center(child: LoadingIndicator());
                   } else if (calorieIntakeState
                       is CalorieIntakeStateinitialized) {
-                    return AppDashboardHomeScreen(
-                        user: user, userData: userdatemodel);
+                    return BlocBuilder<BmiBloc, BmiState>(
+                        bloc: BlocProvider.of<BmiBloc>(context),
+                        builder: (context, bmiState) {
+                          if (bmiState is UnBmiState) {
+                            return Center(child: LoadingIndicator());
+                          } else if (bmiState is InBmiState) {
+                            return AppDashboardHomeScreen(
+                                user: user, userData: userdatemodel);
+                          }
+                          return Center(child: LoadingIndicator());
+                        });
                   }
                   return Center(child: LoadingIndicator());
                 });
@@ -100,5 +111,4 @@ class HomePageState extends State<HomePage> {
           return Center(child: LoadingIndicator());
         });
   }
-  
 }

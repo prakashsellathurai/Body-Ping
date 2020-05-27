@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:gkfit/widgets/ui/blog_list_loader.dart';
 import '../../../ui_view/mediterranesn_diet_view.dart';
 import 'package:gkfit/services/auth_service.dart';
 import 'package:provider/provider.dart';
@@ -142,8 +143,8 @@ class CalorietrackerHomeScreenState extends State<CalorietrackerHomeScreen>
                   animate: true,
                 );
               }
-              return Center(
-                child: CircularProgressIndicator(),
+              return BlogLisLoader(
+                length:1
               );
             },
           ),

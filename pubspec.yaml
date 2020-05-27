@@ -70,6 +70,7 @@ flutter:
    - assets/images/g-logo.png
    - assets/images/logo.png
    - assets/images/dashboard/
+   - assets/images/bmi/
    - assets/images/walk_through/
    - assets/svgs/
    - assets/flare/no_internet.flr
