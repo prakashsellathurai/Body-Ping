@@ -115,7 +115,10 @@ class CalorieIntakeMiniDashBoard extends StatelessWidget {
                                                       const EdgeInsets.only(
                                                           left: 4, bottom: 3),
                                                   child: Text(
-                                                   '${(calorieIntakeBloc.state.totalEatenInKcal * animation.value).toInt()}',
+                                                 (calorieIntakeBloc.state.totalEatenInKcal.toInt() > 1000) ? 
+                                                 '${(calorieIntakeBloc.state.totalEatenInKcal * animation.value).toInt() /1000}' :
+                                                 '${(calorieIntakeBloc.state.totalEatenInKcal * animation.value).toInt()}'
+                                                 ,
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                       fontFamily: DashboardTheme
@@ -133,7 +136,8 @@ class CalorieIntakeMiniDashBoard extends StatelessWidget {
                                                       const EdgeInsets.only(
                                                           left: 4, bottom: 3),
                                                   child: Text(
-                                                    'Kcal',
+                                                     (calorieIntakeBloc.state.totalEatenInKcal.toInt() > 1000) ? 
+                                                    'Kcal' : 'cal',
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                       fontFamily: DashboardTheme
@@ -315,11 +319,13 @@ class CalorieIntakeMiniDashBoard extends StatelessWidget {
                                         children: <Widget>[
                                           Text(
                                             (dailyRequirements.totalEnergy >
-                                                    calorieIntakeBloc
-                                                        .state.totalEatenInKcal)
+                                                    (calorieIntakeBloc
+                                                        .state.totalEatenInKcal > 1000 ? calorieIntakeBloc
+                                                        .state.totalEatenInKcal / 1000 : calorieIntakeBloc
+                                                        .state.totalEatenInKcal ))
                                                 ? 
-                                            '${(((dailyRequirements.totalEnergy - calorieIntakeBloc.state.totalEatenInKcal)) * animation.value).toInt()}'
-                                            : '${((( calorieIntakeBloc.state.totalEatenInKcal - dailyRequirements.totalEnergy )) * animation.value).toInt()}'
+                                            '${((dailyRequirements.totalEnergy - ( calorieIntakeBloc.state.totalEatenInKcal > 1000 ? calorieIntakeBloc.state.totalEatenInKcal /1000 :  calorieIntakeBloc.state.totalEatenInKcal) ) * animation.value).toInt()}'
+                                            : '${(((( calorieIntakeBloc.state.totalEatenInKcal > 1000 ? calorieIntakeBloc.state.totalEatenInKcal /1000 :  calorieIntakeBloc.state.totalEatenInKcal) - dailyRequirements.totalEnergy )) * animation.value).toInt()}'
                                             ,
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
@@ -364,14 +370,12 @@ class CalorieIntakeMiniDashBoard extends StatelessWidget {
                                             HexColor("#8A98E8"),
                                             HexColor("#8A98E8")
                                           ],
-                                          angle: ((calorieIntakeBloc.state
-                                                          .totalEatenInKcal /
+                                          angle: ((( calorieIntakeBloc.state.totalEatenInKcal > 1000 ? calorieIntakeBloc.state.totalEatenInKcal /1000 :  calorieIntakeBloc.state.totalEatenInKcal) /
                                                       dailyRequirements
                                                           .totalEnergy) *
                                                   360) +
                                               (360 -
-                                                      ((calorieIntakeBloc.state
-                                                                  .totalEatenInKcal /
+                                                      ((( calorieIntakeBloc.state.totalEatenInKcal > 1000 ? calorieIntakeBloc.state.totalEatenInKcal /1000 :  calorieIntakeBloc.state.totalEatenInKcal)/
                                                               dailyRequirements
                                                                   .totalEnergy) *
                                                           360)) *

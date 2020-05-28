@@ -100,7 +100,7 @@ class CalorieIntakeStateinitialized extends CalorieIntakeState {
         lunchTotalCalorie +
         evening_snackTotalCalorie +
         dinnerTotalCalorie;
-    totalCalorie = totalCalorie / 1000;
+    // totalCalorie = totalCalorie / 1000;
     return totalCalorie;
   }
 

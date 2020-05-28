@@ -142,3 +142,42 @@ class JustTitleView extends StatelessWidget {
     );
   }
 }
+
+
+
+class JustTitleViewWithoutAnimation extends StatelessWidget {
+  final String titleTxt;
+
+  const JustTitleViewWithoutAnimation(
+      {Key key,
+      this.titleTxt: "",
+    })
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 24, right: 24),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        titleTxt,
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontFamily: DashboardTheme.fontName,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 18,
+                          letterSpacing: 0.5,
+                          color: DashboardTheme.lightText,
+                        ),
+                      ),
+                    ),
+
+                  ],
+                ),
+              ),
+    );
+  }
+}

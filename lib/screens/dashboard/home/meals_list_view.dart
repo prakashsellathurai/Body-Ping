@@ -345,8 +345,13 @@ class MealsView extends StatelessWidget {
                                               letterSpacing: 0.2,
                                               color: DashboardTheme.white,
                                             ),
-                                            text: (mealsListData.kacl.toInt() /
-                                                    1000)
+                                            text: ((mealsListData.kacl.toInt() >
+                                                        1000)
+                                                    ? mealsListData.kacl
+                                                            .toInt() /
+                                                        1000
+                                                    : mealsListData.kacl
+                                                        .toInt())
                                                 .toString(),
                                           )),
                                           Padding(
@@ -354,7 +359,8 @@ class MealsView extends StatelessWidget {
                                                 left: 4, bottom: 3),
                                             child: RichText(
                                               text: TextSpan(
-                                                text: 'kcal',
+                                                text: (mealsListData.kacl.toInt() >
+                                                        1000) ?'kcal' : 'cal',
                                                 style: TextStyle(
                                                   fontFamily:
                                                       DashboardTheme.fontName,

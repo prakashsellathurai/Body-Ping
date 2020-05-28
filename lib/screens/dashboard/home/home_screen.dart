@@ -21,6 +21,7 @@ import 'package:intl/intl.dart';
 
 import 'trackers/water_tracker/mini_water_intake_dashboard.dart';
 import './trackers/calorie_tracker/CalorieIntakeMiniDahsboard.dart';
+
 class DashboardHomeScreen extends StatefulWidget {
   const DashboardHomeScreen({Key key, this.animationController, this.userData})
       : super(key: key);
@@ -47,12 +48,14 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
 
   @override
   void initState() {
-    waterIntakeBloc = BlocProvider.of<WaterIntakeBloc>(context);
-    waterIntakeBloc.add(FetchWaterIntakeEvent());
     calorieIntakeBloc = BlocProvider.of<CalorieIntakeBloc>(context);
     calorieIntakeBloc..add(FetchEntiredayMealModelEvent());
+
     bmiBloc = BlocProvider.of<BmiBloc>(context);
     bmiBloc..add(FetchBMI());
+
+    waterIntakeBloc = BlocProvider.of<WaterIntakeBloc>(context);
+    waterIntakeBloc.add(FetchWaterIntakeEvent());
     currentDate = DateTime.now();
     topBarAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
         CurvedAnimation(
@@ -91,7 +94,11 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
     await Future<dynamic>.delayed(const Duration(milliseconds: 50));
     return true;
   }
-
+@override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -147,28 +154,6 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
               animationController: widget.animationController,
             ),
           );
-          // listViews.add(
-          //   TitleView(
-          //     titleTxt: 'Meals today',
-          //     subTxt: 'Customize',
-          //     animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-          //         parent: widget.animationController,
-          //         curve:
-          //             Interval((1 / count) * 2, 1.0, curve: Curves.fastOutSlowIn))),
-          //     animationController: widget.animationController,
-          //   ),
-          // );
-
-          // listViews.add(
-          //   MealsListView(
-          //     mainScreenAnimation: Tween<double>(begin: 0.0, end: 1.0).animate(
-          //         CurvedAnimation(
-          //             parent: widget.animationController,
-          //             curve: Interval((1 / count) * 3, 1.0,
-          //                 curve: Curves.fastOutSlowIn))),
-          //     mainScreenAnimationController: widget.animationController,
-          //   ),
-          // );
 
           listViews.add(
             TitleView(

@@ -51,7 +51,6 @@ class _AddMealScreenState extends State<AddMealScreen> {
           await _nutritionSearchRepository.searchByName(query);
       setState(() {
         items.clear();
-        
         items.addAll(queryResults);
       });
       return;

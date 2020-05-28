@@ -87,17 +87,19 @@ class WaterIntakeBloc extends Bloc<WaterIntakeEvent, WaterIntakeState> {
             currentState.getLastWaterIntake());
       }
       if (event is UpdateWaterIntakeEvent) {
+
         developer.log(
           ' updating Water quantity',
           name: 'WaterIntakeBloc',
         );
-        await _waterIntakeRepository.updateDailyWaterIntake(
+        _waterIntakeRepository.updateDailyWaterIntake(
             uid,
             DateTime(DateTime.now().year, DateTime.now().month,
                     DateTime.now().day)
                 .toUtc()
                 .toIso8601String(),
             currentState.getCurrentQuantityInMl());
+        yield currentState;
       }
       if (event is FetchWaterIntakeEvent) {
         if (currentState is UnWaterIntakeState) {
