@@ -14,7 +14,11 @@ class BmiBloc extends Bloc<BmiEvent, BmiState> {
   BmiBloc({this.uid});
   @override
   BmiState get initialState => UnBmiState();
-
+  @override
+  Future<void> close() {
+    // TODO: implement close
+    return super.close();
+  }
   @override
   Stream<BmiState> mapEventToState(
     BmiEvent event,

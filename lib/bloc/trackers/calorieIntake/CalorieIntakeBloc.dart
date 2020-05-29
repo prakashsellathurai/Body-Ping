@@ -23,6 +23,11 @@ class CalorieIntakeBloc extends Bloc<CalorieIntakeEvent, CalorieIntakeState> {
       entireDayMeal: EntireDayMealModel.emptyModel());
 
   @override
+  Future<void> close() {
+    // TODO: implement close
+    return super.close();
+  }
+  @override
   Stream<CalorieIntakeState> mapEventToState(CalorieIntakeEvent event) async* {
     final currentState = state;
     // TODO: implement mapEventToState
@@ -225,10 +230,6 @@ class CalorieIntakeBloc extends Bloc<CalorieIntakeEvent, CalorieIntakeState> {
           name: 'CalorieIntakeBloc', error: _, stackTrace: stackTrace);
       yield state;
     }
-  }
-
-  dispose() {
-    super.close();
   }
 
   String getToday() =>

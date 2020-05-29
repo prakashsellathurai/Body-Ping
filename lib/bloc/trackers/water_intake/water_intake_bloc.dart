@@ -32,10 +32,11 @@ class WaterIntakeBloc extends Bloc<WaterIntakeEvent, WaterIntakeState> {
   WaterIntakeBloc({this.uid});
   WaterIntakeRepository _waterIntakeRepository = WaterIntakeRepository();
 
-  dispose() {
-    super.close();
+  @override
+  Future<void> close() {
+    // TODO: implement close
+    return super.close();
   }
-
   @override
   WaterIntakeState get initialState => UnWaterIntakeState(0);
 

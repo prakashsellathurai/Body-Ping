@@ -4,6 +4,7 @@ import 'package:gkfit/bloc/trackers/calorieIntake/CalorieIntakeBloc.dart';
 import 'package:gkfit/bloc/trackers/calorieIntake/calorieIntakeState.dart';
 import 'package:gkfit/bloc/trackers/water_intake/water_intake_bloc.dart';
 import 'package:gkfit/bloc/trackers/water_intake/water_intake_state.dart';
+import 'package:gkfit/bloc/home_bloc.dart';
 import 'package:gkfit/bloc/user_bloc.dart';
 import 'package:gkfit/model/userDataModel.dart';
 import 'package:gkfit/provider/userDataProviderApiClient.dart';
@@ -80,33 +81,14 @@ class HomePageState extends State<HomePage> {
 
   Widget _appDashboardBuilder(
       BuildContext context, User user, UserDataModel userdatemodel) {
-    return BlocBuilder<WaterIntakeBloc, WaterIntakeState>(
-        bloc: BlocProvider.of<WaterIntakeBloc>(context),
-        builder: (context, waterIntakeState) {
-          if (waterIntakeState is UnWaterIntakeState) {
+    return BlocBuilder<HomeBloc, HomeState>(
+        bloc: BlocProvider.of<HomeBloc>(context),
+        builder: (context, homeState) {
+
+          if (homeState == HomeState.notLoaded) {
             return Center(child: LoadingIndicator());
-          } else if (waterIntakeState is InWaterIntakeState) {
-            return BlocBuilder<CalorieIntakeBloc, CalorieIntakeState>(
-                bloc: BlocProvider.of<CalorieIntakeBloc>(context),
-                builder: (context, calorieIntakeState) {
-                  if (calorieIntakeState is CalorieIntakeStateUninitialized) {
-                    return Center(child: LoadingIndicator());
-                  } else if (calorieIntakeState
-                      is CalorieIntakeStateinitialized) {
-                    return BlocBuilder<BmiBloc, BmiState>(
-                        bloc: BlocProvider.of<BmiBloc>(context),
-                        builder: (context, bmiState) {
-                          if (bmiState is UnBmiState) {
-                            return Center(child: LoadingIndicator());
-                          } else if (bmiState is InBmiState) {
-                            return AppDashboardHomeScreen(
-                                user: user, userData: userdatemodel);
-                          }
-                          return Center(child: LoadingIndicator());
-                        });
-                  }
-                  return Center(child: LoadingIndicator());
-                });
+          } else if (homeState == HomeState.loaded) {
+            return AppDashboardHomeScreen(user: user, userData: userdatemodel);
           }
           return Center(child: LoadingIndicator());
         });
