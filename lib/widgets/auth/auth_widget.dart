@@ -57,10 +57,11 @@ class AuthWidget extends StatelessWidget {
             theme: ThemeData(primarySwatch: Colors.indigo),
             home: BlocProvider<HomeBloc>(
                 create: (context) => HomeBloc(
+                    userBloc: BlocProvider.of<UserBloc>(context),
                     bmiBloc: BlocProvider.of<BmiBloc>(context),
-                    calorieIntakeBloc:BlocProvider.of<CalorieIntakeBloc>(context),
-                    waterIntakeBloc: BlocProvider.of<WaterIntakeBloc>(context)
-                    )
+                    calorieIntakeBloc:
+                        BlocProvider.of<CalorieIntakeBloc>(context),
+                    waterIntakeBloc: BlocProvider.of<WaterIntakeBloc>(context))
                   ..add(HomeEvent.appStarted),
                 child: MaterialApp(
                   theme: ThemeData(primarySwatch: Colors.indigo),

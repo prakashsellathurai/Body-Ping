@@ -41,7 +41,7 @@ class UserDataFetched extends UserState {
   @override
   String uid() => userData.uid;
   @override
-  String displayName() => userData.displayName;
+  String displayName() => userData.firstName;
 
 }
 

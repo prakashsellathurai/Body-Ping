@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gkfit/bloc/trackers/water_intake/water_intake_bloc.dart';
 
 import 'package:gkfit/widgets/charts/time_series_chart_with_bar_renderer.dart';
 
 import 'package:charts_flutter/flutter.dart' as charts;
 
 class WaterIntakeHistoryWidget extends StatefulWidget {
-  final List<charts.Series<dynamic, DateTime>> data;
+  final List<charts.Series<TimeSeriesSales, DateTime>> data;
 
   WaterIntakeHistoryWidget({
     Key key,
@@ -19,6 +21,7 @@ class WaterIntakeHistoryWidget extends StatefulWidget {
 }
 
 class _WaterIntakeHistoryWidgetState extends State<WaterIntakeHistoryWidget> {
+  WaterIntakeBloc waterIntakebloc;
   @override
   void initState() {
     // TODO: implement initState
@@ -27,6 +30,8 @@ class _WaterIntakeHistoryWidgetState extends State<WaterIntakeHistoryWidget> {
 
   @override
   Widget build(BuildContext context) {
+    waterIntakebloc = BlocProvider.of<WaterIntakeBloc>(context);
+
     return Container(
         height: 200,
         child: Padding(

@@ -1,4 +1,11 @@
+import 'package:gkfit/screens/dashboard/dashboard_theme.dart';
 import 'package:gkfit/screens/dashboard/home/trackers/bmi_tracker/add_bmi/bodyfat/bodyfatCard.dart';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gkfit/bloc/trackers/bmi/bmi_bloc.dart';
+import 'package:gkfit/bloc/trackers/bmi/bmi_event.dart';
+
+import 'calculator.dart' as calculator;
 
 import './app_bar.dart';
 import './utils/fade_route.dart';
@@ -52,9 +59,29 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
     return Stack(
       children: <Widget>[
         Scaffold(
-          appBar: PreferredSize(
-            child: BmiAppBar(),
-            preferredSize: Size.fromHeight(appBarHeight(context)),
+          appBar: AppBar(
+            elevation: 10,
+            iconTheme: IconThemeData(color: Colors.black),
+            backgroundColor: DashboardTheme.nearlyWhite,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(45),
+              bottomRight: Radius.circular(45),
+            )),
+            leading: new IconButton(
+              icon: new Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            centerTitle: true,
+            title: Text(
+              "Weight Tracker",
+              style: Theme.of(context)
+                  .textTheme
+                  .headline6
+                  .copyWith(color: Colors.black),
+            ),
           ),
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,11 +140,37 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
         bottom: screenAwareSize(22.0, context),
         top: screenAwareSize(14.0, context),
       ),
-      child: PacmanSlider(
-        submitAnimationController: _submitAnimationController,
-        onSubmit: onPacmanSubmit,
-      ),
+      child: weightSubmit(context),
     );
+  }
+
+  Widget weightSubmit(context) {
+    return Center(
+        child: Container(
+      padding: const EdgeInsets.all(2),
+      width: MediaQuery.of(context).size.width * .9,
+      height: screenAwareSize(52, context),
+      child: RaisedButton(
+        color: Theme.of(context).primaryColor,
+        child: Text(
+          "Click Here to Log Your Weight",
+          style: TextStyle(color: Colors.white),
+        ),
+        onPressed: () {
+          BmiBloc _bmibloc = BlocProvider.of<BmiBloc>(context);
+
+          _bmibloc
+            ..add(AddBMI(
+                lastLoggedTime: DateTime.now().toUtc().toIso8601String(),
+                weight_in_kgs: weight.toDouble(),
+                bmi: calculator.calculateBMI(height: height, weight: weight),
+                height_in_cm: height.toDouble(),
+                bodyfat: bodyfat.toDouble()))
+            ..add(UpdateBMI());
+          Navigator.of(context).pop();
+        },
+      ),
+    ));
   }
 
   void onPacmanSubmit() {
@@ -126,11 +179,8 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
 
   _goToResultPage() async {
     return Navigator.of(context).push(FadeRoute(
-      builder: (context) => ResultPage(
-            weight: weight,
-            height: height,
-            bodyfat: bodyfat
-          ),
+      builder: (context) =>
+          ResultPage(weight: weight, height: height, bodyfat: bodyfat),
     ));
   }
 }

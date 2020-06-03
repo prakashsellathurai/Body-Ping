@@ -99,7 +99,10 @@ class WaterIntakeBloc extends Bloc<WaterIntakeEvent, WaterIntakeState> {
                     DateTime.now().day)
                 .toUtc()
                 .toIso8601String(),
-            currentState.getCurrentQuantityInMl());
+            currentState.getCurrentQuantityInMl(),
+            currentState.getLastWaterIntake()
+            
+            );
         yield currentState;
       }
       if (event is FetchWaterIntakeEvent) {
@@ -121,7 +124,7 @@ class WaterIntakeBloc extends Bloc<WaterIntakeEvent, WaterIntakeState> {
                       DateTime.now().day)
                   .toUtc()
                   .toIso8601String(),
-              currentState.getLastWaterIntake());
+              result.results[0].last_drink ?? '');
         } else if (currentState is InWaterIntakeState) {
           final lastMidnight = DateTime(
                   DateTime.now().year, DateTime.now().month, DateTime.now().day)

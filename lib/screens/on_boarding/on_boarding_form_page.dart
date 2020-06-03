@@ -51,6 +51,8 @@ class UserDetailsFormPageState extends State<OnBoardingFormPage>
   int selectedGenderIndex;
   DateTime selectedDate;
   String displayNameField;
+  String firstName;
+  String lastName;
   String phoneNumber;
   String phoneIsoCode;
 
@@ -161,6 +163,94 @@ class UserDetailsFormPageState extends State<OnBoardingFormPage>
     );
   }
 
+  Widget _buildFirstNameField() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        SizedBox(height: 10.0),
+        Container(
+          alignment: Alignment.centerLeft,
+          decoration: kBoxDecorationStyle,
+          height: 60.0,
+          child: TextField(
+            key: Key('FirstName'),
+            keyboardType: TextInputType.text,
+            style: TextStyle(
+              color: Colors.grey,
+              fontFamily: 'OpenSans',
+            ),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(top: 14.0),
+              prefixIcon: Icon(
+                Icons.person,
+                color: Colors.grey,
+              ),
+              hintText: "Enter Your First Name",
+              hintStyle: kHintTextStyle,
+              enabled: true,
+            ),
+            autocorrect: false,
+            onChanged: (value) {
+              setState(() {
+                firstName = value;
+              });
+            },
+            onSubmitted: (value) {
+              setState(() {
+                firstName = value;
+              });
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLastNameField() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        SizedBox(height: 10.0),
+        Container(
+          alignment: Alignment.centerLeft,
+          decoration: kBoxDecorationStyle,
+          height: 60.0,
+          child: TextField(
+            key: Key('LastName'),
+            keyboardType: TextInputType.emailAddress,
+            style: TextStyle(
+              color: Colors.grey,
+              fontFamily: 'OpenSans',
+            ),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(top: 14.0),
+              prefixIcon: Icon(
+                Icons.person,
+                color: Colors.grey,
+              ),
+              hintText: "Enter Your Last Name",
+              hintStyle: kHintTextStyle,
+              enabled: true,
+            ),
+            autocorrect: false,
+            onChanged: (value) {
+              setState(() {
+                lastName = value;
+              });
+            },
+            onSubmitted: (value) {
+              setState(() {
+                lastName = value;
+              });
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
   void onPhoneNumberChange(
       String number, String internationalizedPhoneNumber, String isoCode) {
     print((phoneNumber == null || phoneNumber == ''));
@@ -192,8 +282,7 @@ class UserDetailsFormPageState extends State<OnBoardingFormPage>
                 enabledCountries: ['+91'],
                 hintText: "Phone Number",
               ),
-            )
-            ),
+            )),
       ],
     );
   }
@@ -295,32 +384,33 @@ class UserDetailsFormPageState extends State<OnBoardingFormPage>
         ]);
   }
 
-
-
   Widget _buildsubmitbtn(BuildContext context) {
     return OutlineButton(
       splashColor: Colors.grey,
       onPressed: () async {
-        print(displayNameField);
+        print(firstName);
+        print(lastName);
         print(gender);
         print(selectedDate);
         print(phoneNumber == '');
         print(phoneIsoCode);
         print(user.uid);
 
-        if (displayNameField == null || phoneNumber == '') {
+        if (firstName == null || lastName == null|| phoneNumber == '') {
           PlatformAlertDialog(
             title: "Alert",
             content: "Fill all fields to submit",
             defaultActionText: Strings.ok,
           ).show(context);
-        } else {
+        } 
+        else {
           String uid = user.uid;
           Map<String, dynamic> userDetailsResponseJson = {
             'email': user.email,
             'uid': uid,
             'photoUrl': user.photoUrl,
-            'displayName': displayNameField,
+            'firstName': firstName,
+            'lastName': lastName,
             'phoneNumber': phoneNumber,
             'phoneIsoCode': phoneIsoCode,
             'gender': gender,
@@ -410,7 +500,9 @@ class UserDetailsFormPageState extends State<OnBoardingFormPage>
                                 children: <Widget>[
                                   _buildEmailField(),
                                   SizedBox(height: 8),
-                                  _buildDisplayNameField(),
+                                  _buildFirstNameField(),
+                                  SizedBox(height: 8),
+                                  _buildLastNameField(),
                                   SizedBox(height: 8),
                                   _buildPhoneNumberField(),
                                   SizedBox(height: 8),
@@ -459,6 +551,7 @@ class UserDetailsTopBar extends StatelessWidget implements PreferredSizeWidget {
         children: <Widget>[
           Container(
               height: topbarHeight,
+              color: Colors.transparent,
               child: Align(
                   alignment: Alignment.center,
                   child: Text(

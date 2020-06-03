@@ -234,7 +234,8 @@ class _WaterIntakeMiniDashboardViewState
                         setState(() {
                           waterIntakeBloc
                             ..add(AddtwoFiftyMlevent())
-                            ..add(AddLastDrinkDataEvent());
+                            ..add(AddLastDrinkDataEvent())
+                            ..add(UpdateWaterIntakeEvent());
                         });
                       },
                       child: Container(

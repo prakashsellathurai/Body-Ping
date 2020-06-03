@@ -54,7 +54,7 @@ class WaterTrackerHomeScreenState extends State<WaterTrackerHomeScreen> {
           leading: new IconButton(
               icon: new Icon(Icons.arrow_back),
               onPressed: () {
-                waterIntakebloc..add(UpdateWaterIntakeEvent());
+                // waterIntakebloc..add(UpdateWaterIntakeEvent());
                 Navigator.pop(context, true);
               }),
           iconTheme: IconThemeData(color: Colors.black),
@@ -78,7 +78,7 @@ class WaterTrackerHomeScreenState extends State<WaterTrackerHomeScreen> {
           future: _createWaterIntakeChart(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
-              return listView(snapshot.data);
+              return listView(context, snapshot.data);
             }
 
             return BlogLisLoader(
@@ -90,7 +90,9 @@ class WaterTrackerHomeScreenState extends State<WaterTrackerHomeScreen> {
     );
   }
 
-  Widget listView(List<charts.Series<dynamic, DateTime>> data) {
+  Widget listView(
+      BuildContext context, List<charts.Series<dynamic, DateTime>> data) {
+    waterIntakebloc = BlocProvider.of<WaterIntakeBloc>(context);
     int count = 7;
     List<Widget> listViews = <Widget>[];
     listViews.add(WaterIntakeMiniDashboardView());
@@ -99,7 +101,7 @@ class WaterTrackerHomeScreenState extends State<WaterTrackerHomeScreen> {
     );
 
     listViews
-        .add(JustTitleViewWithoutAnimation(titleTxt: "Water Intake History"));
+        .add(JustTitleViewWithoutAnimation(titleTxt: "Water Intake Chart"));
 
     listViews.add(WaterIntakeHistoryWidget(
       data: data,
@@ -121,8 +123,14 @@ class WaterTrackerHomeScreenState extends State<WaterTrackerHomeScreen> {
         await _waterIntakeRepository.fetchWaterIntakeHistory(user.uid);
     List<TimeSeriesSales> data = [];
     autogen.results.forEach((element) {
-      data.add(new TimeSeriesSales(DateTime.parse(element.day).toLocal(),
-          int.parse(element.quantity_in_ml).toInt()));
+      if (DateTime.parse(element.day).toLocal().day ==
+          DateTime.parse(waterIntakebloc.state.getDay()).toLocal().day) {
+        data.add(new TimeSeriesSales(DateTime.parse(element.day).toLocal(),
+            waterIntakebloc.state.getCurrentQuantityInMl()));
+      } else {
+        data.add(new TimeSeriesSales(DateTime.parse(element.day).toLocal(),
+            int.parse(element.quantity_in_ml).toInt()));
+      }
     });
 
     return [
@@ -140,7 +148,7 @@ class WaterTrackerHomeScreenState extends State<WaterTrackerHomeScreen> {
   Future<bool> _willPopCallback() async {
     // await showDialog or Show add banners or whatever
     // then
-    waterIntakebloc..add(UpdateWaterIntakeEvent());
+    // waterIntakebloc..add(UpdateWaterIntakeEvent());
     return true; // return true if the route to be popped
   }
 }

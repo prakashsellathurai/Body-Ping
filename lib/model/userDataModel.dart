@@ -2,7 +2,7 @@ class UserDataModel {
   String uid;
   String email;
   String photoUrl;
-  String displayName;
+  String firstName,lastName;
   String phoneNumber;
   String phoneIsoCode;
   String gender;
@@ -12,16 +12,20 @@ class UserDataModel {
   UserDataModel(
       {this.uid,
       this.email,
+      this.firstName,
+      this.lastName,
       this.photoUrl,
-      this.displayName,
       this.phoneNumber,
       this.currentPlan});
 
   UserDataModel.fromJson(Map<String, dynamic> userDetailsResponseJson) {
     uid = userDetailsResponseJson["uid"] ?? '';
     email = userDetailsResponseJson["email"] ?? '';
+
+    firstName = userDetailsResponseJson["firstName"] ?? '';
+    lastName = userDetailsResponseJson["lastName"] ?? '';
+
     photoUrl = userDetailsResponseJson["photoUrl"] ?? '';
-    displayName = userDetailsResponseJson["displayName"] ?? '';
     phoneNumber = userDetailsResponseJson["phoneNumber"] ?? '';
     phoneIsoCode = userDetailsResponseJson["phoneIsoCode"] ?? '';
     gender = userDetailsResponseJson["gender"] ?? '';
@@ -34,7 +38,8 @@ class UserDataModel {
       'uid': this.uid,
       'email': this.email,
       'photoUrl': this.photoUrl ?? '',
-      'displayName': this.displayName ?? '',
+      'firstName': this.firstName ?? '',
+      'lastName': this.lastName ?? '',
       'phoneNumber': this.phoneNumber ?? '',
       'phoneIsoCode' : this.phoneIsoCode ?? '',
       'gender' :this.gender?? '',

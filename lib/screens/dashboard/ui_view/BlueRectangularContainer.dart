@@ -1,13 +1,18 @@
 import 'package:gkfit/constants/colors.dart';
 import 'package:flutter/material.dart';
-import '../../../dashboard_theme.dart';
+import '../dashboard_theme.dart';
 
-class AddLogView extends StatelessWidget {
+class BlueRectangularContainerView extends StatelessWidget {
   final AnimationController animationController;
+  final String text;
   final Animation animation;
   final void Function() onTap;
-  const AddLogView(
-      {Key key, this.animationController, this.animation, this.onTap})
+  const BlueRectangularContainerView(
+      {Key key,
+      this.text,
+      this.animationController,
+      this.animation,
+      this.onTap})
       : super(key: key);
 
   @override
@@ -42,6 +47,8 @@ class AddLogView extends StatelessWidget {
                             child: GestureDetector(
                               onTap: onTap,
                               child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
                                   Padding(
                                     padding: const EdgeInsets.only(
@@ -50,8 +57,8 @@ class AddLogView extends StatelessWidget {
                                         right: 12,
                                         top: 12),
                                     child: Text(
-                                      'Add your Body Measurement Log here',
-                                      textAlign: TextAlign.left,
+                                      text,
+                                      textAlign: TextAlign.justify,
                                       style: TextStyle(
                                         fontFamily: DashboardTheme.fontName,
                                         fontWeight: FontWeight.w500,
@@ -62,14 +69,20 @@ class AddLogView extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                  IconButton(
-                                      icon: Icon(Icons.arrow_forward_ios),
-                                      onPressed: null),
+                                  Expanded(
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                         crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: <Widget>[
+                                      IconButton(
+                                          icon: Icon(Icons.arrow_forward_ios),
+                                          onPressed: null),
+                                    ],
+                                  ))
                                 ],
                               ),
                             ),
                           )),
-
                     ],
                   ),
                 ),

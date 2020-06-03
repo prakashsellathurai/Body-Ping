@@ -256,7 +256,7 @@ class _SettingsScreenState extends State<SettingsScreen>
         if (userState is UserDataFetched) {
           userData = userState.userData;
 
-          print(userData.displayName);
+          print(userData.firstName);
           List<Widget> listViews = <Widget>[];
           var formatter = new DateFormat('dd-MM-yyyy');
           listViews.add(
@@ -264,9 +264,16 @@ class _SettingsScreenState extends State<SettingsScreen>
               title: 'Account',
               tiles: [
                 SettingsTile(
-                  title: (userData.displayName == '')
-                      ? 'Enter your Name'
-                      : userData.displayName ?? 'Enter your Name',
+                  title: (userData.firstName == '')
+                      ? 'Enter your First Name'
+                      : userData.firstName ?? 'Enter your Name',
+                  leading: Icon(Icons.person),
+                  onTap: () => _goToEditScreen(context),
+                ),
+                   SettingsTile(
+                  title: (userData.lastName == '')
+                      ? 'Enter your Last Name'
+                      : userData.lastName ?? 'Enter your Last Name',
                   leading: Icon(Icons.person),
                   onTap: () => _goToEditScreen(context),
                 ),

@@ -51,7 +51,7 @@ class EditAccountScreen extends StatefulWidget {
 class _EditAccountScreenState extends State<EditAccountScreen> {
   UserDataModel userData;
   UserBloc userbloc;
-  String displayNameFieldPlaceholder,
+  String firstNamePlaceholder,lastNamePlaceholder,
       emailplaceholder,
       genderPlaceholder,
       dateOfBirthPlaceholder,
@@ -66,7 +66,8 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
   @override
   void initState() {
     userbloc = BlocProvider.of<UserBloc>(context);
-    displayNameFieldPlaceholder = userData.displayName;
+    firstNamePlaceholder = userData.firstName;
+    lastNamePlaceholder = userData.lastName;
     emailplaceholder = userData.email;
     phoneNumberPlaceholder = userData.phoneNumber;
     dateOfBirthPlaceholder = userData.dateofbirth;
@@ -111,7 +112,8 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
     );
   }
 
-  Widget _buildDisplayNameField() {
+
+  Widget _buildFirstNameField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -134,19 +136,19 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                 Icons.person,
                 color: Colors.grey, //Colors.white,
               ),
-              hintText: displayNameFieldPlaceholder,
+              hintText: firstNamePlaceholder,
               hintStyle: kHintTextStyle,
               enabled: true,
             ),
             autocorrect: false,
             onChanged: (value) {
               setState(() {
-                displayNameFieldPlaceholder = value;
+                firstNamePlaceholder = value;
               });
             },
             onSubmitted: (value) {
               setState(() {
-                displayNameFieldPlaceholder = value;
+                firstNamePlaceholder = value;
               });
             },
           ),
@@ -154,7 +156,49 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
       ],
     );
   }
-
+    Widget _buildlastNameField() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        SizedBox(height: 10.0),
+        Container(
+          alignment: Alignment.centerLeft,
+          decoration: kBoxDecorationStyle,
+          height: 60.0,
+          child: TextField(
+            key: Key('DisplayName'),
+            keyboardType: TextInputType.emailAddress,
+            style: TextStyle(
+              color: Colors.grey,
+              fontFamily: 'OpenSans',
+            ),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(top: 14.0),
+              prefixIcon: Icon(
+                Icons.person,
+                color: Colors.grey, //Colors.white,
+              ),
+              hintText: lastNamePlaceholder,
+              hintStyle: kHintTextStyle,
+              enabled: true,
+            ),
+            autocorrect: false,
+            onChanged: (value) {
+              setState(() {
+                lastNamePlaceholder = value;
+              });
+            },
+            onSubmitted: (value) {
+              setState(() {
+                lastNamePlaceholder = value;
+              });
+            },
+          ),
+        ),
+      ],
+    );
+  }
   Widget _buildPhoneNumberField() {
     void onPhoneNumberChange(
         String number, String internationalizedPhoneNumber, String isoCode) {
@@ -295,14 +339,15 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
       print(isSubmitting);
       isSubmitting = !isSubmitting;
     });
-    print(displayNameFieldPlaceholder);
+    print(firstNamePlaceholder);
+    print(lastNamePlaceholder);
     print(genderPlaceholder);
     print(dateOfBirthPlaceholder);
     print(phoneNumberPlaceholder);
     print(phoneIsoCode);
     print(userData.uid);
 
-    if (displayNameFieldPlaceholder == null || phoneNumberPlaceholder == '') {
+    if (firstNamePlaceholder == null || phoneNumberPlaceholder == '') {
       PlatformAlertDialog(
         title: "Alert",
         content: "Fill all fields to submit",
@@ -310,7 +355,8 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
       ).show(context);
     } else {
       Map<String, dynamic> userDetailsJson = {
-        'displayName': displayNameFieldPlaceholder,
+        'firstName': firstNamePlaceholder,
+        'lastName':lastNamePlaceholder,
         'phoneNumber': phoneNumberPlaceholder,
         'phoneIsoCode': phoneIsoCode,
         'gender': genderPlaceholder,
@@ -423,7 +469,9 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                                 children: <Widget>[
                                   _buildEmailField(),
                                   SizedBox(height: 8),
-                                  _buildDisplayNameField(),
+                                  _buildFirstNameField(),
+                                  SizedBox(height: 8),
+                                  _buildlastNameField(),
                                   SizedBox(height: 8),
                                   _buildPhoneNumberField(),
                                   SizedBox(height: 8),

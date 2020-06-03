@@ -4,11 +4,12 @@ import 'package:gkfit/screens/dashboard/dashboard_screen.dart';
 import 'package:gkfit/screens/dashboard/home/trackers/bmi_tracker/logViewWidget.dart';
 import 'package:gkfit/services/auth_service.dart';
 import 'package:provider/provider.dart';
-
+import '../../../ui_view/title_view.dart';
 import '../../../dashboard_theme.dart';
 import '../../../ui_view/body_measurement.dart';
 import 'add_bmi/input_page.dart';
 import 'bmi_history/bmi_history.dart';
+
 class BmitrackerHomeScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => BmitrackerHomeScreenState();
@@ -89,8 +90,17 @@ class BmitrackerHomeScreenState extends State<BmitrackerHomeScreen>
           }),
     );
     listViews.add(
-      BmIHistoryWidget()
+      JustTitleView(
+        titleTxt: 'Weight Chart',
+        animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+            parent: animationController,
+            curve:
+                Interval((1 / count) * 0, 1.0, curve: Curves.fastOutSlowIn))),
+        animationController: animationController,
+        onclick: () {},
+      ),
     );
+    listViews.add(BmIHistoryWidget());
     return ListView.builder(
         padding: EdgeInsets.only(
           // top: AppBar().preferredSize.height +

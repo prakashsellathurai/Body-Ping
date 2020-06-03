@@ -157,7 +157,7 @@ class _MealsListViewState extends State<MealsListView>
   Widget build(BuildContext context) {
     calorieIntakeBloc = BlocProvider.of<CalorieIntakeBloc>(context);
     mealsListData = updateMealListData(calorieIntakeBloc, context);
-    print("rebuild the meal list view");
+
     return AnimatedBuilder(
       animation: widget.mainScreenAnimationController,
       builder: (BuildContext context, Widget child) {

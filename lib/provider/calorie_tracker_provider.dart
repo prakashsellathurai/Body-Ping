@@ -143,7 +143,7 @@ class CalorieTrackerProvider {
       "quantities_in_grams": quantities_in_grams,
       "total_calories": total_calories
     });
-    http.Response result = await http.post(baseUrl + '/add/$uid/evening_snack',
+    http.Response result = await http.post(baseUrl + '/add/$uid/dinner',
         body: body, headers: {"content-type": "application/json"});
     return result.body;
   }

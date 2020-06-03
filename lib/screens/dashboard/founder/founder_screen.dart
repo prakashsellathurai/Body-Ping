@@ -254,7 +254,7 @@ class _FounderScreenState extends State<FounderScreen>
                               alignment: Alignment.center,
                               width: MediaQuery.of(context).size.height * 0.1,
                               child: Text(
-                                "Founder's journey",
+                                "Founder's Journal",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontFamily: DashboardTheme.fontName,

@@ -6,10 +6,11 @@ import 'package:gkfit/bloc/trackers/water_intake/water_intake_model.dart';
 class WaterIntakeProvider {
   String waterIntakeProvideBaseurl;
   WaterIntakeProvider({this.waterIntakeProvideBaseurl});
-  Future<dynamic> addWaterIntakeLog(uid, day, quantity_in_ml) {
+  Future<dynamic> addWaterIntakeLog(uid, day, quantity_in_ml,last_drink) {
     return http.post(waterIntakeProvideBaseurl + '/add/$uid', body: {
       'day': day.toString(),
-      'quantity_in_ml': quantity_in_ml.toString()
+      'quantity_in_ml': quantity_in_ml.toString(),
+      'last_drink': last_drink.toString()
     });
   }
 

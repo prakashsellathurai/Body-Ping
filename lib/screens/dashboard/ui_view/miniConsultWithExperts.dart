@@ -1,12 +1,15 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gkfit/bloc/user_bloc.dart';
 import 'package:gkfit/constants/colors.dart';
 import 'package:flutter/material.dart';
-import '../../../dashboard_theme.dart';
+import 'package:intercom_flutter/intercom_flutter.dart';
+import '../dashboard_theme.dart';
 
-class AddLogView extends StatelessWidget {
+class MiniConsultWithOurExpertsView extends StatelessWidget {
   final AnimationController animationController;
   final Animation animation;
   final void Function() onTap;
-  const AddLogView(
+  const MiniConsultWithOurExpertsView(
       {Key key, this.animationController, this.animation, this.onTap})
       : super(key: key);
 
@@ -40,8 +43,29 @@ class AddLogView extends StatelessWidget {
                                   topRight: Radius.circular(8.0)),
                             ),
                             child: GestureDetector(
-                              onTap: onTap,
+                              onTap: () async {
+                                UserBloc userBloc = BlocProvider.of<UserBloc>(context);
+                                var userData = userBloc.state.getUserData();
+                                dynamic userUpdated = await Intercom.updateUser(
+                                    email: userData.email,
+                                    name: userData.firstName,
+                                    userId: userData.uid,
+                                    phone: userData.phoneNumber,
+                                    customAttributes: {
+                                      "gender": userData.gender,
+                                      "date of birth": userData.dateofbirth,
+                                      "current_plan": userData.currentPlan,
+                                      "firstName": userData.firstName,
+                                      "lastName": userData.lastName
+                                    });
+                                print(userUpdated);
+                                await Intercom.displayMessenger();
+                                print("messager opened");
+                              },
                               child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.end,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
                                   Padding(
                                     padding: const EdgeInsets.only(
@@ -50,7 +74,7 @@ class AddLogView extends StatelessWidget {
                                         right: 12,
                                         top: 12),
                                     child: Text(
-                                      'Add your Body Measurement Log here',
+                                      'Consult With Our Experts Here  ',
                                       textAlign: TextAlign.left,
                                       style: TextStyle(
                                         fontFamily: DashboardTheme.fontName,
@@ -62,14 +86,15 @@ class AddLogView extends StatelessWidget {
                                       ),
                                     ),
                                   ),
+                                  Container(
+                                    child: 
                                   IconButton(
                                       icon: Icon(Icons.arrow_forward_ios),
-                                      onPressed: null),
+                                      onPressed: null),)
                                 ],
                               ),
                             ),
                           )),
-
                     ],
                   ),
                 ),

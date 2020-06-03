@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:gkfit/bloc/user_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
@@ -16,10 +17,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final CalorieIntakeBloc calorieIntakeBloc;
   final WaterIntakeBloc waterIntakeBloc;
   final BmiBloc bmiBloc;
+  final UserBloc userBloc;
 
   StreamSubscription<bool> _blocsSubscription;
 
-  HomeBloc({this.calorieIntakeBloc, this.waterIntakeBloc, this.bmiBloc});
+  HomeBloc({this.userBloc,this.calorieIntakeBloc, this.waterIntakeBloc, this.bmiBloc});
 
   HomeState get initialState => HomeState.notLoaded;
 
@@ -33,14 +35,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Stream<HomeState> mapEventToState(HomeEvent event) async* {
     if (event == HomeEvent.appStarted) {
 
-      _blocsSubscription = Rx.combineLatest3(
+      _blocsSubscription = Rx.combineLatest4(
           Stream.value(calorieIntakeBloc.state),
           Stream.value(waterIntakeBloc),
           Stream.value(bmiBloc),
-          (a, b, c) =>
+          Stream.value(userBloc),
+          (a, b, c,d) =>
               a is CalorieIntakeStateinitialized &&
               b is WaterIntakeState &&
-              c is InBmiState).listen((isHomeLoaded) => add(HomeEvent.loaded));
+              c is InBmiState && 
+              d is UserDataFetched
+              ).listen((isHomeLoaded) => add(HomeEvent.loaded));
     } else if (event == HomeEvent.loaded) {
       yield HomeState.loaded;
     }

@@ -5,10 +5,12 @@ import 'package:gkfit/bloc/trackers/calorieIntake/CalorieIntakeBloc.dart';
 import 'package:gkfit/bloc/trackers/calorieIntake/CalorieIntakeEvent.dart';
 import 'package:gkfit/bloc/trackers/water_intake/water_intake_bloc.dart';
 import 'package:gkfit/model/userDataModel.dart';
+import 'package:gkfit/screens/dashboard/home/meals_list_view.dart';
 import 'package:gkfit/screens/dashboard/home/staticWaterView.dart';
 import 'package:gkfit/screens/dashboard/home/trackers/bmi_tracker/bmi_tracker_home.dart';
 import 'package:gkfit/screens/dashboard/home/trackers/calorie_tracker/calorie_tracker_home.dart';
 import 'package:gkfit/screens/dashboard/home/trackers/water_tracker/water_tracker_home.dart';
+import 'package:gkfit/screens/dashboard/ui_view/miniConsultWithExperts.dart';
 
 import '../ui_view/body_measurement.dart';
 import '../ui_view/glass_view.dart';
@@ -21,6 +23,7 @@ import 'package:intl/intl.dart';
 
 import 'trackers/water_tracker/mini_water_intake_dashboard.dart';
 import './trackers/calorie_tracker/CalorieIntakeMiniDahsboard.dart';
+import 'package:gkfit/bloc/user_bloc.dart';
 
 class DashboardHomeScreen extends StatefulWidget {
   const DashboardHomeScreen({Key key, this.animationController, this.userData})
@@ -37,6 +40,7 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
   Animation<double> topBarAnimation;
 
   final ScrollController scrollController = ScrollController();
+  UserBloc userBloc;
   double topBarOpacity = 0.0;
   DateTime currentDate;
   UserDataModel userData;
@@ -56,6 +60,8 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
 
     waterIntakeBloc = BlocProvider.of<WaterIntakeBloc>(context);
     waterIntakeBloc.add(FetchWaterIntakeEvent());
+
+    userBloc = BlocProvider.of<UserBloc>(context);
     currentDate = DateTime.now();
     topBarAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
         CurvedAnimation(
@@ -94,13 +100,25 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
     await Future<dynamic>.delayed(const Duration(milliseconds: 50));
     return true;
   }
-@override
+
+  @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
+    calorieIntakeBloc = BlocProvider.of<CalorieIntakeBloc>(context);
+    calorieIntakeBloc..add(FetchEntiredayMealModelEvent());
+
+    bmiBloc = BlocProvider.of<BmiBloc>(context);
+    bmiBloc..add(FetchBMI());
+
+    waterIntakeBloc = BlocProvider.of<WaterIntakeBloc>(context);
+    waterIntakeBloc.add(FetchWaterIntakeEvent());
+    userBloc = BlocProvider.of<UserBloc>(context);
+    userBloc.fetchUser();
     return Container(
       color: DashboardTheme.background,
       child: Scaffold(
@@ -129,7 +147,7 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
           List<Widget> listViews = <Widget>[];
           listViews.add(
             TitleView(
-              titleTxt: 'Your Daily Nutrition',
+              titleTxt: 'Daily Nutrition',
               subTxt: 'Details',
               animation: Tween<double>(begin: 0.0, end: 1.0).animate(
                   CurvedAnimation(
@@ -152,9 +170,79 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
                       curve: Interval((1 / count) * 1, 1.0,
                           curve: Curves.fastOutSlowIn))),
               animationController: widget.animationController,
+              noInteraction: false,
+            ),
+          );
+          listViews.add(
+            JustTitleView(
+              titleTxt: 'Track Your Meal',
+              animation: Tween<double>(begin: 0.0, end: 1.0).animate(
+                  CurvedAnimation(
+                      parent: widget.animationController,
+                      curve: Interval((1 / count) * 0, 1.0,
+                          curve: Curves.fastOutSlowIn))),
+              animationController: widget.animationController,
+              onclick: () {},
+            ),
+          );
+          listViews.add(MealsListView(
+            mainScreenAnimation: Tween<double>(begin: 0.0, end: 1.0).animate(
+                CurvedAnimation(
+                    parent: widget.animationController,
+                    curve: Interval((1 / count) * 1, 1.0,
+                        curve: Curves.fastOutSlowIn))),
+            mainScreenAnimationController: widget.animationController,
+          ));
+          listViews.add(MiniConsultWithOurExpertsView(
+            animation: Tween<double>(begin: 0.0, end: 1.0).animate(
+                CurvedAnimation(
+                    parent: widget.animationController,
+                    curve: Interval((1 / count) * 6, 1.0,
+                        curve: Curves.fastOutSlowIn))),
+            animationController: widget.animationController,
+          ));
+          listViews.add(
+            TitleView(
+              titleTxt: 'Water',
+              subTxt: 'Details',
+              animation: Tween<double>(begin: 0.0, end: 1.0).animate(
+                  CurvedAnimation(
+                      parent: widget.animationController,
+                      curve: Interval((1 / count) * 6, 1.0,
+                          curve: Curves.fastOutSlowIn))),
+              animationController: widget.animationController,
+              onclick: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext context) =>
+                        WaterTrackerHomeScreen()));
+              },
             ),
           );
 
+          listViews.add(AnimatedBuilder(
+              animation: widget.animationController,
+              builder: (BuildContext context, Widget child) {
+                return FadeTransition(
+                    opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
+                        CurvedAnimation(
+                            parent: widget.animationController,
+                            curve: Interval((1 / count) * 6, 1.0,
+                                curve: Curves.fastOutSlowIn))),
+                    child: new Transform(
+                        transform: new Matrix4.translationValues(
+                            0.0,
+                            30 *
+                                (1.0 -
+                                    Tween<double>(begin: 0.0, end: 1.0)
+                                        .animate(CurvedAnimation(
+                                            parent: widget.animationController,
+                                            curve: Interval(
+                                                (1 / count) * 6, 1.0,
+                                                curve: Curves.fastOutSlowIn)))
+                                        .value),
+                            0.0),
+                        child: WaterIntakeMiniDashboardView()));
+              }));
           listViews.add(
             TitleView(
               titleTxt: 'Body measurement',
@@ -172,8 +260,12 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
             ),
           );
 
-          listViews.add(
-            BodyMeasurementView(
+          listViews.add(GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => BmitrackerHomeScreen()));
+            },
+            child: BodyMeasurementView(
               animation: Tween<double>(begin: 0.0, end: 1.0).animate(
                   CurvedAnimation(
                       parent: widget.animationController,
@@ -181,35 +273,7 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
                           curve: Curves.fastOutSlowIn))),
               animationController: widget.animationController,
             ),
-          );
-          listViews.add(
-            TitleView(
-              titleTxt: 'Water',
-              subTxt: 'Track ',
-              animation: Tween<double>(begin: 0.0, end: 1.0).animate(
-                  CurvedAnimation(
-                      parent: widget.animationController,
-                      curve: Interval((1 / count) * 6, 1.0,
-                          curve: Curves.fastOutSlowIn))),
-              animationController: widget.animationController,
-              onclick: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (BuildContext context) =>
-                        WaterTrackerHomeScreen()));
-              },
-            ),
-          );
-
-          listViews.add(StaticWaterDashboardView(
-              mainScreenAnimation: Tween<double>(begin: 0.0, end: 1.0).animate(
-                  CurvedAnimation(
-                      parent: widget.animationController,
-                      curve: Interval((1 / count) * 7, 1.0,
-                          curve: Curves.fastOutSlowIn))),
-              mainScreenAnimationController: widget.animationController,
-              daily_target: 3500,
-              current_water_intake: 2100));
-
+          ));
           return ListView.builder(
             controller: scrollController,
             padding: EdgeInsets.only(
@@ -272,17 +336,49 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  //(userData.displayName != null) ? 'Hello ${userData.displayName}' : "Home",
-                                  "Home",
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                    fontFamily: DashboardTheme.fontName,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 22 + 6 - 6 * topBarOpacity,
-                                    // letterSpacing: 1.2,
-                                    color: DashboardTheme.darkerText,
-                                  ),
+                                child: StreamBuilder<UserDataModel>(
+                                  stream: Stream.value(
+                                      userBloc.state.getUserData()),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<UserDataModel> snapshot) {
+                                    try {
+                                      return RichText(
+                                        maxLines: 12,
+                                        softWrap: false,
+                                        textAlign: TextAlign.left,
+                                        text: TextSpan(
+                                            text: (snapshot.hasData)
+                                                ? 'Hi ${capitalize((snapshot.data.firstName != null) ? snapshot.data.firstName : "home")}'
+                                                : "Home",
+                                            style: TextStyle(
+                                              fontFamily:
+                                                  DashboardTheme.fontName,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize:
+                                                  22 + 6 - 6 * topBarOpacity,
+                                              // letterSpacing: 1.2,
+                                              color: DashboardTheme.darkerText,
+                                            )),
+                                      );
+                                    } catch (e) {
+                                      return RichText(
+                                        maxLines: 12,
+                                        softWrap: false,
+                                        textAlign: TextAlign.left,
+                                        text: TextSpan(
+                                            text: "Home",
+                                            style: TextStyle(
+                                              fontFamily:
+                                                  DashboardTheme.fontName,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize:
+                                                  22 + 6 - 6 * topBarOpacity,
+                                              // letterSpacing: 1.2,
+                                              color: DashboardTheme.darkerText,
+                                            )),
+                                      );
+                                    }
+                                  },
                                 ),
                               ),
                             ),
@@ -370,4 +466,6 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
       ],
     );
   }
+
+  String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
 }

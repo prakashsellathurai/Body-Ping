@@ -100,13 +100,15 @@ class _YourWellnessState extends State<YourWellness>
           var userData = userBloc.state.getUserData();
           dynamic userUpdated = await Intercom.updateUser(
               email: userData.email,
-              name: userData.displayName,
+              name: userData.firstName,
               userId: userData.uid,
               phone: userData.phoneNumber,
               customAttributes: {
                 "gender": userData.gender,
                 "date of birth": userData.dateofbirth,
-                "current_plan": userData.currentPlan
+                "current_plan": userData.currentPlan,
+                "firstName": userData.firstName,
+                "lastName": userData.lastName
               });
           print(userUpdated);
           await Intercom.displayMessenger();
@@ -181,13 +183,15 @@ class _YourWellnessState extends State<YourWellness>
 
     dynamic userUpdated = await Intercom.updateUser(
         email: userData.email,
-        name: userData.displayName,
+        name: userData.firstName,
         userId: userData.uid,
         phone: userData.phoneNumber,
         customAttributes: {
           "gender": userData.gender,
           "date of birth": userData.dateofbirth,
-          "current_plan": userData.currentPlan
+          "current_plan": userData.currentPlan,
+          "firstName": userData.firstName,
+          "lastName":userData.lastName
         });
     print(userUpdated);
   }

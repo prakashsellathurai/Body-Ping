@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../../../dashboard_theme.dart';
 import './../../../home/meals_list_view.dart';
 import './../../../ui_view/title_view.dart';
+import './../../../ui_view/BlueRectangularContainer.dart';
 import './your_nutrition_report_screen.dart';
 import 'CalorieIntakeMiniDahsboard.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,6 +20,7 @@ import 'package:gkfit/widgets/charts/time_series_chart_with_bar_renderer.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:gkfit/repository/CalorietrackerRepository.dart';
 import 'package:gkfit/model/trackers/calorieTracker/entireDayMealModel.dart';
+import './meal_history_page.dart';
 
 class CalorietrackerHomeScreen extends StatefulWidget {
   @override
@@ -60,7 +62,7 @@ class CalorietrackerHomeScreenState extends State<CalorietrackerHomeScreen>
           )),
           centerTitle: true,
           title: Text(
-            "Calorie Intake Tracker",
+            "Meal  Tracker",
             style: Theme.of(context)
                 .textTheme
                 .headline6
@@ -81,11 +83,12 @@ class CalorietrackerHomeScreenState extends State<CalorietrackerHomeScreen>
             curve:
                 Interval((1 / count) * 1, 1.0, curve: Curves.fastOutSlowIn))),
         animationController: animationController,
+        noInteraction: true,
       ),
     );
     listViews.add(
       JustTitleView(
-        titleTxt: 'Track Your Calorie Intake',
+        titleTxt: "Track Today's Meal",
         animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
             parent: animationController,
             curve:
@@ -119,7 +122,7 @@ class CalorietrackerHomeScreenState extends State<CalorietrackerHomeScreen>
 
     listViews.add(
       JustTitleView(
-        titleTxt: 'Your Calorie Intake History',
+        titleTxt: 'Calorie Chart',
         animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
             parent: animationController,
             curve:
@@ -143,13 +146,22 @@ class CalorietrackerHomeScreenState extends State<CalorietrackerHomeScreen>
                   animate: true,
                 );
               }
-              return BlogLisLoader(
-                length:1
-              );
+              return BlogLisLoader(length: 1);
             },
           ),
         )));
-
+    listViews.add(BlueRectangularContainerView(
+      text: 'View your entire Meal History',
+      animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+          parent: animationController,
+          curve: Interval((1 / count) * 0, 1.0, curve: Curves.fastOutSlowIn))),
+      animationController: animationController,
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => MealHistoryScreen(),
+        ));
+      },
+    ));
     return ListView.builder(
       // controller: scrollController,
       padding: EdgeInsets.only(
@@ -178,7 +190,7 @@ class CalorietrackerHomeScreenState extends State<CalorietrackerHomeScreen>
           0 + element.dinner.total_calories ??
           0;
       data.add(new TimeSeriesSales(
-          DateTime.parse(element.date).toLocal(), totalcalories~/1000));
+          DateTime.parse(element.date).toLocal(), totalcalories ~/ 1000));
     });
 
     return [

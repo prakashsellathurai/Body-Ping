@@ -10,12 +10,12 @@ import 'package:gkfit/widgets/charts/time_series_chart_with_bar_renderer.dart';
 import 'package:gkfit/widgets/ui/blog_list_loader.dart';
 import 'package:provider/provider.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+
 class BmIHistoryWidget extends StatefulWidget {
   BmIHistoryWidget({Key key}) : super(key: key);
 
   @override
-  _BmIHistoryWidgetState createState() =>
-      _BmIHistoryWidgetState();
+  _BmIHistoryWidgetState createState() => _BmIHistoryWidgetState();
 }
 
 class _BmIHistoryWidgetState extends State<BmIHistoryWidget> {
@@ -24,7 +24,6 @@ class _BmIHistoryWidgetState extends State<BmIHistoryWidget> {
   List<charts.Series<Balance, String>> series;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -40,17 +39,15 @@ class _BmIHistoryWidgetState extends State<BmIHistoryWidget> {
             builder: (BuildContext context,
                 AsyncSnapshot<List<charts.Series<TimeSeriesSales, DateTime>>>
                     snapshot) {
-              
               if (snapshot.hasData) {
-                
-                return new TimeSeriesBar(
+                return new charts.TimeSeriesChart(
                   snapshot.data,
                   animate: true,
                 );
               }
-              return  BlogLisLoader(
-                            length: 1,
-                          );
+              return BlogLisLoader(
+                length: 1,
+              );
             },
           ),
         ));
@@ -63,20 +60,20 @@ class _BmIHistoryWidgetState extends State<BmIHistoryWidget> {
     DateTime fiveDaysBefore = today.subtract(new Duration(days: 2)).toUtc();
     print(today);
     print(fiveDaysBefore);
-    List<WeightTrackerModel> autogen = await _weightTrackerRepository.getHistory(user.uid,fiveDaysBefore.toIso8601String(),fiveDaysafter.toIso8601String());
+    List<WeightTrackerModel> autogen =
+        await _weightTrackerRepository.getHistory(user.uid,
+            fiveDaysBefore.toIso8601String(), fiveDaysafter.toIso8601String());
     List<TimeSeriesSales> data = [];
     autogen.forEach((element) {
-
       data.add(new TimeSeriesSales(DateTime.parse(element.time).toLocal(),
           element.weight_in_kgs.toInt()));
     });
-print(data);
+    print(data);
     return [
       new charts.Series<TimeSeriesSales, DateTime>(
         id: 'Sales',
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (TimeSeriesSales sales, _) =>
-            sales.time,
+        domainFn: (TimeSeriesSales sales, _) => sales.time.toLocal(),
         measureFn: (TimeSeriesSales sales, _) => sales.sales,
         data: data,
       )

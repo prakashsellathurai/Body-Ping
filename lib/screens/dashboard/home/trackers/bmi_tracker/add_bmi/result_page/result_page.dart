@@ -69,26 +69,27 @@ class _ResultPageState extends State<ResultPage> {
           //         builder: (context) => BmitrackerHomeScreen())),
           //   ),
           // ),
-          Container(
-              height: 52.0,
-              width: 80.0,
-              child: RaisedButton(
-                child: Icon(
-                  Icons.refresh,
-                  color: Colors.white,
-                  size: 28.0,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(6.0),
-                ),
-                onPressed: () => Navigator.of(context).pop(),
-                color: Theme.of(context).primaryColor,
-              )),
+          // Container(
+          //     height: 52.0,
+          //     width: 80.0,
+          //     child: RaisedButton(
+          //       child: Icon(
+          //         Icons.refresh,
+          //         color: Colors.white,
+          //         size: 28.0,
+          //       ),
+          //       shape: RoundedRectangleBorder(
+          //         borderRadius: BorderRadius.circular(6.0),
+          //       ),
+          //       onPressed: () => Navigator.of(context).pop(),
+          //       color: Theme.of(context).primaryColor,
+          //     )),
           Padding(
-            padding: const EdgeInsets.only(left: 40.0),
-            child: IconButton(
+            padding: const EdgeInsets.all( 4.0),
+            child: RaisedButton.icon(
+              label: Text("click here to log"),
               icon: Icon(
-                Icons.navigate_next,
+                Icons.add,
                 color: Colors.grey,
                 size: 40.0,
               ),

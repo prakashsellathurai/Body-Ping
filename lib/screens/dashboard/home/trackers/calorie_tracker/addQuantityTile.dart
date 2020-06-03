@@ -53,7 +53,7 @@ class _AddQuantityToFoodTileState extends State<AddQuantityToFoodTile> {
               GestureDetector(
                 onTap: () {
                   setState(() {
-                    currentquantity = currentquantity + widget.quantity;
+                    currentquantity = currentquantity + 100;
                     widget.currentQuantity(currentquantity);
                   });
                 },
@@ -88,7 +88,7 @@ class _AddQuantityToFoodTileState extends State<AddQuantityToFoodTile> {
               GestureDetector(
                 onTap: () {
                   setState(() {
-                    currentquantity = currentquantity - widget.quantity;
+                    currentquantity = currentquantity - 100;
                     currentquantity = (currentquantity <= 0)
                         ? double.parse('0')
                         : currentquantity;
