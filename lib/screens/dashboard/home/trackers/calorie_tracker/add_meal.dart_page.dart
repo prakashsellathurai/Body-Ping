@@ -234,8 +234,10 @@ class _AddMealScreenState extends State<AddMealScreen> {
                           isSelected: (bool value) {
                             setState(() {
                               selectedItems.add(items[index]);
-                              selectedItemsQuantity
-                                  .add(items[index].quantity_in_grams);
+                              // selectedItemsQuantity
+                              //     .add(items[index].quantity_in_grams);
+                                   selectedItemsQuantity
+                                  .add(20);
                               items = List<NutritionDatabaseModel>();
                             });
                           });

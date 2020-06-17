@@ -51,7 +51,7 @@ dependencies:
   intercom_flutter: ^2.2.0
   flutter_svg: ^0.17.4
   charts_flutter: ^0.9.0
-
+  numberpicker: ^1.2.0
 
 dev_dependencies:
   flutter_test:
