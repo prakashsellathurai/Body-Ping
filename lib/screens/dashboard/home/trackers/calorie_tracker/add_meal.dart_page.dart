@@ -142,13 +142,18 @@ class _AddMealScreenState extends State<AddMealScreen> {
                           Navigator.of(context).pop();
                           return;
                         },
-                        child: Text(
-                          'done',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6
-                              .copyWith(color: Colors.black),
-                        ))))
+                        child: 
+                        
+                        // Text(
+                        //   'done',
+                        //   style: Theme.of(context)
+                        //       .textTheme
+                        //       .headline6
+                        //       .copyWith(color: Colors.black),
+                        // )
+                        Icon(Icons.done)
+                        
+                        )))
           ],
           centerTitle: true,
           title: Text(

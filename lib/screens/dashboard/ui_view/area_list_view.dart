@@ -162,7 +162,7 @@ class AreaView extends StatelessWidget {
                     splashColor: DashboardTheme.nearlyDarkBlue.withOpacity(0.2),
                     onTap: () {
                       Navigator.of(context)
-                          .push(SlideLeftRoute(widget: GKFITblogPostScreen()));
+                          .push(SlideLeftRoute(widget: GKFITblogPostScreen(postData: null,)));
                     },
                     child: CachedNetworkImage(
                         imageUrl: imagepath,

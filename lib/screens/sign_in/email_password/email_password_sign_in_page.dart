@@ -314,7 +314,7 @@ class _EmailPasswordSignInPageState extends State<EmailPasswordSignInPage> {
     return Scaffold(
       appBar:  
       TopBar(title: model.title,
-      onPressed:() => Navigator.pop(context),),
+      onPressed:() => Navigator.pop(context), child: null,),
       backgroundColor:  base_color_monochrome_1,  
       body:  AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
