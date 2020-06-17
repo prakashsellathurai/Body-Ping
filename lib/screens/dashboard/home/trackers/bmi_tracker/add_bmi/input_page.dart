@@ -105,22 +105,22 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
     return Row(
       children: <Widget>[
         Expanded(
-          child: Column(
-            children: <Widget>[
-              // Expanded(
-              //   child: BodyFat(
-              //     bodyfat: bodyfat,
-              //     onChanged: (val) => setState(() => bodyfat = val),
-              //   ),
-              // ),
-              Expanded(
+          // child: Column(
+          //   children: <Widget>[
+          //     // Expanded(
+          //     //   child: BodyFat(
+          //     //     bodyfat: bodyfat,
+          //     //     onChanged: (val) => setState(() => bodyfat = val),
+          //     //   ),
+          //     // ),
+          //     Expanded(
                 child: WeightCard(
                   weight: weight,
                   onChanged: (val) => setState(() => weight = val),
                 ),
-              ),
-            ],
-          ),
+            //   ),
+            // ],
+          // ),
         ),
         Expanded(
           child: HeightCard(
