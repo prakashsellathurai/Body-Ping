@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intercom_flutter/intercom_flutter.dart';
 
 import './widgets/auth/auth_widget_builder.dart';
@@ -12,17 +13,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 
+import 'bloc/simpleblocdelegate.dart';
+
 Future<void> main() async {
   // Fix for: Unhandled Exception: ServicesBinding.defaultBinaryMessenger was accessed before the binding was initialized.
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  SystemChrome.setEnabledSystemUIOverlays ([SystemUiOverlay.bottom]);
-await Intercom.initialize('rv4ydr2y', iosApiKey: 'ios_sdk-152bd9bbc8dc994be0b581e706b97a7bfbd7f3cd', androidApiKey: 'android_sdk-00787217d80052b3eee2d51235c22e803a521dce');
+  SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+  await Intercom.initialize('rv4ydr2y',
+      iosApiKey: 'ios_sdk-152bd9bbc8dc994be0b581e706b97a7bfbd7f3cd',
+      androidApiKey: 'android_sdk-00787217d80052b3eee2d51235c22e803a521dce');
+  BlocSupervisor.delegate = SimpleBlocDelegate();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-    final AuthServiceType initialAuthServiceType = AuthServiceType.firebase;
+  final AuthServiceType initialAuthServiceType = AuthServiceType.firebase;
   // [initialAuthServiceType] is made configurable for testing
 
   @override

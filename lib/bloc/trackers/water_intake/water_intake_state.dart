@@ -25,7 +25,8 @@ class UnWaterIntakeState extends WaterIntakeState {
 
   @override
   String toString() => 'UnWaterIntakeState';
-
+  @override
+  List<Object> get props => ([version,0]);
   @override
   int getCurrentQuantityInMl() {
     // TODO: implement getCurrentQuantityInMl
@@ -61,7 +62,8 @@ class InWaterIntakeState extends WaterIntakeState {
     return InWaterIntakeState(version + 1, quantity_in_ml, day,lastWaterIntake);
   }
 
-
+  @override
+  List<Object> get props => ([version,quantity_in_ml, day,lastWaterIntake]);
 
   @override
   int getCurrentQuantityInMl() {
@@ -82,7 +84,42 @@ class InWaterIntakeState extends WaterIntakeState {
     return  this.lastWaterIntake ?? '';
   }
 }
+class LoadingWaterIntakeState extends WaterIntakeState{
+  final int quantity_in_ml;
+  final String day;
+  String lastWaterIntake;
 
+  LoadingWaterIntakeState(int version, this.quantity_in_ml, this.day,this.lastWaterIntake)
+      : super(version, [quantity_in_ml, day]);
+
+  @override
+  String toString() => 'InWaterIntakeState $quantity_in_ml $day';
+ @override
+  List<Object> get props => ([version,quantity_in_ml, day,lastWaterIntake]);
+  LoadingWaterIntakeState copyWith(quantity_in_ml, day, lastWaterIntake) {
+    return LoadingWaterIntakeState(version + 1, quantity_in_ml, day,lastWaterIntake);
+  }
+
+  @override
+  int getCurrentQuantityInMl() {
+    // TODO: implement getCurrentQuantityInMl
+    return quantity_in_ml;
+  }
+
+  @override
+  String getDay() {
+    // TODO: implement getDay
+    return day;
+  }
+
+  @override
+  String getLastWaterIntake() {
+    
+    // TODO: implement getDay
+    return  this.lastWaterIntake ?? '';
+  }
+
+}
 class ErrorWaterIntakeState extends WaterIntakeState {
   final String errorMessage;
 
@@ -96,6 +133,8 @@ class ErrorWaterIntakeState extends WaterIntakeState {
   ErrorWaterIntakeState getStateCopy() {
     return ErrorWaterIntakeState(version, errorMessage);
   }
+   @override
+  List<Object> get props => ([version]);
 
   @override
   ErrorWaterIntakeState getNewVersion() {
