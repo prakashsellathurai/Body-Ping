@@ -6,7 +6,7 @@ import 'package:gkfit/screens/dashboard/home/trackers/bmi_tracker/bmi_tracker_ho
 import '../app_bar.dart';
 import '../calculator.dart' as calculator;
 import '../input_page_styles.dart';
-import '../model/gender.dart';
+import 'package:gkfit/bloc/user_bloc.dart';
 import 'package:flutter/material.dart';
 
 class ResultPage extends StatefulWidget {
@@ -95,7 +95,8 @@ class _ResultPageState extends State<ResultPage> {
               ),
               onPressed: () {
                 BmiBloc _bmibloc = BlocProvider.of<BmiBloc>(context);
-
+                UserBloc _userbloc = BlocProvider.of<UserBloc>(context);
+                print(_userbloc.state.getUserData());
                 _bmibloc
                   ..add(AddBMI(
                       lastLoggedTime: DateTime.now().toUtc().toIso8601String(),
