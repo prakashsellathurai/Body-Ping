@@ -1,7 +1,7 @@
 import 'package:gkfit/model/userDataModel.dart';
 import 'package:gkfit/provider/userDataProviderApiClient.dart';
 
-class UserRepository {
+class UserDataRepository {
   final userApiProvider =  UserDataProviderApiClient();
 
   Future<UserDataModel> fetchUser(uid) =>userApiProvider.getUser(uid);

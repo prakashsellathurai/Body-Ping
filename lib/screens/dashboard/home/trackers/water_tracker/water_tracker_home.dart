@@ -1,5 +1,7 @@
 import 'package:gkfit/bloc/trackers/water_intake/water_intake_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gkfit/bloc/authentication/authentication_bloc.dart';
+
 import 'package:gkfit/bloc/trackers/water_intake/water_intake_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -17,13 +19,13 @@ import 'package:provider/provider.dart';
 import 'dart:async';
 import './../../../ui_view/title_view.dart';
 import 'history/models/domain.dart';
-import 'package:gkfit/services/auth_service.dart';
+
 import 'package:gkfit/widgets/ui/blog_list_loader.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:gkfit/widgets/charts/time_series_chart_with_bar_renderer.dart';
 import 'package:gkfit/bloc/trackers/water_intake/water_intake_model.dart';
 import 'package:gkfit/bloc/trackers/water_intake/water_intake_repository.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 class WaterTrackerHomeScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => WaterTrackerHomeScreenState();
@@ -31,7 +33,7 @@ class WaterTrackerHomeScreen extends StatefulWidget {
 
 class WaterTrackerHomeScreenState extends State<WaterTrackerHomeScreen> {
   WaterIntakeBloc waterIntakebloc;
-  User user;
+  FirebaseUser  user;
 
   WaterIntakeRepository _waterIntakeRepository = WaterIntakeRepository();
   List<charts.Series<Balance, String>> series;
@@ -43,7 +45,7 @@ class WaterTrackerHomeScreenState extends State<WaterTrackerHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    user = Provider.of<User>(context);
+    user = BlocProvider.of<AuthenticationBloc>(context).state.user;
     waterIntakebloc = BlocProvider.of<WaterIntakeBloc>(context);
     // TODO: implement build
     return WillPopScope(

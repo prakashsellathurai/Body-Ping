@@ -3,7 +3,7 @@ import '../../../dashboard_theme.dart';
 import 'package:gkfit/repository/CalorietrackerRepository.dart';
 import 'package:gkfit/model/trackers/calorieTracker/entireDayMealModel.dart';
 import 'package:provider/provider.dart';
-import 'package:gkfit/services/auth_service.dart';
+
 import 'package:gkfit/widgets/loading/loadingIndicator.dart';
 import 'package:intl/intl.dart';
 import 'package:gkfit/model/trackers/calorieTracker/breakfastModel.dart';
@@ -13,7 +13,9 @@ import 'package:gkfit/model/trackers/calorieTracker/eveningSnackNodel.dart';
 import 'package:gkfit/model/trackers/calorieTracker/lunchModel.dart';
 import 'package:gkfit/model/trackers/calorieTracker/morningSnackModel.dart';
 import 'package:gkfit/model/trackers/Nutrition_database_model.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gkfit/bloc/authentication/authentication_bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 class MealHistoryScreen extends StatefulWidget {
   MealHistoryScreen({Key key}) : super(key: key);
 
@@ -24,7 +26,7 @@ class MealHistoryScreen extends StatefulWidget {
 class _MealHistoryScreenState extends State<MealHistoryScreen> {
   CalorieTrackerRepository _calorieTrackerRepository =
       CalorieTrackerRepository();
-  User user;
+ FirebaseUser   user;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,7 +124,7 @@ class _MealHistoryScreenState extends State<MealHistoryScreen> {
   }
 
   Future<List<EntireDayMealModel>> _future() async {
-    user = Provider.of<User>(context);
+    user = BlocProvider.of<AuthenticationBloc>(context).state.user;
     List<EntireDayMealModel> autogen =
         await _calorieTrackerRepository.fetchEntireMealHistory(user.uid);
     return autogen;

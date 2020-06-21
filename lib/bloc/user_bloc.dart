@@ -49,7 +49,7 @@ class UserBloc extends Bloc<UserEvent,UserState>{
   String uid;
   UserBloc({this.uid});
 
-  final _userRepository = UserRepository();
+  final _userRepository = UserDataRepository();
   final _userFetcher = PublishSubject<UserDataModel>();
 
   Stream<UserDataModel> get userData => _userFetcher.stream;
