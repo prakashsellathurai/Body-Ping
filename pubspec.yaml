@@ -55,6 +55,7 @@ dependencies:
   numberpicker: ^1.2.0
   flutter_local_notifications: ^1.4.4+1
   path_provider: ^1.6.1
+  flushbar: ^1.10.4
 dev_dependencies:
   flutter_test:
     sdk: flutter 

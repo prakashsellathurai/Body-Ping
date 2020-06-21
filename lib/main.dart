@@ -3,31 +3,34 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
 
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gkfit/bloc/home_bloc.dart';
 import 'package:gkfit/screens/home.dart';
+import 'package:gkfit/screens/login/login_screen.dart';
+import 'package:gkfit/widgets/loading/loadingIndicator.dart';
 import 'package:intercom_flutter/intercom_flutter.dart';
 
-import './widgets/auth/auth_widget_builder.dart';
-import './widgets/exceptions/email_link_error_presenter.dart';
-import './widgets/auth/auth_widget.dart';
-import './services/auth_service.dart';
-import './services/auth_service_adapter.dart';
-import './services/firebase_email_link_handler.dart';
-import './services/email_secure_store.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:provider/provider.dart';
 
+
+
+import 'package:flutter/material.dart';
+
+
+import 'bloc/authentication/authentication_bloc.dart';
 import 'bloc/simpleblocdelegate.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/subjects.dart';
 
+import 'bloc/trackers/bmi/bmi_bloc.dart';
+import 'bloc/trackers/bmi/bmi_event.dart';
+import 'bloc/trackers/calorieIntake/CalorieIntakeBloc.dart';
+import 'bloc/trackers/calorieIntake/CalorieIntakeEvent.dart';
+import 'bloc/trackers/water_intake/water_intake_bloc.dart';
+import 'bloc/user_bloc.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -40,6 +43,7 @@ final BehaviorSubject<String> selectNotificationSubject =
     BehaviorSubject<String>();
 
 NotificationAppLaunchDetails notificationAppLaunchDetails;
+
 class ReceivedNotification {
   final int id;
   final String title;
@@ -54,17 +58,15 @@ class ReceivedNotification {
   });
 }
 
-
 Future<void> main() async {
   // Fix for: Unhandled Exception: ServicesBinding.defaultBinaryMessenger was accessed before the binding was initialized.
   WidgetsFlutterBinding.ensureInitialized();
 
-
-
   notificationAppLaunchDetails =
       await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
 
-  var initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher_foreground');
+  var initializationSettingsAndroid =
+      AndroidInitializationSettings('@mipmap/ic_launcher');
   // Note: permissions aren't requested here just to demonstrate that can be done later using the `requestPermissions()` method
   // of the `IOSFlutterLocalNotificationsPlugin` class
   var initializationSettingsIOS = IOSInitializationSettings(
@@ -78,7 +80,6 @@ Future<void> main() async {
       });
   var initializationSettings = InitializationSettings(
       initializationSettingsAndroid, initializationSettingsIOS);
-  
 
   await flutterLocalNotificationsPlugin.initialize(initializationSettings,
       onSelectNotification: (String payload) async {
@@ -88,17 +89,17 @@ Future<void> main() async {
     selectNotificationSubject.add(payload);
   });
 
-
-
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
   await Intercom.initialize('rv4ydr2y',
       iosApiKey: 'ios_sdk-152bd9bbc8dc994be0b581e706b97a7bfbd7f3cd',
       androidApiKey: 'android_sdk-00787217d80052b3eee2d51235c22e803a521dce');
   BlocSupervisor.delegate = SimpleBlocDelegate();
-  runApp(MyApp());
-}
 
+  runApp(BlocProvider(
+      create: (context) => AuthenticationBloc()..add(AuthenticationStarted()),
+      child: MyApp()));
+}
 
 class MyApp extends StatefulWidget {
   @override
@@ -106,12 +107,8 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
-    final MethodChannel platform =
+  final MethodChannel platform =
       MethodChannel('crossingthestreams.io/resourceResolver');
-
-
-  final AuthServiceType initialAuthServiceType = AuthServiceType.firebase;
-  // [initialAuthServiceType] is made configurable for testing
 
   @override
   void initState() {
@@ -131,7 +128,8 @@ class MyAppState extends State<MyApp> {
           sound: true,
         );
   }
-void _configureDidReceiveLocalNotificationSubject() {
+
+  void _configureDidReceiveLocalNotificationSubject() {
     didReceiveLocalNotificationSubject.stream
         .listen((ReceivedNotification receivedNotification) async {
       await showDialog(
@@ -174,41 +172,62 @@ void _configureDidReceiveLocalNotificationSubject() {
       // );
     });
   }
+
   @override
   Widget build(BuildContext context) {
     // MultiProvider for top-level services that can be created right away
-    return MultiProvider(
-      providers: [
-        Provider<AuthService>(
-          create: (_) => AuthServiceAdapter(
-            initialAuthServiceType: initialAuthServiceType,
-          ),
-          dispose: (_, AuthService authService) => authService.dispose(),
-        ),
-        Provider<EmailSecureStore>(
-          create: (_) => EmailSecureStore(
-            flutterSecureStorage: FlutterSecureStorage(),
-          ),
-        ),
-        ProxyProvider2<AuthService, EmailSecureStore, FirebaseEmailLinkHandler>(
-          update: (_, AuthService authService, EmailSecureStore storage, __) =>
-              FirebaseEmailLinkHandler.createAndConfigure(
-            auth: authService,
-            userCredentialsStorage: storage,
-          ),
-          dispose: (_, linkHandler) => linkHandler.dispose(),
-        ),
-      ],
-      child: AuthWidgetBuilder(
-          builder: (BuildContext context, AsyncSnapshot<User> userSnapshot) {
-        return MaterialApp(
-          theme: ThemeData(primarySwatch: Colors.indigo),
-          home: EmailLinkErrorPresenter.create(
-            context,
-            child: AuthWidget(userSnapshot: userSnapshot),
-          ),
-        );
-      }),
+
+    return MaterialApp(
+      home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+        bloc: BlocProvider.of<AuthenticationBloc>(context),
+        builder: (context, state) {
+          if (state is AuthenticationFailure) {
+            return LoginScreen();
+          }
+          if (state is AuthenticationSuccess) {
+            return _buildHomePage(state.user.uid);
+          }
+          return Scaffold(
+            body: Center(
+              child: LoadingIndicator(),
+            ),
+          );
+        },
+      ),
     );
   }
+}
+
+Widget _buildHomePage(uid) {
+  return MultiBlocProvider(
+      providers: [
+        BlocProvider<UserBloc>(
+          create: (context) => UserBloc(uid: uid)..add(UserFetch()),
+        ),
+        BlocProvider<WaterIntakeBloc>(
+          create: (context) =>
+              WaterIntakeBloc(uid: uid)..add(FetchWaterIntakeEvent()),
+        ),
+        BlocProvider<CalorieIntakeBloc>(
+          create: (context) =>
+              CalorieIntakeBloc(uid: uid)..add(FetchEntiredayMealModelEvent()),
+        ),
+        BlocProvider<BmiBloc>(
+          create: (context) => BmiBloc(uid: uid)..add(FetchBMI()),
+        ),
+      ],
+      child: MaterialApp(
+          theme: ThemeData(primarySwatch: Colors.indigo),
+          home: BlocProvider<HomeBloc>(
+              create: (context) => HomeBloc(
+                  userBloc: BlocProvider.of<UserBloc>(context),
+                  bmiBloc: BlocProvider.of<BmiBloc>(context),
+                  calorieIntakeBloc:
+                      BlocProvider.of<CalorieIntakeBloc>(context),
+                  waterIntakeBloc: BlocProvider.of<WaterIntakeBloc>(context))
+                ..add(HomeEvent.appStarted),
+              child: MaterialApp(
+                theme: ThemeData(primarySwatch: Colors.indigo),
+                home: HomePage(),
+              ))));
 }

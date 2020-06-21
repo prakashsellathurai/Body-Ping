@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gkfit/widgets/ui/blog_list_loader.dart';
-import '../../../ui_view/mediterranesn_diet_view.dart';
-import 'package:gkfit/services/auth_service.dart';
-import 'package:provider/provider.dart';
+
 import '../../../dashboard_theme.dart';
 import './../../../home/meals_list_view.dart';
 import './../../../ui_view/title_view.dart';
@@ -22,6 +20,9 @@ import 'package:gkfit/repository/CalorietrackerRepository.dart';
 import 'package:gkfit/model/trackers/calorieTracker/entireDayMealModel.dart';
 import './meal_history_page.dart';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gkfit/bloc/authentication/authentication_bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 class CalorietrackerHomeScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => CalorietrackerHomeScreenState();
@@ -31,7 +32,7 @@ class CalorietrackerHomeScreenState extends State<CalorietrackerHomeScreen>
     with TickerProviderStateMixin {
   AnimationController animationController;
   CalorieIntakeBloc calorieIntakeBloc;
-  User user;
+  FirebaseUser  user;
   CalorieTrackerRepository _calorieTrackerRepository =
       CalorieTrackerRepository();
   @override
@@ -42,7 +43,7 @@ class CalorietrackerHomeScreenState extends State<CalorietrackerHomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    user = Provider.of<User>(context);
+    user = BlocProvider.of<AuthenticationBloc>(context).state.user;
     calorieIntakeBloc = BlocProvider.of<CalorieIntakeBloc>(context);
     developer.log(
       'calorie tracker home' +
