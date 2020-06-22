@@ -5,12 +5,13 @@ import 'package:gkfit/bloc/trackers/water_intake/water_intake_repository.dart';
 import 'package:gkfit/model/trackers/weight_tracker/weight_tracker_model.dart';
 import 'package:gkfit/repository/weight_tracker_repository.dart';
 import 'package:gkfit/screens/dashboard/home/trackers/water_tracker/history/models/balance.dart';
-import 'package:gkfit/services/auth_service.dart';
 import 'package:gkfit/widgets/charts/time_series_chart_with_bar_renderer.dart';
 import 'package:gkfit/widgets/ui/blog_list_loader.dart';
 import 'package:provider/provider.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gkfit/bloc/authentication/authentication_bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 class BmIHistoryWidget extends StatefulWidget {
   BmIHistoryWidget({Key key}) : super(key: key);
 
@@ -20,7 +21,7 @@ class BmIHistoryWidget extends StatefulWidget {
 
 class _BmIHistoryWidgetState extends State<BmIHistoryWidget> {
   WeightTrackerRepository _weightTrackerRepository = WeightTrackerRepository();
-  User user;
+  FirebaseUser  user;
   List<charts.Series<Balance, String>> series;
   @override
   void initState() {
@@ -29,7 +30,7 @@ class _BmIHistoryWidgetState extends State<BmIHistoryWidget> {
 
   @override
   Widget build(BuildContext context) {
-    user = Provider.of<User>(context);
+    user = BlocProvider.of<AuthenticationBloc>(context).state.user;
     return Container(
         height: 200,
         child: Padding(

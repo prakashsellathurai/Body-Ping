@@ -1,5 +1,7 @@
 import 'package:gkfit/bloc/trackers/water_intake/water_intake_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gkfit/bloc/trackers/water_intake/water_intake_state.dart';
+import 'package:gkfit/widgets/loading/shimmer_box.dart';
 import 'package:intl/intl.dart';
 
 import '../../../ui_view/wave_view.dart';
@@ -7,6 +9,7 @@ import '../../../dashboard_theme.dart';
 import './../../../../../constants/colors.dart';
 import 'package:gkfit/model/userPreferenceModel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class WaterIntakeMiniDashboardView extends StatefulWidget {
   String last_drink_time;
@@ -44,67 +47,102 @@ class _WaterIntakeMiniDashboardViewState
   @override
   Widget build(BuildContext context) {
     waterIntakeBloc = BlocProvider.of<WaterIntakeBloc>(context);
-    return Padding(
-      padding: const EdgeInsets.only(left: 24, right: 24, top: 16, bottom: 18),
-      child: Container(
-        decoration: BoxDecoration(
-          color: DashboardTheme.white,
-          borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(8.0),
-              bottomLeft: Radius.circular(8.0),
-              bottomRight: Radius.circular(8.0),
-              topRight: Radius.circular(68.0)),
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-                color: DashboardTheme.grey.withOpacity(0.2),
-                offset: const Offset(1.1, 1.1),
-                blurRadius: 10.0),
-          ],
-        ),
-        child: Padding(
+    return BlocBuilder<WaterIntakeBloc, WaterIntakeState>(
+      bloc: waterIntakeBloc,
+      builder: (BuildContext context,WaterIntakeState waterIntakestate) {
+        return Padding(
           padding:
-              const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 16),
-          child: Row(
-            children: <Widget>[
-              Expanded(
-                child: Column(
-                  children: <Widget>[
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+              const EdgeInsets.only(left: 24, right: 24, top: 16, bottom: 18),
+          child: Container(
+            decoration: BoxDecoration(
+              color: DashboardTheme.white,
+              borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(8.0),
+                  bottomLeft: Radius.circular(8.0),
+                  bottomRight: Radius.circular(8.0),
+                  topRight: Radius.circular(68.0)),
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                    color: DashboardTheme.grey.withOpacity(0.2),
+                    offset: const Offset(1.1, 1.1),
+                    blurRadius: 10.0),
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  top: 16, left: 16, right: 16, bottom: 16),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Column(
                       children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.end,
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 4, bottom: 3),
-                              child: Text(
-                                waterIntakeBloc.state
-                                    .getCurrentQuantityInMl()
-                                    .toString(),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontFamily: DashboardTheme.fontName,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 32,
-                                  color: DashboardTheme.nearlyDarkBlue,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: <Widget>[
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 4, bottom: 3),
+                                  child: (waterIntakeBloc.state
+                                              is LoadingWaterIntakeState ||
+                                          waterIntakeBloc.state
+                                              is UnWaterIntakeState)
+                                      ? SizedBox(
+                                          child: Center(
+                                              child: SpinKitThreeBounce(
+                                                  size: MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                      9,
+                                                  color: Theme.of(context)
+                                                      .primaryColor)))
+                                      : Text(
+                                          waterIntakeBloc.state
+                                              .getCurrentQuantityInMl()
+                                              .toString(),
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontFamily: DashboardTheme.fontName,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 32,
+                                            color:
+                                                DashboardTheme.nearlyDarkBlue,
+                                          ),
+                                        ),
                                 ),
-                              ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 8, bottom: 8),
+                                  child: Text(
+                                    'ml',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontFamily: DashboardTheme.fontName,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 18,
+                                      letterSpacing: -0.2,
+                                      color: DashboardTheme.nearlyDarkBlue,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                             Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 8, bottom: 8),
+                              padding: const EdgeInsets.only(
+                                  left: 4, top: 2, bottom: 14),
                               child: Text(
-                                'ml',
+                                'of daily goal ${daily_target.toString()} mL',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontFamily: DashboardTheme.fontName,
                                   fontWeight: FontWeight.w500,
-                                  fontSize: 18,
-                                  letterSpacing: -0.2,
-                                  color: DashboardTheme.nearlyDarkBlue,
+                                  fontSize: 14,
+                                  letterSpacing: 0.0,
+                                  color: DashboardTheme.darkText,
                                 ),
                               ),
                             ),
@@ -112,220 +150,248 @@ class _WaterIntakeMiniDashboardViewState
                         ),
                         Padding(
                           padding: const EdgeInsets.only(
-                              left: 4, top: 2, bottom: 14),
-                          child: Text(
-                            'of daily goal ${daily_target.toString()} mL',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontFamily: DashboardTheme.fontName,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14,
-                              letterSpacing: 0.0,
-                              color: DashboardTheme.darkText,
+                              left: 4, right: 4, top: 8, bottom: 16),
+                          child: Container(
+                            height: 2,
+                            decoration: BoxDecoration(
+                              color: DashboardTheme.background,
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(4.0)),
                             ),
                           ),
                         ),
+                        (waterIntakeBloc.state is LoadingWaterIntakeState ||
+                                waterIntakeBloc.state is UnWaterIntakeState)
+                            ? SizedBox(
+                                child: Center(
+                                    child: SpinKitThreeBounce(
+                                        size:
+                                            MediaQuery.of(context).size.width /
+                                                9,
+                                        color: Theme.of(context).primaryColor)))
+                            : Padding(
+                                padding: const EdgeInsets.only(top: 16),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: <Widget>[
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        if (waterIntakeBloc.state
+                                                .getLastWaterIntake() !=
+                                            null)
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 4),
+                                            child: Icon(
+                                              Icons.access_time,
+                                              color: DashboardTheme.grey
+                                                  .withOpacity(0.5),
+                                              size: 16,
+                                            ),
+                                          ),
+                                        if (waterIntakeBloc.state
+                                                .getLastWaterIntake() !=
+                                            null)
+                                          Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 4.0),
+                                              child: Text(
+                                                'Last drink ${waterIntakeBloc.state.getLastWaterIntake()}',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  fontFamily:
+                                                      DashboardTheme.fontName,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 14,
+                                                  letterSpacing: 0.0,
+                                                  color: DashboardTheme.grey
+                                                      .withOpacity(0.5),
+                                                ),
+                                              )),
+                                      ],
+                                    ),
+                                    if (!(waterIntakeBloc
+                                            is LoadingWaterIntakeState ||
+                                        waterIntakeBloc.state
+                                            is UnWaterIntakeState))
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 4),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: <Widget>[
+                                            if ((waterIntakeBloc.state
+                                                                .getCurrentQuantityInMl() /
+                                                            daily_target)
+                                                        .toDouble() *
+                                                    100 <
+                                                10)
+                                              SizedBox(
+                                                width: 24,
+                                                height: 24,
+                                                child: Image.asset(
+                                                    'assets/images/dashboard/bell.png'),
+                                              ),
+                                            if ((waterIntakeBloc.state
+                                                                .getCurrentQuantityInMl() /
+                                                            daily_target)
+                                                        .toDouble() *
+                                                    100 <
+                                                10)
+                                              Flexible(
+                                                child: Text(
+                                                  'Your bottle is empty, refill it!.',
+                                                  textAlign: TextAlign.start,
+                                                  style: TextStyle(
+                                                    fontFamily:
+                                                        DashboardTheme.fontName,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 12,
+                                                    letterSpacing: 0.0,
+                                                    color: HexColor('#F65283'),
+                                                  ),
+                                                ),
+                                              ),
+                                          ],
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                              )
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 4, right: 4, top: 8, bottom: 16),
-                      child: Container(
-                        height: 2,
-                        decoration: BoxDecoration(
-                          color: DashboardTheme.background,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(4.0)),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 16),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              if (waterIntakeBloc.state.getLastWaterIntake() !=
-                                  null)
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 4),
-                                  child: Icon(
-                                    Icons.access_time,
-                                    color: DashboardTheme.grey.withOpacity(0.5),
-                                    size: 16,
-                                  ),
-                                ),
-                              if (waterIntakeBloc.state.getLastWaterIntake() !=
-                                  null)
-                                Padding(
-                                    padding: const EdgeInsets.only(left: 4.0),
-                                    child: Text(
-                                      'Last drink ${waterIntakeBloc.state.getLastWaterIntake()}',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontFamily: DashboardTheme.fontName,
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 14,
-                                        letterSpacing: 0.0,
-                                        color: DashboardTheme.grey
-                                            .withOpacity(0.5),
+                  ),
+                  (waterIntakeBloc.state is LoadingWaterIntakeState ||
+                          waterIntakeBloc.state is UnWaterIntakeState)
+                      ? SizedBox(
+                          child: Center(
+                              child: SpinKitThreeBounce(
+                                  size: MediaQuery.of(context).size.width / 9,
+                                  color: Theme.of(context).primaryColor)))
+                      : Row(
+                          children: <Widget>[
+                            SizedBox(
+                              width: 34,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+// if(waterIntakeBloc.state is  LoadingWaterIntakeState)
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        waterIntakeBloc
+                                          ..add(AddtwoFiftyMlevent())
+                                          ..add(AddLastDrinkDataEvent())
+                                          ..add(UpdateWaterIntakeEvent());
+                                      });
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: DashboardTheme.nearlyWhite,
+                                        shape: BoxShape.circle,
+                                        boxShadow: <BoxShadow>[
+                                          BoxShadow(
+                                              color: DashboardTheme
+                                                  .nearlyDarkBlue
+                                                  .withOpacity(0.4),
+                                              offset: const Offset(4.0, 4.0),
+                                              blurRadius: 8.0),
+                                        ],
                                       ),
-                                    )),
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 4),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                if ((waterIntakeBloc.state
-                                                    .getCurrentQuantityInMl() /
-                                                daily_target)
-                                            .toDouble() *
-                                        100 <
-                                    10)
-                                  SizedBox(
-                                    width: 24,
-                                    height: 24,
-                                    child: Image.asset(
-                                        'assets/images/dashboard/bell.png'),
-                                  ),
-                                if ((waterIntakeBloc.state
-                                                    .getCurrentQuantityInMl() /
-                                                daily_target)
-                                            .toDouble() *
-                                        100 <
-                                    10)
-                                  Flexible(
-                                    child: Text(
-                                      'Your bottle is empty, refill it!.',
-                                      textAlign: TextAlign.start,
-                                      style: TextStyle(
-                                        fontFamily: DashboardTheme.fontName,
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 12,
-                                        letterSpacing: 0.0,
-                                        color: HexColor('#F65283'),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(6.0),
+                                        child: Icon(
+                                          Icons.add,
+                                          color: DashboardTheme.nearlyDarkBlue,
+                                          size: 24,
+                                        ),
                                       ),
                                     ),
                                   ),
-                              ],
+                                  const SizedBox(
+                                    height: 45,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        waterIntakeBloc
+                                          ..add(SubtracttwoFiftyMlevent())
+                                          ..add(UpdateWaterIntakeEvent());
+                                        ;
+                                      });
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: DashboardTheme.nearlyWhite,
+                                        shape: BoxShape.circle,
+                                        boxShadow: <BoxShadow>[
+                                          BoxShadow(
+                                              color: DashboardTheme
+                                                  .nearlyDarkBlue
+                                                  .withOpacity(0.4),
+                                              offset: const Offset(4.0, 4.0),
+                                              blurRadius: 8.0),
+                                        ],
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(6.0),
+                                        child: Icon(
+                                          Icons.remove,
+                                          color: DashboardTheme.nearlyDarkBlue,
+                                          size: 24,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              SizedBox(
-                width: 34,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          waterIntakeBloc
-                            ..add(AddtwoFiftyMlevent())
-                            ..add(AddLastDrinkDataEvent())
-                            ..add(UpdateWaterIntakeEvent());
-                        });
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: DashboardTheme.nearlyWhite,
-                          shape: BoxShape.circle,
-                          boxShadow: <BoxShadow>[
-                            BoxShadow(
-                                color: DashboardTheme.nearlyDarkBlue
-                                    .withOpacity(0.4),
-                                offset: const Offset(4.0, 4.0),
-                                blurRadius: 8.0),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 16, right: 8, top: 16),
+                              child: Container(
+                                width: 60,
+                                height: 160,
+                                decoration: BoxDecoration(
+                                  color: HexColor('#E8EDFE'),
+                                  borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(80.0),
+                                      bottomLeft: Radius.circular(80.0),
+                                      bottomRight: Radius.circular(80.0),
+                                      topRight: Radius.circular(80.0)),
+                                  boxShadow: <BoxShadow>[
+                                    BoxShadow(
+                                        color: DashboardTheme.grey
+                                            .withOpacity(0.4),
+                                        offset: const Offset(2, 2),
+                                        blurRadius: 4),
+                                  ],
+                                ),
+                                child: WaveView(
+                                  percentageValue: (waterIntakeBloc.state
+                                                  .getCurrentQuantityInMl() /
+                                              daily_target)
+                                          .toDouble() *
+                                      100,
+                                ),
+                              ),
+                            )
                           ],
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(6.0),
-                          child: Icon(
-                            Icons.add,
-                            color: DashboardTheme.nearlyDarkBlue,
-                            size: 24,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 45,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          waterIntakeBloc..add(SubtracttwoFiftyMlevent());
-                        });
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: DashboardTheme.nearlyWhite,
-                          shape: BoxShape.circle,
-                          boxShadow: <BoxShadow>[
-                            BoxShadow(
-                                color: DashboardTheme.nearlyDarkBlue
-                                    .withOpacity(0.4),
-                                offset: const Offset(4.0, 4.0),
-                                blurRadius: 8.0),
-                          ],
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(6.0),
-                          child: Icon(
-                            Icons.remove,
-                            color: DashboardTheme.nearlyDarkBlue,
-                            size: 24,
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
+                        )
+                ],
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 16, right: 8, top: 16),
-                child: Container(
-                  width: 60,
-                  height: 160,
-                  decoration: BoxDecoration(
-                    color: HexColor('#E8EDFE'),
-                    borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(80.0),
-                        bottomLeft: Radius.circular(80.0),
-                        bottomRight: Radius.circular(80.0),
-                        topRight: Radius.circular(80.0)),
-                    boxShadow: <BoxShadow>[
-                      BoxShadow(
-                          color: DashboardTheme.grey.withOpacity(0.4),
-                          offset: const Offset(2, 2),
-                          blurRadius: 4),
-                    ],
-                  ),
-                  child: WaveView(
-                    percentageValue:
-                        (waterIntakeBloc.state.getCurrentQuantityInMl() /
-                                    daily_target)
-                                .toDouble() *
-                            100,
-                  ),
-                ),
-              )
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

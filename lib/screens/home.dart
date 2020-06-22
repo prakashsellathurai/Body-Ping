@@ -1,24 +1,16 @@
-import 'package:gkfit/bloc/trackers/bmi/bmi_bloc.dart';
-import 'package:gkfit/bloc/trackers/bmi/bmi_state.dart';
-import 'package:gkfit/bloc/trackers/calorieIntake/CalorieIntakeBloc.dart';
-import 'package:gkfit/bloc/trackers/calorieIntake/calorieIntakeState.dart';
-import 'package:gkfit/bloc/trackers/water_intake/water_intake_bloc.dart';
-import 'package:gkfit/bloc/trackers/water_intake/water_intake_state.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gkfit/bloc/home_bloc.dart';
 import 'package:gkfit/bloc/user_bloc.dart';
 import 'package:gkfit/model/userDataModel.dart';
 import 'package:gkfit/provider/userDataProviderApiClient.dart';
 import 'package:gkfit/screens/on_boarding/on_boarding_form_page.dart';
 import 'package:gkfit/widgets/error/no_internet.dart';
-
 import 'package:gkfit/widgets/loading/loadingIndicator.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import './../services/auth_service.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import './../bloc/authentication/bloc.dart';
 import './dashboard/dashboard_screen.dart';
-
 UserDataProviderApiClient userdataApi = UserDataProviderApiClient();
 
 class HomePage extends StatefulWidget {
@@ -30,7 +22,7 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
   UserBloc userBloc;
-  User user;
+  FirebaseUser user;
   @override
   void initState() {
     // TODO: implement initState
@@ -46,7 +38,7 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    user = Provider.of<User>(context);
+    user = BlocProvider.of<AuthenticationBloc>(context).state.user;
     userBloc = BlocProvider.of<UserBloc>(context);
     return _buildHomePage(context);
   }
@@ -82,7 +74,7 @@ class HomePageState extends State<HomePage> {
   }
 
   Widget _appDashboardBuilder(
-      BuildContext context, User user, UserDataModel userdatemodel) {
+      BuildContext context, FirebaseUser user, UserDataModel userdatemodel) {
     return BlocBuilder<HomeBloc, HomeState>(
         bloc: BlocProvider.of<HomeBloc>(context),
         builder: (context, homeState) {

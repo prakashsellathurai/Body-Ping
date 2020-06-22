@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gkfit/screens/dashboard/dashboard_screen.dart';
 import 'package:gkfit/screens/dashboard/home/trackers/bmi_tracker/logViewWidget.dart';
-import 'package:gkfit/services/auth_service.dart';
+
 import 'package:provider/provider.dart';
 import '../../../ui_view/title_view.dart';
 import '../../../dashboard_theme.dart';
 import '../../../ui_view/body_measurement.dart';
 import 'add_bmi/input_page.dart';
 import 'bmi_history/bmi_history.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gkfit/bloc/authentication/authentication_bloc.dart';
 class BmitrackerHomeScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => BmitrackerHomeScreenState();
@@ -38,7 +39,7 @@ class BmitrackerHomeScreenState extends State<BmitrackerHomeScreen>
                 context,
                 MaterialPageRoute(
                     builder: (context) => AppDashboardHomeScreen(
-                          user: Provider.of<User>(context),
+                          user:BlocProvider.of<AuthenticationBloc>(context).state.user,
                         )),
               );
             },

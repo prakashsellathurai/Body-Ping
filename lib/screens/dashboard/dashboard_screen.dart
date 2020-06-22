@@ -12,13 +12,13 @@ import 'package:flutter/material.dart';
 import 'bottom_navigation_view/bottom_bar_view.dart';
 import './dashboard_theme.dart';
 import 'home/home_screen.dart';
-import './../../services/auth_service.dart';
-import './settings/settingsScreen.dart';
 
+import './settings/settingsScreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 class AppDashboardHomeScreen extends StatefulWidget {
   const AppDashboardHomeScreen({Key key, @required this.user, this.userData})
       : super(key: key);
-  final User user;
+  final FirebaseUser user;
   final UserDataModel userData;
 
   @override
@@ -32,7 +32,7 @@ class _AppDashboardHomeScreenState extends State<AppDashboardHomeScreen>
   UserBloc userbloc;
 
   _AppDashboardHomeScreenState._(this.user, this.userData);
-  final User user;
+  final FirebaseUser user;
   UserDataModel userData;
   bool showUserDetailsForm = true;
   AnimationController animationController;

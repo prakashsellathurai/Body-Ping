@@ -74,12 +74,12 @@ class MiniConsultWithOurExpertsView extends StatelessWidget {
                                         right: 12,
                                         top: 12),
                                     child: Text(
-                                      'Consult With Our Experts Here  ',
+                                      'Consult With Our Fitness Experts Here',
                                       textAlign: TextAlign.left,
                                       style: TextStyle(
                                         fontFamily: DashboardTheme.fontName,
                                         fontWeight: FontWeight.w500,
-                                        fontSize: 14,
+                                        fontSize: 13,
                                         letterSpacing: 0.0,
                                         color: DashboardTheme.nearlyDarkBlue
                                             .withOpacity(0.6),

@@ -1,6 +1,6 @@
 import 'package:gkfit/constants/keys.dart';
-import 'package:gkfit/screens/sign_in/sign_in_page.dart';
 import 'package:flutter/material.dart';
+import 'package:gkfit/screens/login/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './../../widgets/ui/page_view_indicator.dart';
 import './../../model/walk_through/walk_through_model.dart';
@@ -103,7 +103,7 @@ class WalkThroughScreenBodyState extends State<WalkThroughScreenBody> {
                       await SharedPreferences.getInstance();
                   prefs.setBool(Keys.showWalkthrough, false);
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (BuildContext context) => SignInPageBuilder()));
+                      builder: (BuildContext context) => LoginScreen()));
                 },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(

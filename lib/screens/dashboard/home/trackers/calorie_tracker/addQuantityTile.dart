@@ -37,58 +37,24 @@ class _AddQuantityToFoodTileState extends State<AddQuantityToFoodTile> {
         height: 50,
         child: Padding(
             padding: const EdgeInsets.only(left: 24, right: 24),
-            child: 
-            Row(children: <Widget>[
+            child: Row(children: <Widget>[
               Expanded(
                 child: Text(
                   '\n' +
                       '${(widget.index + 1).toString()} . ' +
                       widget.meal_data.name,
-                      style: TextStyle(
-
-                      ),
+                  style: TextStyle(),
                   textAlign: TextAlign.left,
                 ),
               ),
               GestureDetector(
                 onTap: () {
                   setState(() {
-                    currentquantity = currentquantity + 100;
-                    widget.currentQuantity(currentquantity);
-                  });
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: DashboardTheme.nearlyWhite,
-                    shape: BoxShape.circle,
-                    boxShadow: <BoxShadow>[
-                      BoxShadow(
-                          color: DashboardTheme.nearlyDarkBlue.withOpacity(0.4),
-                          offset: const Offset(4.0, 4.0),
-                          blurRadius: 8.0),
-                    ],
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(6.0),
-                    child: Icon(
-                      Icons.add,
-                      color: DashboardTheme.nearlyDarkBlue,
-                      size: 15,
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Text(
-                  '${currentquantity} g',
-                  style: DashboardTheme.textTheme.headline2,
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    currentquantity = currentquantity - 100;
+                    if (currentquantity > 100) {
+                      currentquantity = currentquantity - 100;
+                    } else {
+                      currentquantity = currentquantity - 20;
+                    }
                     currentquantity = (currentquantity <= 0)
                         ? double.parse('0')
                         : currentquantity;
@@ -116,8 +82,46 @@ class _AddQuantityToFoodTileState extends State<AddQuantityToFoodTile> {
                   ),
                 ),
               ),
-            ]
-            
-            )));
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Text(
+                  '${currentquantity} g',
+                  style: DashboardTheme.textTheme.headline2,
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    if (currentquantity.toInt() <= 80) {
+                      currentquantity = currentquantity + 20;
+                    } else {
+                      currentquantity = currentquantity + 100;
+                    }
+
+                    widget.currentQuantity(currentquantity);
+                  });
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: DashboardTheme.nearlyWhite,
+                    shape: BoxShape.circle,
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                          color: DashboardTheme.nearlyDarkBlue.withOpacity(0.4),
+                          offset: const Offset(4.0, 4.0),
+                          blurRadius: 8.0),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(6.0),
+                    child: Icon(
+                      Icons.add,
+                      color: DashboardTheme.nearlyDarkBlue,
+                      size: 15,
+                    ),
+                  ),
+                ),
+              ),
+            ])));
   }
 }

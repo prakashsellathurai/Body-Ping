@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:gkfit/bloc/authentication/authentication_bloc.dart';
 import 'package:gkfit/bloc/home_bloc.dart';
 import 'package:gkfit/bloc/trackers/calorieIntake/CalorieIntakeBloc.dart';
 import 'package:gkfit/bloc/trackers/water_intake/water_intake_bloc.dart';
@@ -14,7 +15,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intercom_flutter/intercom_flutter.dart';
 import 'package:intl/intl.dart';
-import './../../../services/auth_service.dart';
 import 'package:settings_ui/settings_ui.dart';
 import '../dashboard_theme.dart';
 import 'package:provider/provider.dart';
@@ -22,13 +22,17 @@ import 'package:flutter/services.dart';
 
 import './../../../constants/strings.dart';
 import 'package:international_phone_input/international_phone_input.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flushbar/flushbar.dart';
+
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen(
       {Key key, this.animationController, this.user, this.userData})
       : super(key: key);
   final AnimationController animationController;
-  final User user;
+  final FirebaseUser user;
   final UserDataModel userData;
   @override
   _SettingsScreenState createState() => _SettingsScreenState(user, userData);
@@ -40,7 +44,7 @@ class _SettingsScreenState extends State<SettingsScreen>
 
   _SettingsScreenState(this.user, this.userData);
 
-  final User user;
+  final FirebaseUser user;
   UserDataModel userData;
   String phoneNumber = '';
   String phoneIsoCode = '+91';
@@ -50,7 +54,8 @@ class _SettingsScreenState extends State<SettingsScreen>
 
   final ScrollController scrollController = ScrollController();
   double topBarOpacity = 0.0;
-
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
   @override
   void initState() {
     userBloc = BlocProvider.of<UserBloc>(context);
@@ -93,10 +98,29 @@ class _SettingsScreenState extends State<SettingsScreen>
 
   Future<void> _signOut(BuildContext context) async {
     try {
-      final AuthService auth = Provider.of<AuthService>(context, listen: false);
+      var flushbar = Flushbar(
+        flushbarPosition: FlushbarPosition.TOP,
+        title: "Logging out...",
+        message: "Please Wait ...",
+        duration: Duration(seconds: 3),
+        messageText: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // Text('Logging out...', style: TextStyle(color:Colors.white),),
+            CircularProgressIndicator(),
+          ],
+        ),
+        // icon: Icon(
+        //          Icons.info_outline,
+        //          color: Colors.blue,),
+      ); // <bool> is the type of the result passed to dismiss() and collected by show().then((result){})
+      flushbar..show(context);
+      flutterLocalNotificationsPlugin.cancelAll();
       userBloc = BlocProvider.of<UserBloc>(context);
-      final CalorieIntakeBloc calorieIntakeBloc = BlocProvider.of<CalorieIntakeBloc>(context);
-      final WaterIntakeBloc waterIntakeBloc = BlocProvider.of<WaterIntakeBloc>(context);
+      final CalorieIntakeBloc calorieIntakeBloc =
+          BlocProvider.of<CalorieIntakeBloc>(context);
+      final WaterIntakeBloc waterIntakeBloc =
+          BlocProvider.of<WaterIntakeBloc>(context);
       final BmiBloc bmiBloc = BlocProvider.of<BmiBloc>(context);
       final HomeBloc homeBloc = BlocProvider.of<HomeBloc>(context);
       await Intercom.logout();
@@ -105,7 +129,11 @@ class _SettingsScreenState extends State<SettingsScreen>
       await waterIntakeBloc.close();
       await bmiBloc.close();
       await userBloc.dispose();
-      await auth.signOut();
+      BlocProvider.of<AuthenticationBloc>(context)
+        ..add(
+          AuthenticationLogOut(),
+        );
+      flushbar.dismiss(context);
     } on PlatformException catch (e) {
       await PlatformExceptionAlertDialog(
         title: Strings.logoutFailed,
@@ -138,7 +166,6 @@ class _SettingsScreenState extends State<SettingsScreen>
   }
 
   Future<void> _goToEditScreen(BuildContext context) {
-
     Navigator.of(context).push(SlideLeftRoute(
         widget: BlocBuilder<UserBloc, UserState>(
             bloc: userBloc,
@@ -270,7 +297,7 @@ class _SettingsScreenState extends State<SettingsScreen>
                   leading: Icon(Icons.person),
                   onTap: () => _goToEditScreen(context),
                 ),
-                   SettingsTile(
+                SettingsTile(
                   title: (userData.lastName == '')
                       ? 'Enter your Last Name'
                       : userData.lastName ?? 'Enter your Last Name',

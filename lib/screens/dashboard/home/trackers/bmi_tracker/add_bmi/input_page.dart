@@ -6,7 +6,7 @@ import 'package:gkfit/bloc/trackers/bmi/bmi_bloc.dart';
 import 'package:gkfit/bloc/trackers/bmi/bmi_event.dart';
 
 import 'calculator.dart' as calculator;
-
+import 'package:gkfit/bloc/user_bloc.dart';
 import './app_bar.dart';
 import './utils/fade_route.dart';
 import './gender/gender_card.dart';
@@ -105,22 +105,22 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
     return Row(
       children: <Widget>[
         Expanded(
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                child: BodyFat(
-                  bodyfat: bodyfat,
-                  onChanged: (val) => setState(() => bodyfat = val),
-                ),
-              ),
-              Expanded(
+          // child: Column(
+          //   children: <Widget>[
+          //     // Expanded(
+          //     //   child: BodyFat(
+          //     //     bodyfat: bodyfat,
+          //     //     onChanged: (val) => setState(() => bodyfat = val),
+          //     //   ),
+          //     // ),
+          //     Expanded(
                 child: WeightCard(
                   weight: weight,
                   onChanged: (val) => setState(() => weight = val),
                 ),
-              ),
-            ],
-          ),
+            //   ),
+            // ],
+          // ),
         ),
         Expanded(
           child: HeightCard(
@@ -158,14 +158,19 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
         ),
         onPressed: () {
           BmiBloc _bmibloc = BlocProvider.of<BmiBloc>(context);
-
+          UserBloc _userbloc = BlocProvider.of<UserBloc>(context);
+          String gender = _userbloc.state.getUserData().gender;
+          DateTime dob = DateTime.parse(_userbloc.state.getUserData().dateofbirth);
+          int age = calculator.calculateAge(dob);
+          double bmi = calculator.calculateBMI(height: height, weight: weight);
+          double bodyFat = calculator.calculateBodyFat(bmi: bmi,gender: gender,age: age);
           _bmibloc
             ..add(AddBMI(
                 lastLoggedTime: DateTime.now().toUtc().toIso8601String(),
                 weight_in_kgs: weight.toDouble(),
-                bmi: calculator.calculateBMI(height: height, weight: weight),
+                bmi: bmi,
                 height_in_cm: height.toDouble(),
-                bodyfat: bodyfat.toDouble()))
+                bodyfat: bodyFat))
             ..add(UpdateBMI());
           Navigator.of(context).pop();
         },

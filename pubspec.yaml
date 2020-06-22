@@ -11,8 +11,9 @@ description: A new Flutter project.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+2
-
+version: 1.0.0+4
+module: 
+  androidX: true 
 environment:
   sdk: ">=2.2.2 <3.0.0"
 
@@ -40,6 +41,7 @@ dependencies:
   url_launcher: ^5.4.5
   google_fonts: ^ 1.0.0
   shimmer: ^1.0.1
+  flutter_spinkit: "^4.1.2"
   flare_flutter: ^2.0.3
   cached_network_image: ^2.2.0+1
   webview_flutter: ^0.3.22
@@ -51,15 +53,17 @@ dependencies:
   intercom_flutter: ^2.2.0
   flutter_svg: ^0.17.4
   charts_flutter: ^0.9.0
-
-
+  numberpicker: ^1.2.0
+  flutter_local_notifications: ^1.4.4+1
+  path_provider: ^1.6.1
+  flushbar: ^1.10.4
 dev_dependencies:
   flutter_test:
     sdk: flutter 
-  flutter_launcher_icons: "^0.7.3"
+  flutter_launcher_icons: "^0.7.5"
 
 flutter_icons:
-  android: "launcher_icon" 
+  android: true
   ios: true
   image_path: "assets/images/logo.png"
 flutter:
