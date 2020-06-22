@@ -101,85 +101,102 @@ class _LoginFormState extends State<LoginForm> with TickerProviderStateMixin {
         }
         if (state.isSuccess) {
           BlocProvider.of<AuthenticationBloc>(context)
-              .add(AuthenticationLoggedIn());
+              .add(AuthenticationLogIn());
         }
       },
       child: BlocBuilder<LoginBloc, LoginState>(
         builder: (context, state) {
-          return Padding(
-            padding: EdgeInsets.all(20.0),
-            child: Form(
-              child: ListView(
-                children: <Widget>[
-                  topContent(),
-                  DelayedAnimation(
-                    child: TextFormField(
-                      controller: _emailController,
-                      decoration: InputDecoration(
-                        icon: Icon(Icons.email),
-                        labelText: 'Email',
-                      ),
-                      keyboardType: TextInputType.emailAddress,
-                      autovalidate: true,
-                      autocorrect: false,
-                      validator: (_) {
-                        return !state.isEmailValid ? 'Invalid Email' : null;
-                      },
-                    ),
-                    delay: delayedAmount + 1000,
-                  ),
-                  DelayedAnimation(
-                    child: TextFormField(
-                      controller: _passwordController,
-                      decoration: InputDecoration(
-                        icon: Icon(Icons.lock),
-                        labelText: 'Password',
-                      ),
-                      obscureText: true,
-                      autovalidate: true,
-                      autocorrect: false,
-                      validator: (_) {
-                        return !state.isPasswordValid
-                            ? 'Invalid Password'
-                            : null;
-                      },
-                    ),
-                    delay: delayedAmount + 2000,
-                  ),
-                  DelayedAnimation(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          SizedBox(height: 32.0),
-                          LoginButton(
-                            onPressed: isLoginButtonEnabled(state)
-                                ? _onFormSubmitted
-                                : null,
+          return Stack(
+            fit: StackFit.expand,
+            children: <Widget>[
+              Positioned(
+                top: MediaQuery.of(context).size.height * .45,
+                child: Container(
+                  height: MediaQuery.of(context).size.height * .55,
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.all(20.0),
+                  child: Form(
+                    child: ListView(
+                      scrollDirection: Axis.vertical,
+                      children: <Widget>[
+                        // topContent(),
+                        DelayedAnimation(
+                          child: TextFormField(
+                            controller: _emailController,
+                            decoration: InputDecoration(
+                              icon: Icon(Icons.email),
+                              labelText: 'Email',
+                            ),
+                            keyboardType: TextInputType.emailAddress,
+                            autovalidate: true,
+                            autocorrect: false,
+                            validator: (_) {
+                              return !state.isEmailValid
+                                  ? 'Invalid Email'
+                                  : null;
+                            },
                           ),
-                          SizedBox(height: 15.0),
-                          _buildSignInWithText(),
-                          SizedBox(height: 15.0),
-                          GoogleLoginButton(),
-                          SizedBox(height: 15.0),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                                     ForgetPasswordButton(),
-                              CreateAccountButton(),
-                       
-                            ],
-                          )
-                        ],
-                      ),
+                          delay: delayedAmount + 1000,
+                        ),
+                        DelayedAnimation(
+                          child: TextFormField(
+                            controller: _passwordController,
+                            decoration: InputDecoration(
+                              icon: Icon(Icons.lock),
+                              labelText: 'Password',
+                            ),
+                            obscureText: true,
+                            autovalidate: true,
+                            autocorrect: false,
+                            validator: (_) {
+                              return !state.isPasswordValid
+                                  ? 'Invalid Password'
+                                  : null;
+                            },
+                          ),
+                          delay: delayedAmount + 2000,
+                        ),
+                        DelayedAnimation(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(vertical: 20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: <Widget>[
+                                SizedBox(height: 32.0),
+                                LoginButton(
+                                  onPressed: isLoginButtonEnabled(state)
+                                      ? _onFormSubmitted
+                                      : null,
+                                ),
+                                SizedBox(height: 15.0),
+                                _buildSignInWithText(),
+                                SizedBox(height: 15.0),
+                                GoogleLoginButton(),
+                                SizedBox(height: 15.0),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    ForgetPasswordButton(),
+                                    CreateAccountButton(),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                          delay: delayedAmount + 3000,
+                        )
+                      ],
                     ),
-                    delay: delayedAmount + 3000,
-                  )
-                ],
+                  ),
+                ),
               ),
-            ),
+              Positioned(
+                  child: Align(
+                alignment: Alignment.topCenter,
+                child: topContent(context),
+              ))
+            ],
           );
         },
       ),
@@ -200,8 +217,24 @@ class _LoginFormState extends State<LoginForm> with TickerProviderStateMixin {
     );
   }
 
-  Widget topContent() {
+  Widget topContent(BuildContext context) {
     return Container(
+      height: MediaQuery.of(context).size.height * .45,
+      margin: const EdgeInsets.only(bottom: 6.0), //Same as `blurRadius` i guess
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(50),
+          bottomRight: Radius.circular(50),
+        ),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey,
+            offset: Offset(0.0, 1.0), //(x,y)
+            blurRadius: 6.0,
+          ),
+        ],
+      ),
       padding: EdgeInsets.all(16.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -212,17 +245,17 @@ class _LoginFormState extends State<LoginForm> with TickerProviderStateMixin {
             child: _buildHeader(),
             delay: 2,
           ),
-          // DelayedAnimation(
-          //   child: Text(
-          //     "Hi There",
-          //     textAlign: TextAlign.center,
-          //     style: TextStyle(
-          //         fontWeight: FontWeight.bold,
-          //         fontSize: 35.0,
-          //         color: Colors.black54),
-          //   ),
-          //   delay: delayedAmount + 1000,
-          // ),
+          DelayedAnimation(
+            child: Text(
+              "Hi There",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: MediaQuery.of(context).size.width * .085,
+                  color: Colors.black54),
+            ),
+            delay: delayedAmount + 1000,
+          ),
           SizedBox(height: 32.0),
         ],
       ),

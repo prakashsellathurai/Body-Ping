@@ -30,6 +30,8 @@
 -keepclassmembers,allowobfuscation class * {
   @com.google.gson.annotations.SerializedName <fields>;
 }
-
+-keep class com.google.firebase.** { *; }
 ## flutter_local_notification plugin rules
 -keep class com.dexterous.** { *; }
+
+-keep class io.flutter.** {*;} -dontwarn io.flutter.**

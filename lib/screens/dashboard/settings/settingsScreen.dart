@@ -26,6 +26,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flushbar/flushbar.dart';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen(
       {Key key, this.animationController, this.user, this.userData})
@@ -53,7 +54,7 @@ class _SettingsScreenState extends State<SettingsScreen>
 
   final ScrollController scrollController = ScrollController();
   double topBarOpacity = 0.0;
-         final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
   @override
   void initState() {
@@ -97,13 +98,12 @@ class _SettingsScreenState extends State<SettingsScreen>
 
   Future<void> _signOut(BuildContext context) async {
     try {
-      Flushbar(
+      var flushbar = Flushbar(
         flushbarPosition: FlushbarPosition.TOP,
         title: "Logging out...",
         message: "Please Wait ...",
         duration: Duration(seconds: 3),
         messageText: Row(
-  
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             // Text('Logging out...', style: TextStyle(color:Colors.white),),
@@ -113,9 +113,9 @@ class _SettingsScreenState extends State<SettingsScreen>
         // icon: Icon(
         //          Icons.info_outline,
         //          color: Colors.blue,),
-      ) // <bool> is the type of the result passed to dismiss() and collected by show().then((result){})
-        ..show(context);
- flutterLocalNotificationsPlugin.cancelAll();
+      ); // <bool> is the type of the result passed to dismiss() and collected by show().then((result){})
+      flushbar..show(context);
+      flutterLocalNotificationsPlugin.cancelAll();
       userBloc = BlocProvider.of<UserBloc>(context);
       final CalorieIntakeBloc calorieIntakeBloc =
           BlocProvider.of<CalorieIntakeBloc>(context);
@@ -129,10 +129,11 @@ class _SettingsScreenState extends State<SettingsScreen>
       await waterIntakeBloc.close();
       await bmiBloc.close();
       await userBloc.dispose();
-      BlocProvider.of<AuthenticationBloc>(context).add(
-        AuthenticationLoggedOut(),
-      );
-     
+      BlocProvider.of<AuthenticationBloc>(context)
+        ..add(
+          AuthenticationLogOut(),
+        );
+      flushbar.dismiss(context);
     } on PlatformException catch (e) {
       await PlatformExceptionAlertDialog(
         title: Strings.logoutFailed,

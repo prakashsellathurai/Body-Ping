@@ -83,7 +83,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          SizedBox(height: 32.0),
+          SizedBox(height: 30.0),
           DelayedAnimation(
             child: _buildHeader(),
             delay: 2,
