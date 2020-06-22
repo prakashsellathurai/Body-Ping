@@ -13,7 +13,7 @@ class AddMealScreen extends StatefulWidget {
   String meal_title;
   List<NutritionDatabaseModel> mealListFromDatabase;
   String mealSelector;
-bool isTyping;
+  bool isTyping;
   List<double> mealQuantityList;
   AddMealScreen(
       {this.meal_title,
@@ -56,7 +56,7 @@ class _AddMealScreenState extends State<AddMealScreen> {
       return;
     } else {
       setState(() {
-          widget.isTyping = false;
+        widget.isTyping = false;
         items.clear();
       });
       return;
@@ -80,9 +80,8 @@ class _AddMealScreenState extends State<AddMealScreen> {
           actions: <Widget>[
             Center(
                 child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: FlatButton(
-                        color: DashboardTheme.nearlyWhite,
+                    padding: const EdgeInsets.only(right: 15.0),
+                    child: IconButton(
                         onPressed: () {
                           List<double> calories_list = [];
                           double totalCalories = 0;
@@ -104,7 +103,6 @@ class _AddMealScreenState extends State<AddMealScreen> {
                             calorieIntakeBloc
                               ..add(UpdateBreakfastModelIndatabaseEvent());
                           } else if (mealSelector == 'morningSnack') {
-
                             calorieIntakeBloc
                               ..add(AddMorningSnack(
                                   meallist: selectedItems,
@@ -142,21 +140,18 @@ class _AddMealScreenState extends State<AddMealScreen> {
                           Navigator.of(context).pop();
                           return;
                         },
-                        child: Text(
-                          'done',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6
-                              .copyWith(color: Colors.black),
-                        ))))
+                        icon: Icon(Icons.done))))
           ],
           centerTitle: true,
-          title: Text(
-            'Add ' + widget.meal_title,
-            style: Theme.of(context)
-                .textTheme
-                .headline6
-                .copyWith(color: Colors.black),
+          title: RichText(
+            text: TextSpan(
+              text: 'Add ' + widget.meal_title,
+              style: Theme.of(context)
+                  .textTheme
+                  .headline6
+                  .copyWith(color: Colors.black),
+            ),
+            textAlign: TextAlign.center,
           ),
         ),
         backgroundColor: DashboardTheme.background,
@@ -229,8 +224,9 @@ class _AddMealScreenState extends State<AddMealScreen> {
                           isSelected: (bool value) {
                             setState(() {
                               selectedItems.add(items[index]);
-                              selectedItemsQuantity
-                                  .add(items[index].quantity_in_grams);
+                              // selectedItemsQuantity
+                              //     .add(items[index].quantity_in_grams);
+                              selectedItemsQuantity.add(20);
                               items = List<NutritionDatabaseModel>();
                             });
                           });

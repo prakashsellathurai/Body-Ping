@@ -6,6 +6,7 @@ import 'package:gkfit/bloc/trackers/calorieIntake/CalorieIntakeEvent.dart';
 import 'package:gkfit/bloc/trackers/water_intake/water_intake_bloc.dart';
 import 'package:gkfit/model/userDataModel.dart';
 import 'package:gkfit/screens/dashboard/home/meals_list_view.dart';
+import 'package:gkfit/screens/dashboard/home/set_reminder/set_reminder_screen.dart';
 import 'package:gkfit/screens/dashboard/home/staticWaterView.dart';
 import 'package:gkfit/screens/dashboard/home/trackers/bmi_tracker/bmi_tracker_home.dart';
 import 'package:gkfit/screens/dashboard/home/trackers/calorie_tracker/calorie_tracker_home.dart';
@@ -24,6 +25,7 @@ import 'package:intl/intl.dart';
 import 'trackers/water_tracker/mini_water_intake_dashboard.dart';
 import './trackers/calorie_tracker/CalorieIntakeMiniDahsboard.dart';
 import 'package:gkfit/bloc/user_bloc.dart';
+import 'package:flutter/services.dart';
 
 class DashboardHomeScreen extends StatefulWidget {
   const DashboardHomeScreen({Key key, this.animationController, this.userData})
@@ -52,14 +54,6 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
 
   @override
   void initState() {
-    calorieIntakeBloc = BlocProvider.of<CalorieIntakeBloc>(context);
-    calorieIntakeBloc..add(FetchEntiredayMealModelEvent());
-
-    bmiBloc = BlocProvider.of<BmiBloc>(context);
-    bmiBloc..add(FetchBMI());
-
-    waterIntakeBloc = BlocProvider.of<WaterIntakeBloc>(context);
-    waterIntakeBloc.add(FetchWaterIntakeEvent());
 
     userBloc = BlocProvider.of<UserBloc>(context);
     currentDate = DateTime.now();
@@ -109,14 +103,13 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
 
   @override
   Widget build(BuildContext context) {
+        SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top,SystemUiOverlay.bottom]);
     calorieIntakeBloc = BlocProvider.of<CalorieIntakeBloc>(context);
     calorieIntakeBloc..add(FetchEntiredayMealModelEvent());
 
     bmiBloc = BlocProvider.of<BmiBloc>(context);
     bmiBloc..add(FetchBMI());
 
-    waterIntakeBloc = BlocProvider.of<WaterIntakeBloc>(context);
-    waterIntakeBloc.add(FetchWaterIntakeEvent());
     userBloc = BlocProvider.of<UserBloc>(context);
     userBloc.fetchUser();
     return Container(
@@ -453,6 +446,17 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
                                     ),
                               ),
                             ),
+                            IconButton(icon:    Icon(
+                              Icons.alarm,
+                              color: DashboardTheme.grey,
+                              // size: 18,
+                            ), onPressed: () {  
+                              print("alarm");
+                              Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) => SetRemainderScreen())
+                              );
+                            },)
+                         
                           ],
                         ),
                       )

@@ -4,14 +4,13 @@ import 'package:gkfit/constants/strings.dart';
 import 'package:gkfit/model/userDataModel.dart';
 import 'package:gkfit/provider/userDataProviderApiClient.dart';
 import 'package:gkfit/screens/on_boarding/user_submit_loading_page.dart';
-import 'package:gkfit/services/auth_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:international_phone_input/international_phone_input.dart';
 import 'package:intl/intl.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 final kHintTextStyle = TextStyle(
   color: Colors.grey, //Colors.white54,
   fontFamily: 'OpenSans',
@@ -36,7 +35,7 @@ final kBoxDecorationStyle = BoxDecoration(
 );
 
 class OnBoardingFormPage extends StatefulWidget {
-  User user;
+  FirebaseUser user;
   OnBoardingFormPage({this.user});
   @override
   State<StatefulWidget> createState() {
@@ -46,7 +45,7 @@ class OnBoardingFormPage extends StatefulWidget {
 
 class UserDetailsFormPageState extends State<OnBoardingFormPage>
     with TickerProviderStateMixin {
-  User user;
+  FirebaseUser user;
   String gender;
   int selectedGenderIndex;
   DateTime selectedDate;
