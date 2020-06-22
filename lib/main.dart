@@ -92,9 +92,13 @@ Future<void> main() async {
       androidApiKey: 'android_sdk-00787217d80052b3eee2d51235c22e803a521dce');
   BlocSupervisor.delegate = SimpleBlocDelegate();
 
-  runApp(BlocProvider(
+  runApp(startApp());
+}
+
+Widget startApp() {
+  return BlocProvider(
       create: (context) => AuthenticationBloc()..add(AuthenticationStarted()),
-      child: MyApp()));
+      child: MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -174,7 +178,6 @@ class MyAppState extends State<MyApp> {
     return MaterialApp(
       home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
         bloc: BlocProvider.of<AuthenticationBloc>(context),
-
         builder: (context, state) {
           if (state is AuthenticationProcessing) {
             return Scaffold(
