@@ -15,7 +15,7 @@ class AuthenticationSuccess extends AuthenticationState {
   final FirebaseUser user;
 
   const AuthenticationSuccess(this.user);
-  
+
   @override
   List<Object> get props => [user];
 
@@ -23,4 +23,21 @@ class AuthenticationSuccess extends AuthenticationState {
   String toString() => 'Authenticated { displayName: ${user.displayName} }';
 }
 
-class AuthenticationFailure extends AuthenticationState {}
+class AuthenticationProcessing extends AuthenticationState {
+  @override
+  List<Object> get props => ["processing"];
+  @override
+  String toString() => 'Authentication under process ';
+}
+class AuthenticationLoggedOut extends AuthenticationState {
+  @override
+  List<Object> get props => ["logged out"];
+  @override
+  String toString() => 'Authentication : logged Out';
+}
+class AuthenticationFailure extends AuthenticationState {
+  @override
+  List<Object> get props => [null];
+  @override
+  String toString() => 'Authentication Failure ';
+}

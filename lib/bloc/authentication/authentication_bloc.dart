@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:gkfit/bloc/authentication/bloc.dart';
 import 'package:gkfit/repository/user_repository.dart';
 import 'package:meta/meta.dart';
 
@@ -12,8 +13,6 @@ class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   final UserRepository _userRepository = UserRepository();
 
-
-
   @override
   AuthenticationState get initialState => AuthenticationInitial();
 
@@ -23,19 +22,25 @@ class AuthenticationBloc
   ) async* {
     if (event is AuthenticationStarted) {
       yield* _mapAuthenticationStartedToState();
-    } else if (event is AuthenticationLoggedIn) {
+    } else if (event is AuthenticationLogIn) {
       yield* _mapAuthenticationLoggedInToState();
-    } else if (event is AuthenticationLoggedOut) {
+    } else if (event is AuthenticationLogOut) {
       yield* _mapAuthenticationLoggedOutToState();
     }
   }
 
   Stream<AuthenticationState> _mapAuthenticationStartedToState() async* {
-    final isSignedIn = await _userRepository.isSignedIn();
-    if (isSignedIn) {
-      final name = await _userRepository.getUser();
-      yield AuthenticationSuccess(name);
-    } else {
+    try {
+      final isSignedIn = await _userRepository.isSignedIn();
+      if (isSignedIn) {
+        yield AuthenticationProcessing();
+        final name = await _userRepository.getUser();
+        yield AuthenticationSuccess(name);
+      } else {
+        yield AuthenticationLoggedOut();
+      }
+    } catch (e) {
+      print(e);
       yield AuthenticationFailure();
     }
   }
@@ -45,7 +50,9 @@ class AuthenticationBloc
   }
 
   Stream<AuthenticationState> _mapAuthenticationLoggedOutToState() async* {
-    yield AuthenticationFailure();
     _userRepository.signOut();
+    yield AuthenticationLoggedOut();
   }
+
+
 }

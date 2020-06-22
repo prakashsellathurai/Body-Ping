@@ -12,11 +12,7 @@ import 'package:gkfit/screens/login/login_screen.dart';
 import 'package:gkfit/widgets/loading/loadingIndicator.dart';
 import 'package:intercom_flutter/intercom_flutter.dart';
 
-
-
-
 import 'package:flutter/material.dart';
-
 
 import 'bloc/authentication/authentication_bloc.dart';
 import 'bloc/simpleblocdelegate.dart';
@@ -66,7 +62,7 @@ Future<void> main() async {
       await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
 
   var initializationSettingsAndroid =
-      AndroidInitializationSettings('@mipmap/ic_launcher');
+      AndroidInitializationSettings('@mipmap/notification_ic');
   // Note: permissions aren't requested here just to demonstrate that can be done later using the `requestPermissions()` method
   // of the `IOSFlutterLocalNotificationsPlugin` class
   var initializationSettingsIOS = IOSInitializationSettings(
@@ -175,18 +171,28 @@ class MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    // MultiProvider for top-level services that can be created right away
-
     return MaterialApp(
       home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
         bloc: BlocProvider.of<AuthenticationBloc>(context),
+
         builder: (context, state) {
+          if (state is AuthenticationProcessing) {
+            return Scaffold(
+              body: Center(
+                child: LoadingIndicator(),
+              ),
+            );
+          }
+          if (state is AuthenticationLoggedOut) {
+            return LoginScreen();
+          }
           if (state is AuthenticationFailure) {
             return LoginScreen();
           }
           if (state is AuthenticationSuccess) {
             return _buildHomePage(state.user.uid);
           }
+
           return Scaffold(
             body: Center(
               child: LoadingIndicator(),

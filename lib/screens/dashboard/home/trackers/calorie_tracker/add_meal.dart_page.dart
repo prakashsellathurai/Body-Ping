@@ -80,9 +80,8 @@ class _AddMealScreenState extends State<AddMealScreen> {
           actions: <Widget>[
             Center(
                 child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: FlatButton(
-                        color: DashboardTheme.nearlyWhite,
+                    padding: const EdgeInsets.only(right: 15.0),
+                    child: IconButton(
                         onPressed: () {
                           List<double> calories_list = [];
                           double totalCalories = 0;
@@ -141,16 +140,7 @@ class _AddMealScreenState extends State<AddMealScreen> {
                           Navigator.of(context).pop();
                           return;
                         },
-                        child:
-
-                            // Text(
-                            //   'done',
-                            //   style: Theme.of(context)
-                            //       .textTheme
-                            //       .headline6
-                            //       .copyWith(color: Colors.black),
-                            // )
-                            Icon(Icons.done))))
+                        icon: Icon(Icons.done))))
           ],
           centerTitle: true,
           title: RichText(
@@ -236,8 +226,7 @@ class _AddMealScreenState extends State<AddMealScreen> {
                               selectedItems.add(items[index]);
                               // selectedItemsQuantity
                               //     .add(items[index].quantity_in_grams);
-                                   selectedItemsQuantity
-                                  .add(20);
+                              selectedItemsQuantity.add(20);
                               items = List<NutritionDatabaseModel>();
                             });
                           });

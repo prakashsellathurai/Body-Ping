@@ -52,7 +52,7 @@ class _RegisterFormState extends State<RegisterForm> {
         }
         if (state.isSuccess) {
           BlocProvider.of<AuthenticationBloc>(context)
-              .add(AuthenticationLoggedIn());
+              .add(AuthenticationLogIn());
           Navigator.of(context).pop();
         }
         if (state.isFailure) {

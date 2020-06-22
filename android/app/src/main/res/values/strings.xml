@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">customer-app</string>
+    <string name="app_name">GkFit</string>
 
     <!-- Replace "000000000000" with your Facebook App ID here. -->
     <string name="facebook_app_id">1132396303793621</string>
