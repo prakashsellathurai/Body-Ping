@@ -1,32 +1,25 @@
 import 'dart:async';
-import 'dart:io';
-import 'dart:typed_data';
-import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gkfit/bloc/home_bloc.dart';
-import 'package:gkfit/screens/home.dart';
-import 'package:gkfit/screens/login/login_screen.dart';
-import 'package:gkfit/widgets/loading/loadingIndicator.dart';
-import 'package:intercom_flutter/intercom_flutter.dart';
-
-import 'package:flutter/material.dart';
-
-import 'bloc/authentication/authentication_bloc.dart';
-import 'bloc/simpleblocdelegate.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:intercom_flutter/intercom_flutter.dart';
 import 'package:rxdart/subjects.dart';
 
+import 'bloc/authentication/authentication_bloc.dart';
+import 'bloc/home_bloc.dart';
+import 'bloc/simpleblocdelegate.dart';
 import 'bloc/trackers/bmi/bmi_bloc.dart';
 import 'bloc/trackers/bmi/bmi_event.dart';
 import 'bloc/trackers/calorieIntake/CalorieIntakeBloc.dart';
 import 'bloc/trackers/calorieIntake/CalorieIntakeEvent.dart';
 import 'bloc/trackers/water_intake/water_intake_bloc.dart';
 import 'bloc/user_bloc.dart';
+import 'screens/home.dart';
+import 'screens/login/login_screen.dart';
+import 'widgets/loading/loadingIndicator.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
