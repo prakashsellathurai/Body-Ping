@@ -103,7 +103,7 @@ class WalkThroughScreenBodyState extends State<WalkThroughScreenBody> {
                       await SharedPreferences.getInstance();
                   prefs.setBool(Keys.showWalkthrough, false);
                   Navigator.of(context)
-                  .push(MaterialPageRoute(
+                  .pushReplacement(MaterialPageRoute(
                       builder: (BuildContext context) => startApp()));
                 },
                 child: Padding(

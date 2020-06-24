@@ -9,6 +9,7 @@ import 'package:gkfit/screens/dashboard/home/home_screen.dart';
 import 'package:gkfit/screens/dashboard/your_wellness/your_wellness_screen.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intercom_flutter/intercom_flutter.dart';
+import 'package:rxdart/src/subjects/behavior_subject.dart';
 
 import './../../model/dashboard/tabIcon_data.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,10 @@ import './settings/settingsScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AppDashboardHomeScreen extends StatefulWidget {
-  const AppDashboardHomeScreen({Key key, @required this.user, this.userData})
+  const AppDashboardHomeScreen(
+      {Key key,
+      @required this.user,
+      this.userData})
       : super(key: key);
   final FirebaseUser user;
   final UserDataModel userData;
@@ -82,6 +86,7 @@ class _AppDashboardHomeScreenState extends State<AppDashboardHomeScreen>
     tabBody = DashboardHomeScreen(animationController: animationController);
     super.initState();
     initIntercom();
+
   }
 
   void showBottomBar() {

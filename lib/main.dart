@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,6 +33,20 @@ final BehaviorSubject<String> selectNotificationSubject =
     BehaviorSubject<String>();
 
 NotificationAppLaunchDetails notificationAppLaunchDetails;
+final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) {
+    if (message.containsKey('data')) {
+      // Handle data message
+      final dynamic data = message['data'];
+    }
+
+    if (message.containsKey('notification')) {
+      // Handle notification message
+      final dynamic notification = message['notification'];
+    }
+    print("onBackgroundMessage: $message");
+    // Or do other work.
+  }
 
 class ReceivedNotification {
   final int id;
@@ -109,7 +124,24 @@ class MyAppState extends State<MyApp> {
     _requestIOSPermissions();
     _configureDidReceiveLocalNotificationSubject();
     _configureSelectNotificationSubject();
+    _configureFirebaseMessaging();
   }
+
+  _configureFirebaseMessaging() {
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+      },
+      onBackgroundMessage: myBackgroundMessageHandler,
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("onResume: $message");
+      },
+    );
+  }
+
 
   void _requestIOSPermissions() {
     flutterLocalNotificationsPlugin
@@ -140,14 +172,6 @@ class MyAppState extends State<MyApp> {
               child: Text('Ok'),
               onPressed: () async {
                 print("recieved cupertino");
-                // Navigator.of(context, rootNavigator: true).pop();
-                // await Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) =>
-                //         HomePage(),
-                //   ),
-                // );
               },
             )
           ],
@@ -159,10 +183,6 @@ class MyAppState extends State<MyApp> {
   void _configureSelectNotificationSubject() {
     selectNotificationSubject.stream.listen((String payload) async {
       print("recieved rx subject");
-      // await Navigator.push(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => HomePage()),
-      // );
     });
   }
 
