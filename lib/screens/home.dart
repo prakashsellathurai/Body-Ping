@@ -26,10 +26,11 @@ class HomePageState extends State<HomePage> {
   @override
   void initState() {
     // TODO: implement initState
-
+  userBloc = BlocProvider.of<UserBloc>(context);
+ 
     super.initState();
   }
-
+ 
   @override
   void dispose() {
     // TODO: implement dispose
@@ -82,6 +83,7 @@ class HomePageState extends State<HomePage> {
           if (homeState == HomeState.notLoaded) {
             return Center(child: LoadingIndicator());
           } else if (homeState == HomeState.loaded) {
+            
             return AppDashboardHomeScreen(user: user, userData: userdatemodel);
           }
           return Center(child: LoadingIndicator());
