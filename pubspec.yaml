@@ -58,7 +58,7 @@ dependencies:
   path_provider: ^1.6.1
   flushbar: ^1.10.4
   firebase_messaging: ^6.0.16
-
+  firebase_in_app_messaging: ^0.1.2
 dev_dependencies:
   flutter_test:
     sdk: flutter 
