@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:firebase_in_app_messaging/firebase_in_app_messaging.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +34,7 @@ final BehaviorSubject<String> selectNotificationSubject =
 
 NotificationAppLaunchDetails notificationAppLaunchDetails;
 final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+final FirebaseInAppMessaging fiam = FirebaseInAppMessaging();
   Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) {
     if (message.containsKey('data')) {
       // Handle data message
