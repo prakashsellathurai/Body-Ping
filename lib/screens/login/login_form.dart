@@ -103,6 +103,7 @@ class _LoginFormState extends State<LoginForm> with TickerProviderStateMixin {
           BlocProvider.of<AuthenticationBloc>(context)
               .add(AuthenticationLogIn());
         }
+      
       },
       child: BlocBuilder<LoginBloc, LoginState>(
         builder: (context, state) {
