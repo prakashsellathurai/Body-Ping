@@ -26,10 +26,12 @@ class HomePageState extends State<HomePage> {
   @override
   void initState() {
     // TODO: implement initState
-
+  userBloc = BlocProvider.of<UserBloc>(context);
+ 
     super.initState();
+    
   }
-
+ 
   @override
   void dispose() {
     // TODO: implement dispose

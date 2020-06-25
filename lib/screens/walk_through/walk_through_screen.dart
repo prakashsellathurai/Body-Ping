@@ -4,7 +4,7 @@ import 'package:gkfit/screens/login/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './../../widgets/ui/page_view_indicator.dart';
 import './../../model/walk_through/walk_through_model.dart';
-
+import 'package:gkfit/main.dart';
 class WalkThroughScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -102,8 +102,9 @@ class WalkThroughScreenBodyState extends State<WalkThroughScreenBody> {
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
                   prefs.setBool(Keys.showWalkthrough, false);
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (BuildContext context) => LoginScreen()));
+                  Navigator.of(context)
+                  .pushReplacement(MaterialPageRoute(
+                      builder: (BuildContext context) => startApp()));
                 },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(

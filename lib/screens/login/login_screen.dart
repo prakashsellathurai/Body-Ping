@@ -25,7 +25,7 @@ class LoginScreen extends StatelessWidget {
             return Scaffold(
               backgroundColor: Colors.white, //Colors.grey[200],
               body: BlocProvider<LoginBloc>(
-                create: (context) => LoginBloc(userRepository: _userRepository),
+                create: (context) => LoginBloc(),
                 child: LoginForm(userRepository: _userRepository),
               ),
             );
