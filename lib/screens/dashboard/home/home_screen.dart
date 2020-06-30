@@ -51,10 +51,10 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
   BmiBloc bmiBloc;
   var TopBarformatter = new DateFormat('MMMd');
   _DashboardHomeScreenState(this.userData);
+  bool _isOnTop = true;
 
   @override
   void initState() {
-
     userBloc = BlocProvider.of<UserBloc>(context);
     currentDate = DateTime.now();
     topBarAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
@@ -88,6 +88,18 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
     super.initState();
   }
 
+  _scrollToTop() {
+    scrollController.animateTo(scrollController.position.minScrollExtent,
+        duration: Duration(milliseconds: 1000), curve: Curves.easeIn);
+    setState(() => _isOnTop = true);
+  }
+
+  _scrollToBottom() {
+    scrollController.animateTo(scrollController.position.maxScrollExtent,
+        duration: Duration(milliseconds: 1000), curve: Curves.easeOut);
+    setState(() => _isOnTop = false);
+  }
+
   void addAllListData() {}
 
   Future<bool> getData() async {
@@ -103,7 +115,8 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
 
   @override
   Widget build(BuildContext context) {
-        SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top,SystemUiOverlay.bottom]);
+    SystemChrome.setEnabledSystemUIOverlays(
+        [SystemUiOverlay.top, SystemUiOverlay.bottom]);
     calorieIntakeBloc = BlocProvider.of<CalorieIntakeBloc>(context);
     calorieIntakeBloc..add(FetchEntiredayMealModelEvent());
 
@@ -335,23 +348,30 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
                                   builder: (BuildContext context,
                                       AsyncSnapshot<UserDataModel> snapshot) {
                                     try {
-                                      return RichText(
-                                        maxLines: 12,
-                                        softWrap: false,
-                                        textAlign: TextAlign.left,
-                                        text: TextSpan(
-                                            text: (snapshot.hasData)
-                                                ? 'Hi ${capitalize((snapshot.data.firstName != null) ? snapshot.data.firstName : "home")}'
-                                                : "Home",
-                                            style: TextStyle(
-                                              fontFamily:
-                                                  DashboardTheme.fontName,
-                                              fontWeight: FontWeight.w700,
-                                              fontSize:
-                                                  22 + 6 - 6 * topBarOpacity,
-                                              // letterSpacing: 1.2,
-                                              color: DashboardTheme.darkerText,
-                                            )),
+                                      return GestureDetector(
+                                        onTap: () {
+                                          //  _isOnTop ? _scrollToBottom() :
+                                          _scrollToTop();
+                                        },
+                                        child: RichText(
+                                          maxLines: 12,
+                                          softWrap: false,
+                                          textAlign: TextAlign.left,
+                                          text: TextSpan(
+                                              text: (snapshot.hasData)
+                                                  ? 'Hi ${capitalize((snapshot.data.firstName != null) ? snapshot.data.firstName : "home")}'
+                                                  : "Home",
+                                              style: TextStyle(
+                                                fontFamily:
+                                                    DashboardTheme.fontName,
+                                                fontWeight: FontWeight.w700,
+                                                fontSize:
+                                                    22 + 6 - 6 * topBarOpacity,
+                                                // letterSpacing: 1.2,
+                                                color:
+                                                    DashboardTheme.darkerText,
+                                              )),
+                                        ),
                                       );
                                     } catch (e) {
                                       return RichText(
@@ -446,17 +466,19 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
                                     ),
                               ),
                             ),
-                            IconButton(icon:    Icon(
-                              Icons.alarm,
-                              color: DashboardTheme.grey,
-                              // size: 18,
-                            ), onPressed: () {  
-                              print("alarm");
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (context) => SetRemainderScreen())
-                              );
-                            },)
-                         
+                            IconButton(
+                              icon: Icon(
+                                Icons.alarm,
+                                color: DashboardTheme.grey,
+                                // size: 18,
+                              ),
+                              onPressed: () {
+                                print("alarm");
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        SetRemainderScreen()));
+                              },
+                            )
                           ],
                         ),
                       )

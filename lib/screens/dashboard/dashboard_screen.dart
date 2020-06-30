@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gkfit/bloc/user_bloc.dart';
 import 'package:gkfit/model/userDataModel.dart';
 import 'package:gkfit/provider/userDataProviderApiClient.dart';
+import 'package:gkfit/screens/dashboard/fitness/fitness_screen.dart';
 import 'package:gkfit/screens/dashboard/founder/founder_screen.dart';
 import 'package:gkfit/screens/dashboard/home/home_screen.dart';
 import 'package:gkfit/screens/dashboard/your_wellness/your_wellness_screen.dart';
@@ -198,9 +199,10 @@ class _AppDashboardHomeScreenState extends State<AppDashboardHomeScreen>
                   return;
                 }
                 setState(() {
-                  tabBody = YourWellness(
+                  tabBody = FitnessScreen(
                       animationController: animationController,
-                      userData: userData);
+                      // userData: userData
+                      );
                 });
               });
             } else if (index == 2) {
