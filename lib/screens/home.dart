@@ -12,8 +12,6 @@ import 'package:gkfit/widgets/loading/loadingIndicator.dart';
 import './../bloc/authentication/bloc.dart';
 import './dashboard/dashboard_screen.dart';
 
-
-
 class HomePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -47,8 +45,13 @@ class HomePageState extends State<HomePage> {
 
   Widget _buildHomePage(BuildContext context) {
     return Scaffold(
-        body: BlocBuilder<UserBloc, UserState>(
+        body: BlocConsumer<UserBloc, UserState>(
             bloc: userBloc,
+            listener: (BuildContext context, UserState userState) {
+              if (userState is UserFetchError) {
+                userBloc..add(UserFetch());
+              }
+            },
             builder: (BuildContext context, UserState userState) {
               if (userState is UserFetchError) {
                 return Center(child: NoInternet());

@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:math';
+import 'dart:math' as math;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gkfit/bloc/user_bloc.dart';
 import 'package:gkfit/model/userDataModel.dart';
@@ -22,10 +22,7 @@ import './settings/settingsScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AppDashboardHomeScreen extends StatefulWidget {
-  const AppDashboardHomeScreen(
-      {Key key,
-      @required this.user,
-      this.userData})
+  const AppDashboardHomeScreen({Key key, @required this.user, this.userData})
       : super(key: key);
   final FirebaseUser user;
   final UserDataModel userData;
@@ -63,7 +60,7 @@ class _AppDashboardHomeScreenState extends State<AppDashboardHomeScreen>
     });
     tabIconsList[0].isSelected = false;
     bottomBarScrollControl = ScrollController();
-    bottomBarScrollControl.addListener(() {
+
       bottomBarScrollControl.addListener(() {
         if (bottomBarScrollControl.position.userScrollDirection ==
             ScrollDirection.reverse) {
@@ -80,14 +77,12 @@ class _AppDashboardHomeScreenState extends State<AppDashboardHomeScreen>
             showBottomBar();
           }
         }
-      });
     });
     animationController = AnimationController(
         duration: const Duration(milliseconds: 600), vsync: this);
     tabBody = DashboardHomeScreen(animationController: animationController);
     super.initState();
     initIntercom();
-
   }
 
   void showBottomBar() {
@@ -156,6 +151,7 @@ class _AppDashboardHomeScreenState extends State<AppDashboardHomeScreen>
             } else {
               return Stack(
                 children: <Widget>[
+                  ..._buildDecorations(),
                   tabBody,
                   bottomBar(),
                 ],
@@ -165,6 +161,33 @@ class _AppDashboardHomeScreenState extends State<AppDashboardHomeScreen>
         ),
       ),
     );
+  }
+
+  List<Widget> _buildDecorations() {
+    final screenSize = MediaQuery.of(context).size;
+
+    final pokeSize = screenSize.width * 0.548;
+
+    return [
+      Positioned(
+        top: screenSize.height * 0.0348,
+        left: -screenSize.width * 0.5,
+        // child: ClipPath(
+        //   clipper: BackgroundImageClipper(),
+          child: Transform.rotate(
+            angle:-math.pi / .5, 
+            child: Image.asset(
+            "assets/images/designs/full_slide_background.png",
+            width: screenSize.height * 0.9,
+            height: screenSize.height * 0.94,
+            alignment: FractionalOffset.topCenter,
+            // color: Colors.teal.withOpacity(0.5),
+            //  color: Colors.grey.withOpacity(0.1),
+          ),
+          )
+        // ),
+      )
+    ];
   }
 
   Future<bool> getData() async {
@@ -200,9 +223,9 @@ class _AppDashboardHomeScreenState extends State<AppDashboardHomeScreen>
                 }
                 setState(() {
                   tabBody = FitnessScreen(
-                      animationController: animationController,
-                      // userData: userData
-                      );
+                    animationController: animationController,
+                    // userData: userData
+                  );
                 });
               });
             } else if (index == 2) {
@@ -233,4 +256,21 @@ class _AppDashboardHomeScreenState extends State<AppDashboardHomeScreen>
       ],
     );
   }
+}
+
+class BackgroundImageClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    var path = Path();
+    path.lineTo(0.0, 0);
+    path.lineTo(size.width, 0);
+   
+    path.lineTo(size.width,size.height/2);
+     path.lineTo(0.0, size.height/2);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }

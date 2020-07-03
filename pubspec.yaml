@@ -77,6 +77,7 @@ flutter:
   assets:
    - assets/user.png
    - assets/images/g-logo.png
+   - assets/images/designs/
    - assets/images/logo.png
    - assets/images/dashboard/
    - assets/images/fitness/

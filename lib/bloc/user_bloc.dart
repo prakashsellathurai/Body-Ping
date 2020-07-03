@@ -16,7 +16,7 @@ class UserState {
   const UserState();
   @override
   List<Object> get props => [];
-   @override
+  @override
   UserDataModel getUserData() => null;
 }
 
@@ -31,7 +31,8 @@ class UserDataFetched extends UserState {
   UserDataFetched copyWith({UserDataModel userData}) {
     return UserDataFetched(userData: userData);
   }
-    @override
+
+  @override
   List<Object> get props => [userData];
 
   @override
@@ -42,10 +43,9 @@ class UserDataFetched extends UserState {
   String uid() => userData.uid;
   @override
   String displayName() => userData.firstName;
-
 }
 
-class UserBloc extends Bloc<UserEvent,UserState>{
+class UserBloc extends Bloc<UserEvent, UserState> {
   String uid;
   UserBloc({this.uid});
 
@@ -54,7 +54,7 @@ class UserBloc extends Bloc<UserEvent,UserState>{
 
   Stream<UserDataModel> get userData => _userFetcher.stream;
 
-  getUser() async{
+  getUser() async {
     return await _userFetcher.last;
   }
 
@@ -77,20 +77,20 @@ class UserBloc extends Bloc<UserEvent,UserState>{
   Stream<UserState> mapEventToState(UserEvent event) async* {
     final currentState = state;
     try {
-      if (currentState is UserUnitialized){
-         UserDataModel userData = await _userRepository.fetchUser(this.uid);
-         yield UserDataFetched(userData: userData);
+      if (currentState is UserUnitialized && event is UserFetch) {
+        UserDataModel userData = await _userRepository.fetchUser(this.uid);
+        yield UserDataFetched(userData: userData);
       }
 
-      if (currentState is UserDataFetched){
-          UserDataModel userData = await _userRepository.fetchUser(this.uid);
-         yield currentState.copyWith(userData: userData);
+      if (currentState is UserDataFetched && event is UserFetch) {
+        UserDataModel userData = await _userRepository.fetchUser(this.uid);
+        yield currentState.copyWith(userData: userData);
       }
-      if (currentState is UserFetchError) {
-        throw Exception("user fetch error");
-      }
+      // if (currentState is UserFetchError && event is UserFetch) {
+      //   throw Exception("user fetch error");
+      // }
     } catch (e) {
+      yield UserFetchError();
     }
-   
   }
 }

@@ -1,3 +1,9 @@
 {
-    "java.configuration.updateBuildConfiguration": "disabled"
-}
+    "editor.formatOnSave": true,
+    "dart.flutterHotRestartOnSave": true,
+    "dart.previewFlutterGutterIcons": true,
+    "dart.previewFlutterUiGuides": true,
+    "dart.previewFlutterUiGuidesCustomTracking": true,
+    "dart.enableMachineLearningCodeCompletion": true
+  }
+  

@@ -12,6 +12,7 @@ import 'package:gkfit/screens/dashboard/home/trackers/bmi_tracker/bmi_tracker_ho
 import 'package:gkfit/screens/dashboard/home/trackers/calorie_tracker/calorie_tracker_home.dart';
 import 'package:gkfit/screens/dashboard/home/trackers/water_tracker/water_tracker_home.dart';
 import 'package:gkfit/screens/dashboard/ui_view/miniConsultWithExperts.dart';
+import 'package:gkfit/widgets/animations/animated_rotated.dart';
 
 import '../ui_view/body_measurement.dart';
 import '../ui_view/glass_view.dart';
@@ -26,6 +27,7 @@ import 'trackers/water_tracker/mini_water_intake_dashboard.dart';
 import './trackers/calorie_tracker/CalorieIntakeMiniDahsboard.dart';
 import 'package:gkfit/bloc/user_bloc.dart';
 import 'package:flutter/services.dart';
+import 'dart:math' as math;
 
 class DashboardHomeScreen extends StatefulWidget {
   const DashboardHomeScreen({Key key, this.animationController, this.userData})
@@ -47,14 +49,18 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
   DateTime currentDate;
   UserDataModel userData;
   WaterIntakeBloc waterIntakeBloc;
+  AnimationController _rotateController;
   CalorieIntakeBloc calorieIntakeBloc;
   BmiBloc bmiBloc;
   var TopBarformatter = new DateFormat('MMMd');
   _DashboardHomeScreenState(this.userData);
   bool _isOnTop = true;
-
+  bool showBackgroundImage = false;
   @override
   void initState() {
+    _rotateController = AnimationController(
+        vsync: this, duration: Duration(milliseconds: 5000));
+    _rotateController.repeat();
     userBloc = BlocProvider.of<UserBloc>(context);
     currentDate = DateTime.now();
     topBarAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
@@ -67,6 +73,7 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
       if (scrollController.offset >= 24) {
         if (topBarOpacity != 1.0) {
           setState(() {
+            showBackgroundImage = true;
             topBarOpacity = 1.0;
           });
         }
@@ -74,12 +81,14 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
           scrollController.offset >= 0) {
         if (topBarOpacity != scrollController.offset / 24) {
           setState(() {
+            showBackgroundImage = false;
             topBarOpacity = scrollController.offset / 24;
           });
         }
       } else if (scrollController.offset <= 0) {
         if (topBarOpacity != 0.0) {
           setState(() {
+            showBackgroundImage = false;
             topBarOpacity = 0.0;
           });
         }
@@ -109,6 +118,7 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
 
   @override
   void dispose() {
+    _rotateController.dispose();
     // TODO: implement dispose
     super.dispose();
   }
@@ -126,11 +136,13 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
     userBloc = BlocProvider.of<UserBloc>(context);
     userBloc.fetchUser();
     return Container(
-      color: DashboardTheme.background,
+      color:
+          showBackgroundImage ? DashboardTheme.background : Colors.transparent,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Stack(
           children: <Widget>[
+            if (showBackgroundImage) ..._buildDecorations(),
             getMainListViewUI(),
             getAppBarUI(),
             SizedBox(
@@ -140,6 +152,40 @@ class _DashboardHomeScreenState extends State<DashboardHomeScreen>
         ),
       ),
     );
+  }
+
+  List<Widget> _buildDecorations() {
+    final screenSize = MediaQuery.of(context).size;
+
+    final pokeSize = screenSize.width * 0.548;
+
+    return [
+      Positioned(
+        top: 0,
+        left: -screenSize.height * 0.15,
+        child: AnimatedRotation(
+          animation: _rotateController,
+          child: Image.asset(
+            "assets/images/designs/pokeball.png",
+            width: pokeSize,
+            height: pokeSize,
+            color: Colors.black.withOpacity(0.06),
+          ),
+        ),
+      ),
+      Positioned(
+          top: screenSize.height * 0.5,
+          right: -screenSize.width * 0.1,
+          child: Transform.rotate(
+            angle: -math.pi / 4,
+            child: Image.asset(
+              "assets/images/designs/dotted.png",
+              width: screenSize.height * 0.1,
+              height: screenSize.height * 0.1 * 0.54,
+              color: Colors.black.withOpacity(0.3),
+            ),
+          )),
+    ];
   }
 
   Widget getMainListViewUI() {
