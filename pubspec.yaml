@@ -1,4 +1,4 @@
-name: gkfit
+name: Body Ping
 description: A new Flutter project.
 
 # The following defines the version and build number for your application.
@@ -62,6 +62,11 @@ dependencies:
   flutter_rounded_progress_bar: "^0.1.2"
   bezier_chart: "^1.0.6"
   percent_indicator: "^2.1.1"
+  modal_bottom_sheet: ^0.2.0
+  direct_select_flutter: ^1.0.6
+  flutter_dash: ^0.0.1
+  flappy_search_bar: ^1.4.1
+  timeline_list: ^0.0.3
 dev_dependencies:
   flutter_test:
     sdk: flutter 

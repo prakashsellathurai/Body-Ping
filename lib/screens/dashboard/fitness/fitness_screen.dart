@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:gkfit/screens/dashboard/dashboard_theme.dart';
+import 'package:gkfit/screens/dashboard/fitness/SearchScreen.dart';
 import 'package:gkfit/screens/dashboard/fitness/widgets/programs.dart';
 import 'package:gkfit/screens/dashboard/home/set_reminder/set_reminder_screen.dart';
 import 'package:gkfit/screens/dashboard/ui_view/running_view.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import './favourites.dart';
+import 'filter.dart';
+
 class FitnessScreen extends StatefulWidget {
   FitnessScreen({Key key, this.animationController}) : super(key: key);
   final AnimationController animationController;
@@ -66,11 +70,12 @@ class _FitnessScreenState extends State<FitnessScreen>
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: DashboardTheme.background,
+      // color: DashboardTheme.background,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Stack(
           children: <Widget>[
+            ..._buildDecorations(),
             getMainListViewUI(),
             getAppBarUI(),
             SizedBox(
@@ -82,27 +87,44 @@ class _FitnessScreenState extends State<FitnessScreen>
     );
   }
 
+  List<Widget> _buildDecorations() {
+    final screenSize = MediaQuery.of(context).size;
+
+    return [
+      Positioned(
+          top: screenSize.height * (1 / 3),
+          // left: screenSize.width * 0.5,
+
+          child: Container(
+            height: screenSize.height * (1 / 3),
+            width: screenSize.width,
+            color: DashboardTheme.background,
+          ))
+    ];
+  }
+
   Widget getMainTabView() {
     return Column(
       children: <Widget>[
         TabBar(
-          labelStyle: DashboardTheme.body2,
-          // isScrollable: true,
-          labelColor: DashboardTheme.body2.color,
-          controller: _tabController, tabs: <Widget>[
-          Container(
-            // height: 30.0,
-            child: Tab(
-              text: 'Home Workouts',
-            ),
-          ),
-          Container(
-            // height: 30.0,
-            child: Tab(
-              text: 'Gym Workouts',
-            ),
-          ),
-        ]),
+            labelStyle: DashboardTheme.body2,
+            // isScrollable: true,
+            labelColor: DashboardTheme.body2.color,
+            controller: _tabController,
+            tabs: <Widget>[
+              Container(
+                // height: 30.0,
+                child: Tab(
+                  text: 'Home Workouts',
+                ),
+              ),
+              Container(
+                // height: 30.0,
+                child: Tab(
+                  text: 'Gym Workouts',
+                ),
+              ),
+            ]),
       ],
     );
   }
@@ -215,11 +237,11 @@ class _FitnessScreenState extends State<FitnessScreen>
                                     Radius.circular(32.0)),
                                 onTap: () {},
                                 child: Center(
-                                  // child: Icon(
-                                  //   Icons.keyboard_arrow_left,
-                                  //   color: DashboardTheme.grey,
-                                  // ),
-                                ),
+                                    // child: Icon(
+                                    //   Icons.keyboard_arrow_left,
+                                    //   color: DashboardTheme.grey,
+                                    // ),
+                                    ),
                               ),
                             ),
                             // Padding(
@@ -227,7 +249,41 @@ class _FitnessScreenState extends State<FitnessScreen>
                             //     left: 8,
                             //     right: 8,
                             //   ),
-                              
+                            IconButton(
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        SearchScreen()));
+                              },
+                              icon: Icon(
+                                Icons.search,
+                                color: DashboardTheme.grey,
+                                // size: 18,
+                              ),
+                            ),
+                            IconButton(
+                              icon: Icon(
+                                Icons.filter_list,
+                                color: DashboardTheme.grey,
+                                // size: 18,
+                              ),
+                              onPressed: () {
+                                showBarModalBottomSheet(
+                                  context: context,
+                                  // elevation: 1,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(35),
+                                    topRight: Radius.circular(35),
+                                  )),
+                                  builder: (context, scrollController) =>
+                                      FitnessFilterWidget(),
+                                );
+                                // Navigator.of(context).push(MaterialPageRoute(
+                                //     builder: (context) =>
+                                //         FavouritesFitnessScreen()));
+                              },
+                            ),
                             IconButton(
                               icon: Icon(
                                 Icons.bookmark,
@@ -235,35 +291,34 @@ class _FitnessScreenState extends State<FitnessScreen>
                                 // size: 18,
                               ),
                               onPressed: () {
-                                print("alarm");
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) =>
                                         FavouritesFitnessScreen()));
                               },
                             )
-                              // child: Row(
-                              //   children: <Widget>[
-                              //     Padding(
-                              //       padding: const EdgeInsets.only(right: 8),
-                              //       child: Icon(
-                              //         Icons.calendar_today,
-                              //         color: DashboardTheme.grey,
-                              //         size: 18,
-                              //       ),
-                              //     ),
-                              //     Text(
-                              //       '15 May',
-                              //       textAlign: TextAlign.left,
-                              //       style: TextStyle(
-                              //         fontFamily: DashboardTheme.fontName,
-                              //         fontWeight: FontWeight.normal,
-                              //         fontSize: 18,
-                              //         letterSpacing: -0.2,
-                              //         color: DashboardTheme.darkerText,
-                              //       ),
-                              //     ),
-                              //   ],
-                              // ),
+                            // child: Row(
+                            //   children: <Widget>[
+                            //     Padding(
+                            //       padding: const EdgeInsets.only(right: 8),
+                            //       child: Icon(
+                            //         Icons.calendar_today,
+                            //         color: DashboardTheme.grey,
+                            //         size: 18,
+                            //       ),
+                            //     ),
+                            //     Text(
+                            //       '15 May',
+                            //       textAlign: TextAlign.left,
+                            //       style: TextStyle(
+                            //         fontFamily: DashboardTheme.fontName,
+                            //         fontWeight: FontWeight.normal,
+                            //         fontSize: 18,
+                            //         letterSpacing: -0.2,
+                            //         color: DashboardTheme.darkerText,
+                            //       ),
+                            //     ),
+                            //   ],
+                            // ),
                             // ),
                             // SizedBox(
                             //   height: 38,

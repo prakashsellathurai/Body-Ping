@@ -1,3 +1,6 @@
+import 'package:timeline_list/timeline.dart';
+import 'package:timeline_list/timeline_model.dart';
+
 import '../components/next_step.dart';
 import '../models/exercise.dart';
 import '../pages/activity_timer.dart';
@@ -151,9 +154,11 @@ class ActivityDetail extends StatelessWidget {
                               title: 'Lateral Raise',
                               seconds: 50,
                             ),
+                            
                           ],
                         ),
                       ),
+   
                     ],
                   ),
                 ),
@@ -162,10 +167,10 @@ class ActivityDetail extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: GestureDetector(
+      floatingActionButton:  GestureDetector(
         child: Container(
-          margin: EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
-          padding: EdgeInsets.all(15.0),
+          margin: EdgeInsets.all( 20.0),
+          padding: EdgeInsets.all(10.0),
           decoration: BoxDecoration(
               color: Color.fromRGBO(100, 140, 255, 1.0),
               borderRadius: BorderRadius.circular(15.0),

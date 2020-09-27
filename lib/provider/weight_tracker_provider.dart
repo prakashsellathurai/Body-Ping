@@ -4,7 +4,7 @@ import 'dart:convert';
 
 class WeightTrackerProvider {
   String baseUrl =
-      'https://trackers-api-dot-hygieafit.el.r.appspot.com/trackers/v1/weight';
+      'url';
 
   Future<String> addWeightLog(
       uid, time, weight_in_kgs, bmi, height_in_cm, bodyfat) async {
