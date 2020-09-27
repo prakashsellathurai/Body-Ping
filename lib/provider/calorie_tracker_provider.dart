@@ -5,7 +5,7 @@ import 'dart:convert';
 
 class CalorieTrackerProvider {
   String baseUrl =
-      'https://trackers-api-dot-hygieafit.el.r.appspot.com/trackers/v1/calories';
+      'url';
 
   Future<String> getMealdata(uid, dateString) async {
 

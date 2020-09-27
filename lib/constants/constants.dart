@@ -1,12 +1,12 @@
 class Constants {
   // TODO: Replace this with your firebase project URL
-  static const String firebaseProjectURL = 'https://customer-app-2bc62.firebaseapp.com/';
-  static const String userDataApiURL = "https://user-api-dot-hygieafit.el.r.appspot.com";
+  static const String firebaseProjectURL = 'url';
+  static const String userDataApiURL = "url";
 
   // founder strings
-  static const String founderBlogPostApi = 'https://founder-blog.gkfit.in';
-  static const String founderBlogcontentAPIKey= '6781277830b6fce9d085e56bd4';
-  static const String aboutFounderUrl = "https://customer-app-2bc62.web.app/about.html";
-  static const String foundertweetsUrl = "https://customer-app-2bc62.web.app/";
+  static const String founderBlogPostApi = 'url';
+  static const String founderBlogcontentAPIKey= 'url';
+  static const String aboutFounderUrl = "url";
+  static const String foundertweetsUrl = "url";
 
 }

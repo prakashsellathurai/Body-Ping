@@ -16,7 +16,7 @@ import 'package:international_phone_input/international_phone_input.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
-
+import 'package:gkfit/provider/userDataProviderApiClient.dart';
 final kHintTextStyle = TextStyle(
   color: Colors.grey, //Colors.white54,
   fontFamily: 'OpenSans',
@@ -57,6 +57,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
       dateOfBirthPlaceholder,
       phoneNumberPlaceholder;
 
+UserDataProviderApiClient userdataApi = UserDataProviderApiClient();
   _EditAccountScreenState(this.userData);
 
   String phoneIsoCode;
