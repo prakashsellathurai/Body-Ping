@@ -7,8 +7,9 @@ import 'package:gkfit/bloc/login/login_event.dart';
 import 'package:gkfit/bloc/login/login_state.dart';
 import 'package:gkfit/repository/user_repository.dart';
 import 'package:gkfit/widgets/animations/delayed_animation.dart';
-import 'package:gkfit/widgets/loading/loadingIndicator.dart';
-
+import './decoration_box.dart';
+import 'package:gkfit/widgets/animations/animated_rotated.dart';
+import 'dart:math' as math;
 import 'create_account_button.dart';
 import 'google_login_button.dart';
 import 'login_button.dart';
@@ -33,7 +34,7 @@ class _LoginFormState extends State<LoginForm> with TickerProviderStateMixin {
   double _scale;
   final int delayedAmount = 500;
   UserRepository get _userRepository => widget._userRepository;
-
+  AnimationController _rotateController;
   bool get isPopulated =>
       _emailController.text.isNotEmpty && _passwordController.text.isNotEmpty;
 
@@ -47,6 +48,9 @@ class _LoginFormState extends State<LoginForm> with TickerProviderStateMixin {
     _loginBloc = BlocProvider.of<LoginBloc>(context);
     _emailController.addListener(_onEmailChanged);
     _passwordController.addListener(_onPasswordChanged);
+    _rotateController = AnimationController(
+        vsync: this, duration: Duration(milliseconds: 5000));
+    _rotateController.repeat();
     _loadingAnimationController = AnimationController(
       vsync: this,
       duration: Duration(
@@ -103,7 +107,6 @@ class _LoginFormState extends State<LoginForm> with TickerProviderStateMixin {
           BlocProvider.of<AuthenticationBloc>(context)
               .add(AuthenticationLogIn());
         }
-      
       },
       child: BlocBuilder<LoginBloc, LoginState>(
         builder: (context, state) {
@@ -196,7 +199,8 @@ class _LoginFormState extends State<LoginForm> with TickerProviderStateMixin {
                   child: Align(
                 alignment: Alignment.topCenter,
                 child: topContent(context),
-              ))
+              )),
+              ..._buildDecorations(),
             ],
           );
         },
@@ -216,6 +220,50 @@ class _LoginFormState extends State<LoginForm> with TickerProviderStateMixin {
         ),
       ],
     );
+  }
+
+  List<Widget> _buildDecorations() {
+    final screenSize = MediaQuery.of(context).size;
+
+    final pokeSize = screenSize.width * 0.548;
+
+    return [
+      Positioned(
+        top: -screenSize.height * 0.15,
+        left: -screenSize.height * 0.15,
+        child: AnimatedRotation(
+          animation: _rotateController,
+          child: Image.asset(
+            "assets/images/designs/pokeball.png",
+            width: pokeSize,
+            height: pokeSize,
+            color: Colors.black.withOpacity(0.06),
+          ),
+        ),
+      ),
+      Positioned(
+          top: screenSize.height * 0.348,
+          left: -screenSize.width * 0.1,
+          child: Transform.rotate(
+            angle:-math.pi / 4.9,
+            child: Image.asset(
+              "assets/images/designs/paperclip.png",
+              width: screenSize.height * 0.9,
+              height: screenSize.height * 0.1 * 0.54,
+              color: Colors.black.withOpacity(0.5),
+            ),
+          )),
+      Positioned(
+        top: 4,
+        left: screenSize.height * 0.3,
+        child: Image.asset(
+          "assets/images/designs/dotted.png",
+          width: screenSize.height * 0.07,
+          height: screenSize.height * 0.07 * 0.54,
+          color: Colors.black.withOpacity(0.3),
+        ),
+      ),
+    ];
   }
 
   Widget topContent(BuildContext context) {

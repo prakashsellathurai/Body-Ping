@@ -1,7 +1,7 @@
 import 'package:http/http.dart' as http;
 
 class NutritionSearchProvider {
-  String baseUrl = 'https://trackers-api-dot-hygieafit.el.r.appspot.com/trackers/v1/calories/search';
+  String baseUrl = 'url';
   Future<String> DoSearch(term) async {
     http.Response result = await http.get(baseUrl+'?name=$term');
     return result.body;

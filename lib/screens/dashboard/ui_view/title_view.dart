@@ -58,7 +58,7 @@ class TitleView extends StatelessWidget {
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                 fontFamily: DashboardTheme.fontName,
-                                fontWeight: FontWeight.normal,
+                                fontWeight: FontWeight.bold,
                                 fontSize: 16,
                                 letterSpacing: 0.5,
                                 color: DashboardTheme.nearlyDarkBlue,

@@ -1,8 +1,28 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-class LoadingIndicator extends StatelessWidget {
+class LoadingIndicator extends StatefulWidget {
+  LoadingIndicator({Key key}) : super(key: key);
+
+  @override
+  _LoadingIndicatorState createState() => _LoadingIndicatorState();
+}
+
+class _LoadingIndicatorState extends State<LoadingIndicator>
+    with SingleTickerProviderStateMixin {
+  AnimationController _animationController;
+  @override
+  void initState() {
+    // TODO: implement initState
+    _animationController = AnimationController(
+                                    vsync: this,
+                                    duration:
+                                        const Duration(milliseconds: 1200));
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -23,10 +43,14 @@ class LoadingIndicator extends StatelessWidget {
                       child: Padding(
                           padding: EdgeInsets.all(24.0),
                           child: Center(
-                            child: FlareActor("assets/flare/loading.flr",
-                                alignment: Alignment.center,
-                                fit: BoxFit.none,
-                                animation: "active"),
+                            child: SpinKitCubeGrid(
+                                color: Color(0xFF4FC1A6),
+                                size: 50.0,
+                                controller: _animationController,)
+                            // child: FlareActor("assets/flare/loading.flr",
+                            //     alignment: Alignment.center,
+                            //     fit: BoxFit.none,
+                            //     animation: "active"),
                           ))),
                 ),
                 Text('Loading....')
